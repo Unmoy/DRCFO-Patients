@@ -1,0 +1,61 @@
+.doctor_screen {
+}
+.top_doctor_search_heading {
+  height: 30vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ecf6ff;
+  margin-bottom: 50px;
+}
+.top_doctor_search {
+  width: 90%;
+  padding-left: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  height: 80px;
+  background-color: #fff;
+  border: 1.5px solid #91d5ff;
+  border-radius: 4px;
+  box-shadow: 0px 14px 14px rgba(0, 0, 0, 0.06);
+}
+
+.doctor_screen_input_left {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.top_doctor_search_input input[type="text"] {
+  border: none;
+  font-family: "Inter", sans-serif;
+  padding: 8px;
+}
+.top_doctor_search_input input[type="text"]::placeholder {
+  color: #48484b;
+}
+.searchInput_2 {
+  width: auto;
+}
+.icon_color {
+  color: #1472e5;
+  margin-right: 5px;
+  font-size: 20px;
+}
+.top_doctor_search_calender_input {
+}
+.top_doctor_search_calender_input span {
+  color: #48484b;
+}
+.search_btn2 {
+  background: #1472e5;
+  border-radius: 0px 4px 4px 0px;
+  color: #fff;
+  height: 100%;
+  border: none;
+  padding: 0 30px;
+  font-size: 20px;
+  cursor: pointer;
+}
