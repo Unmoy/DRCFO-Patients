@@ -140,7 +140,8 @@ const Login = ({ closeModal, modalOpened }) => {
             {status == "login" && (
               <button
                 className="booking_btn"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   getOtp();
                 }}
               >
@@ -150,7 +151,8 @@ const Login = ({ closeModal, modalOpened }) => {
             {status == "otp" && (
               <button
                 className="verify_btn"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   verifyOtp();
                 }}
               >

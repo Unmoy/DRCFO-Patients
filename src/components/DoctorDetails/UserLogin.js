@@ -47,7 +47,6 @@ const UserLogin = () => {
       const response = await signInWithPhone(newNumber);
       setStatus("otp");
       console.log("getotp");
-      console.log(response);
       setResult(response);
     } catch (err) {
       console.log(err);
@@ -79,6 +78,7 @@ const UserLogin = () => {
       </div>
       <div className="sign_up_input_box"></div>
       <form>
+        {status == "loggedIn" && <div>LoggedIn</div>}
         {status == "login" && (
           <div className="booking_input">
             <p className="phone_label">Phone Number*</p>
@@ -132,7 +132,8 @@ const UserLogin = () => {
           {status == "login" && (
             <button
               className="booking_btn"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 getOtp();
               }}
             >
@@ -142,7 +143,8 @@ const UserLogin = () => {
           {status == "otp" && (
             <button
               className="verify_btn"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 verifyOtp();
               }}
             >

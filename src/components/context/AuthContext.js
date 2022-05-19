@@ -28,9 +28,9 @@ export const AuthProvider = ({ children }) => {
       },
       auth
     );
-    console.log(number)
-    // return signInWithPhoneNumber(auth, number, recaptchaVerifier);
-    // return "Success"; 
+    console.log(number);
+    return signInWithPhoneNumber(auth, number, recaptchaVerifier);
+    // return "Success";
   }
   async function signInWithOtp(result, otp) {
     try {
@@ -40,16 +40,17 @@ export const AuthProvider = ({ children }) => {
         console.log(user);
         setCurrentUser({
           user_phone: user.phoneNumber,
-          user_token: user.accessToken,
+          user_uid: user.uid,
         });
-        fetch("https://reservefree-backend.herokuapp.com/auth/docter", {
+        console.log(currentUser);
+        fetch("https://reservefree-backend.herokuapp.com/auth/patient", {
           method: "POST",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            token: user.accessToken,
+            uid: user.uid,
             phone: user.phoneNumber,
           }),
         })
@@ -57,14 +58,14 @@ export const AuthProvider = ({ children }) => {
           .then((data) => {
             console.log(data);
             if (data.message === "SUCCESS") {
-              localStorage.setItem("doctor_id", data.id);
-              if (data.docter) {
-                console.log("docotr");
-                document.location.replace("/dashboard"); // Redirect to dahboard
+              localStorage.setItem("patient_id", data.id);
+              if (data.patient) {
+                console.log("old");
+                document.location.replace("/"); // Redirect to dahboard
               } else {
                 // redirect him to clicnic
-                document.location.replace("/clinicdetails");
-                console.log("not doc");
+                document.location.replace("/doctors");
+                console.log("new");
               }
             }
           });
@@ -82,16 +83,39 @@ export const AuthProvider = ({ children }) => {
     const unsubscribe = authentication.onAuthStateChanged((user) => {
       console.log(user);
       if (user) {
+        console.log(user);
         setCurrentUser({
-          user_name: user._delegate.displayName,
-          user_email: user._delegate.email,
-          user_token: user._delegate.accessToken,
-          user_phone: user._delegate.phoneNumber,
+          user_phone: user.phoneNumber,
+          user_uid: user.uid,
         });
-
-        // localStorage.setItem("token", user._delegate.accessToken);
+        console.log(currentUser);
+        // fetch("https://reservefree-backend.herokuapp.com/auth/docter", {
+        //   method: "POST",
+        //   headers: {
+        //     Accept: "application/json",
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     token: user.accessToken,
+        //     phone: user.phoneNumber,
+        //   }),
+        // })
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     console.log(data);
+        //     if (data.message === "SUCCESS") {
+        //       localStorage.setItem("doctor_id", data.id);
+        //       if (data.docter) {
+        //         console.log("docotr");
+        //         document.location.replace("/dashboard"); // Redirect to dahboard
+        //       } else {
+        //         // redirect him to clicnic
+        //         document.location.replace("/clinicdetails");
+        //         console.log("not doc");
+        //       }
+        //     }
+        //   });
       }
-
       setLoading(false);
     });
     return unsubscribe;
