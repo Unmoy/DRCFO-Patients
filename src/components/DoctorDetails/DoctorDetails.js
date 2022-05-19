@@ -4,7 +4,7 @@ import docimage from "../../assets/images/docimage.png";
 import blackmarker from "../../assets/images/black-marker.png";
 import Carousel from "react-elastic-carousel";
 import TimeCard from "./TimeCard";
-import BookingForm from "./BookingForm";
+import Login from "./Login";
 import Navbar from "../Navbar/Navbar";
 import { useParams } from "react-router";
 const carouselItem = [
@@ -191,7 +191,7 @@ const DoctorDetails = () => {
                 <button onClick={openModal} className="bookbtn">
                   Book Appointment
                 </button>
-                <BookingForm
+                <Login
                   modalOpened={modalIsOpen}
                   closeModal={closeModal}
                 />
