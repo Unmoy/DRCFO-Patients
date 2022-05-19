@@ -41,7 +41,7 @@ const Login = ({ closeModal, modalOpened }) => {
 
   const auth = getAuth();
   async function signInWithPhone(number) {
-      console.log("Signin")
+    console.log("Signin");
     const recaptchaVerifier = new RecaptchaVerifier(
       "recaptcha-container",
       {
@@ -59,39 +59,39 @@ const Login = ({ closeModal, modalOpened }) => {
     try {
       const res = await result.confirm(otp);
       const user = res.user;
-    //   if (user) {
-    //     console.log(user);
-    //     setCurrentUser({
-    //       user_phone: user.phoneNumber,
-    //       user_token: user.accessToken,
-    //     });
-    //     fetch("https://reservefree-backend.herokuapp.com/auth/patient", {
-    //       method: "POST",
-    //       headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({
-    //         uid: user.accessToken,
-    //         phone: user.phoneNumber,
-    //       }),
-    //     })
-    //       .then((response) => response.json())
-    //       .then((data) => {
-    //         console.log(data);
-    //         if (data.message === "SUCCESS") {
-    //           localStorage.setItem("doctor_id", data.id);
-    //           if (data.docter) {
-    //             console.log("docotr");
-    //             document.location.replace("/dashboard"); // Redirect to dahboard
-    //           } else {
-    //             // redirect him to clicnic
-    //             document.location.replace("/clinicdetails");
-    //             console.log("not doc");
-    //           }
-    //         }
-    //       });
-    //   }
+      //   if (user) {
+      //     console.log(user);
+      //     setCurrentUser({
+      //       user_phone: user.phoneNumber,
+      //       user_token: user.accessToken,
+      //     });
+      //     fetch("https://reservefree-backend.herokuapp.com/auth/patient", {
+      //       method: "POST",
+      //       headers: {
+      //         Accept: "application/json",
+      //         "Content-Type": "application/json",
+      //       },
+      //       body: JSON.stringify({
+      //         uid: user.accessToken,
+      //         phone: user.phoneNumber,
+      //       }),
+      //     })
+      //       .then((response) => response.json())
+      //       .then((data) => {
+      //         console.log(data);
+      //         if (data.message === "SUCCESS") {
+      //           localStorage.setItem("doctor_id", data.id);
+      //           if (data.docter) {
+      //             console.log("docotr");
+      //             document.location.replace("/dashboard"); // Redirect to dahboard
+      //           } else {
+      //             // redirect him to clicnic
+      //             document.location.replace("/clinicdetails");
+      //             console.log("not doc");
+      //           }
+      //         }
+      //       });
+      //   }
     } catch (err) {
       console.log(err);
     }
@@ -103,10 +103,10 @@ const Login = ({ closeModal, modalOpened }) => {
       return setStatus("login");
     try {
       let newNumber = "+" + phoneNumber;
-    //   const response = await signInWithPhone(newNumber);
+      //   const response = await signInWithPhone(newNumber);
       await setStatus("otp");
       console.log("getotp");
-    //   setResult(response);
+      //   setResult(response);
     } catch (err) {
       console.log(err);
     }
@@ -118,7 +118,7 @@ const Login = ({ closeModal, modalOpened }) => {
     });
     if (otp1 === "" || otp1 === null) return;
     try {
-    //   await signInWithOtp(result, otp1);
+      //   await signInWithOtp(result, otp1);
       setStatus("loggedIn");
     } catch (err) {
       console.log(err);
@@ -153,19 +153,13 @@ const Login = ({ closeModal, modalOpened }) => {
         </div>
         <div className="sign_up_input_box"></div>
         <form>
-          {status == "login" && (
+          {status === "login" && (
             <div className="booking_input">
               <p className="phone_label">Phone Number*</p>
-              <PhoneInput
-                country={"in"}
-                enableAreaCodes="true"
-                onChange={(phone) => {
-                  setPhoneNumber({ phone });
-                }}
-              />
+              <PhoneInput country={"in"} enableAreaCodes="true" />
             </div>
           )}
-          {status == "otp" && (
+          {status === "otp" && (
             <div>
               <div className="booking_input">
                 <p className="otp_pass">
@@ -202,18 +196,18 @@ const Login = ({ closeModal, modalOpened }) => {
             </div>
           )}
           <div className="mx-5">
-            {status == "login" && (
+            {status === "login" && (
               <button
                 className="booking_btn"
                 onClick={() => {
                   getOtp();
-                setStatus("otp")
+                  setStatus("otp");
                 }}
               >
                 Send OTP
               </button>
             )}
-            {status == "otp" && (
+            {status === "otp" && (
               <button
                 className="verify_btn"
                 onClick={() => {

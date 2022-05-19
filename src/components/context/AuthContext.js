@@ -63,7 +63,6 @@ export const AuthProvider = ({ children }) => {
               } else {
                 // redirect him to clicnic
                 document.location.replace("/clinicdetails");
-                console.log("not doc");
               }
             }
           });

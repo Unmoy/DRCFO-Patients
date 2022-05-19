@@ -49,7 +49,7 @@ const BookingForm = ({ closeModal, modalOpened }) => {
             <button onClick={openModal} className="booking_btn">
               Send OTP
             </button>
-            <OTPModal modalIsOpen={modalIsOpen} closeModal={closeModal} />
+            {/* <OTPModal modalIsOpen={modalIsOpen} closeModal={closeModal} /> */}
             <p className="signup_terms">
               By continuing you are agreeing to our
               <span className="terms"> Terms & Conditions</span> and

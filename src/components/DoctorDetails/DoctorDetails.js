@@ -191,10 +191,7 @@ const DoctorDetails = () => {
                 <button onClick={openModal} className="bookbtn">
                   Book Appointment
                 </button>
-                <Login
-                  modalOpened={modalIsOpen}
-                  closeModal={closeModal}
-                />
+                <Login modalOpened={modalIsOpen} closeModal={closeModal} />
               </div>
             </div>
           </div>

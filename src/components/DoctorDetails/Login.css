@@ -1,160 +1,160 @@
 .booking_input {
-    margin: 20px 70px;
+  margin: 20px 70px;
 }
 
 .phone_label {
-    margin: 20px 0;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 27px;
-    letter-spacing: 0.02em;
-    color: #707272;
+  margin: 20px 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 27px;
+  letter-spacing: 0.02em;
+  color: #707272;
 }
 
 .signup_header {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100px;
 }
 
 .signup_header img {
-    margin-bottom: 20px;
-    margin-right: 20px;
+  margin-bottom: 20px;
+  margin-right: 20px;
 }
 
 .signup_header h3 {
-    font-weight: 500;
-    font-size: 26px;
-    line-height: 34px;
-    color: #000000;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 34px;
+  color: #000000;
 }
 
 .signup_header p {
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 27px;
-    letter-spacing: 0.02em;
-    color: #707272;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 27px;
+  letter-spacing: 0.02em;
+  color: #707272;
 }
 
 .Modal {
-    position: absolute;
-    top: 40px;
-    left: 40px;
-    right: 40px;
-    bottom: 40px;
-    background: #f7f8f9;
-    border-radius: 4px;
-    width: 600px;
-    height: 450px;
-    padding: 40px;
-    border: none;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  background: #f7f8f9;
+  border-radius: 4px;
+  width: 600px;
+  height: 450px;
+  padding: 40px;
+  border: none;
 }
 
 .Overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.92);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.92);
 }
 
 .booking_btn {
-    width: 100%;
-    cursor: pointer;
-    background: #194af5;
-    border-radius: 2px;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 600;
-    padding: 8px 25px;
-    margin: 10px;
-    border: none;
-    outline: none;
+  width: 100%;
+  cursor: pointer;
+  background: #194af5;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 8px 25px;
+  margin: 10px;
+  border: none;
+  outline: none;
 }
 
 .signup_terms {
-    width: 100%;
-    font-weight: 400;
-    font-size: 11px;
-    line-height: 17px;
-    color: #3e3d3c;
-    text-align: center;
+  width: 100%;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 17px;
+  color: #3e3d3c;
+  text-align: center;
 }
 
 .terms {
-    color: #194af5;
+  color: #194af5;
 }
 
 .react-tel-input {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .react-tel-input .selected-flag {
-    width: 43px !important;
+  width: 43px !important;
 }
 
 .react-tel-input .flag-dropdown {
-    background-color: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 .booking_input .react-tel-input input[type="tel"] {
-    padding: 20px 55px;
-    width: 100%;
+  padding: 20px 55px;
+  width: 100%;
 }
 
 .booking_input .react-tel-input input[type="tel"]:focus {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 .otp_pass {
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .num {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 27px;
-    letter-spacing: 0.02em;
-    color: #2e2e2e;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 27px;
+  letter-spacing: 0.02em;
+  color: #2e2e2e;
 }
 
 .change_num {
-    color: #194af5;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 27px;
-    letter-spacing: 0.02em;
-    color: #194af5;
+  color: #194af5;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 27px;
+  letter-spacing: 0.02em;
+  color: #194af5;
 }
 
 .otp_box {
-    height: 70px;
+  height: 70px;
 }
 
 .otp-field {
-    width: 38px;
-    margin-right: 10px;
-    padding-left: 12px;
-    height: 40px;
-    background: #efefef;
-    border-radius: 2px;
-    border: none;
+  width: 38px;
+  margin-right: 10px;
+  padding-left: 12px;
+  height: 40px;
+  background: #efefef;
+  border-radius: 2px;
+  border: none;
 }
 
 .verify_btn {
-    width: 100%;
-    cursor: pointer;
-    background: #e6ebff;
-    border-radius: 2px;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 27px;
-    color: #b7b7b7;
-    padding: 8px 25px;
-    margin: 10px;
-    border: none;
-    outline: none;
+  width: 100%;
+  cursor: pointer;
+  background: #e6ebff;
+  border-radius: 2px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  color: #b7b7b7;
+  padding: 8px 25px;
+  margin: 10px;
+  border: none;
+  outline: none;
 }
