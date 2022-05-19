@@ -97,7 +97,7 @@
 }
 
 .doc_speciality {
-  display: flex;
+  /* display: flex; */
   flex-wrap: wrap;
 }
 .doc_speciality button {

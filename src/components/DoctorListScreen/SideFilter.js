@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SideFilter.css";
-import Slider from "@mui/material";
+// import Slider from "@mui/material";
 
 const marks = [
   {
@@ -26,7 +26,7 @@ const SideFilter = () => {
       </div>
       <div className="location_filter">
         <p>location</p>
-        <Slider value={value} onChange={handleOnChange} marks={marks} />
+        {/* <Slider value={value} onChange={handleOnChange} marks={marks} /> */}
       </div>
       <hr />
       <div className="price_filter">

@@ -44,6 +44,8 @@ const detailText =
 const DoctorDetails = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [singleDoctor, setSingleDoctor] = useState({});
+  const [docspecialities, setDocSpecialities] = useState([]);
+
   const { id } = useParams();
   console.log(singleDoctor);
 
@@ -59,10 +61,14 @@ const DoctorDetails = () => {
     window.scrollTo(0, 0);
     fetch(`https://reservefree-backend.herokuapp.com/get/docter?id=${id}`)
       .then((res) => res.json())
-      .then((data) => setSingleDoctor(data));
+      .then((data) => {
+        setSingleDoctor(data);
+
+        const propertyValues = Object.values(data.specialities);
+        setDocSpecialities(propertyValues);
+      });
   }, [id]);
-  const { specialities } = singleDoctor;
-  console.log(specialities);
+
   return (
     <>
       <Navbar />
@@ -108,8 +114,8 @@ const DoctorDetails = () => {
                 <div className="doc_speciality">
                   <h3>Specialties</h3>
                   <div>
-                    {specialities.map((speciality) => (
-                      <button>{speciality}</button>
+                    {docspecialities.map((speciality) => (
+                      <button key={speciality}>{speciality}</button>
                     ))}
                   </div>
                 </div>

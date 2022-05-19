@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./DoctorListScreen.css";
-
 import SideFilter from "./SideFilter";
 import DoctorCard from "./DoctorCard";
 import Listing from "../Listing/Listing";
@@ -8,7 +7,6 @@ import searchicon from "../../assets/images/searchicon.png";
 import mapmarkericon from "../../assets/images/map-marker.png";
 import calendericon from "../../assets/images/calendericon.png";
 import searcbtnicon from "../../assets/images/searcbtnicon.png";
-import directionicon from "../../assets/images/directionicon.png";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 
@@ -74,7 +72,7 @@ const DoctorListScreen = () => {
                 <DoctorCard key={doctor._id} doctor={doctor} />
               ))}
             </div>
-            {/* Properties Lists Start */}
+            {/* Properties Lists End */}
           </div>
         </div>
         <Listing />

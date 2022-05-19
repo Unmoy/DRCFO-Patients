@@ -7,6 +7,9 @@ import likeicon from "../../assets/images/likeicon.png";
 import { useNavigate } from "react-router-dom";
 const DoctorCard = ({ doctor }) => {
   console.log(doctor);
+
+  const { specialities } = doctor;
+  const speciality = Object.values(specialities)[0];
   let navigate = useNavigate();
   const handleClick = () => {
     const url = `/detail/${doctor._id}`;
@@ -14,7 +17,6 @@ const DoctorCard = ({ doctor }) => {
   };
   return (
     <div>
-      {/* <Link to="#" className="doctor_card_link"> */}
       <div className="mb-3 single_doctors_card">
         <div className="row g-0">
           <div className="col-md-3">
@@ -25,7 +27,7 @@ const DoctorCard = ({ doctor }) => {
           <div className="col-sm-12 col-md-6">
             <div className="doctor_card_detail">
               <h5 className="doctor_name mb-2">{doctor.name}</h5>
-              <span className="mb-2">{doctor.specialities}</span>
+              <span className="mb-2">{speciality}</span>
               <ul className="mb-2">
                 <li>Own Clinic</li>
               </ul>
@@ -53,7 +55,6 @@ const DoctorCard = ({ doctor }) => {
           </div>
         </div>
       </div>
-      {/* </Link> */}
     </div>
   );
 };
