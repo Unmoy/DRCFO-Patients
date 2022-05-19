@@ -24,12 +24,13 @@ export const AuthProvider = ({ children }) => {
         size: "invisible",
         callback: (response) => {
           // reCAPTCHA solved, allow signInWithPhoneNumber.
-          //   return signInWithPhoneNumber(auth, number, recaptchaVerifier);
         },
       },
       auth
     );
-    return signInWithPhoneNumber(auth, number, recaptchaVerifier);
+    console.log(number)
+    // return signInWithPhoneNumber(auth, number, recaptchaVerifier);
+    // return "Success"; 
   }
   async function signInWithOtp(result, otp) {
     try {
