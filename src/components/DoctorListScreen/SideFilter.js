@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SideFilter.css";
-import Slider from "@mui/material";
+import Slider from "@mui/material/Slider";
 
 const marks = [
   {
