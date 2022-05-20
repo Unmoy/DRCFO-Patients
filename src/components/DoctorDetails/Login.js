@@ -4,13 +4,7 @@ import "./Login.css";
 import loginlogo from "../../assets/images/login_logo.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-// import { useAuth } from "../context/AuthContext";
-import { authentication } from "../../firebase";
-import {
-  getAuth,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from "firebase/auth";
+import { useAuth } from "../context/AuthContext";
 
 const customStyles = {
   content: {
@@ -40,72 +34,14 @@ const Login = ({ closeModal, modalOpened }) => {
     }
   };
 
-  const auth = getAuth();
-  async function signInWithPhone(number) {
-    console.log("Signin");
-    const recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
-      {
-        size: "invisible",
-        // callback: (response) => {
-        //   // reCAPTCHA solved, allow signInWithPhoneNumber.
-        //   //   return signInWithPhoneNumber(auth, number, recaptchaVerifier);
-        // },
-      },
-      auth
-    );
-    return signInWithPhoneNumber(auth, number, recaptchaVerifier);
-  }
-  async function signInWithOtp(result, otp) {
-    try {
-      const res = await result.confirm(otp);
-      const user = res.user;
-      console.log(user);
-      //   if (user) {
-      //     console.log(user);
-      //     setCurrentUser({
-      //       user_phone: user.phoneNumber,
-      //       user_token: user.accessToken,
-      //     });
-      //     fetch("https://reservefree-backend.herokuapp.com/auth/patient", {
-      //       method: "POST",
-      //       headers: {
-      //         Accept: "application/json",
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({
-      //         uid: user.accessToken,
-      //         phone: user.phoneNumber,
-      //       }),
-      //     })
-      //       .then((response) => response.json())
-      //       .then((data) => {
-      //         console.log(data);
-      //         if (data.message === "SUCCESS") {
-      //           localStorage.setItem("doctor_id", data.id);
-      //           if (data.docter) {
-      //             console.log("docotr");
-      //             document.location.replace("/dashboard"); // Redirect to dahboard
-      //           } else {
-      //             // redirect him to clicnic
-      //             document.location.replace("/clinicdetails");
-      //             console.log("not doc");
-      //           }
-      //         }
-      //       });
-      //   }
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  // const { signInWithPhone} = useAuth();
-  // const { signInWithOtp} = useAuth();
+  const { signInWithPhone } = useAuth();
+  const { signInWithOtp } = useAuth();
 
   const getOtp = async () => {
     console.log(phoneNumber);
-    if (phoneNumber === "" || phoneNumber === undefined)
+    if (phoneNumber === "" || phoneNumber === undefined) {
       return setStatus("login");
+    }
     try {
       let newNumber = "+" + phoneNumber;
       //   const response = await signInWithPhone(newNumber);
@@ -115,9 +51,11 @@ const Login = ({ closeModal, modalOpened }) => {
       const response = await signInWithPhone(newNumber);
       setStatus("otp");
       console.log("getotp");
+      console.log(response);
       setResult(response);
     } catch (err) {
       console.log(err);
+      console.log("Error");
     }
   };
   const verifyOtp = async () => {
@@ -130,15 +68,6 @@ const Login = ({ closeModal, modalOpened }) => {
       await signInWithOtp(result, otp1);
     } catch (err) {}
   };
-  //   useEffect(() => {
-  //     const unsubscribe = authentication.onAuthStateChanged((user) => {
-  //       console.log(user);
-  //       if (user) {
-  //         // localStorage.setItem("token", user._delegate.accessToken);
-  //       }
-  //     });
-  //     return unsubscribe;
-  //   }, []);
 
   return (
     <div className="booking_modal">
@@ -213,7 +142,8 @@ const Login = ({ closeModal, modalOpened }) => {
             {status === "login" && (
               <button
                 className="booking_btn"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   getOtp();
                 }}
               >
@@ -223,7 +153,8 @@ const Login = ({ closeModal, modalOpened }) => {
             {status === "otp" && (
               <button
                 className="verify_btn"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   verifyOtp();
                 }}
               >
