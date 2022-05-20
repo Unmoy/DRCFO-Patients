@@ -4,6 +4,7 @@ import "./Login.css";
 import loginlogo from "../../assets/images/login_logo.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+// import { useAuth } from "../context/AuthContext";
 import { authentication } from "../../firebase";
 import {
   getAuth,
@@ -46,10 +47,10 @@ const Login = ({ closeModal, modalOpened }) => {
       "recaptcha-container",
       {
         size: "invisible",
-        callback: (response) => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-          //   return signInWithPhoneNumber(auth, number, recaptchaVerifier);
-        },
+        // callback: (response) => {
+        //   // reCAPTCHA solved, allow signInWithPhoneNumber.
+        //   //   return signInWithPhoneNumber(auth, number, recaptchaVerifier);
+        // },
       },
       auth
     );
@@ -59,6 +60,7 @@ const Login = ({ closeModal, modalOpened }) => {
     try {
       const res = await result.confirm(otp);
       const user = res.user;
+      console.log(user);
       //   if (user) {
       //     console.log(user);
       //     setCurrentUser({
@@ -97,6 +99,9 @@ const Login = ({ closeModal, modalOpened }) => {
     }
   }
 
+  // const { signInWithPhone} = useAuth();
+  // const { signInWithOtp} = useAuth();
+
   const getOtp = async () => {
     console.log(phoneNumber);
     if (phoneNumber === "" || phoneNumber === undefined)
@@ -107,6 +112,10 @@ const Login = ({ closeModal, modalOpened }) => {
       await setStatus("otp");
       console.log("getotp");
       //   setResult(response);
+      const response = await signInWithPhone(newNumber);
+      setStatus("otp");
+      console.log("getotp");
+      setResult(response);
     } catch (err) {
       console.log(err);
     }
@@ -118,21 +127,18 @@ const Login = ({ closeModal, modalOpened }) => {
     });
     if (otp1 === "" || otp1 === null) return;
     try {
-      //   await signInWithOtp(result, otp1);
-      setStatus("loggedIn");
-    } catch (err) {
-      console.log(err);
-    }
+      await signInWithOtp(result, otp1);
+    } catch (err) {}
   };
-  useEffect(() => {
-    const unsubscribe = authentication.onAuthStateChanged((user) => {
-      console.log(user);
-      if (user) {
-        // localStorage.setItem("token", user._delegate.accessToken);
-      }
-    });
-    return unsubscribe;
-  }, []);
+  //   useEffect(() => {
+  //     const unsubscribe = authentication.onAuthStateChanged((user) => {
+  //       console.log(user);
+  //       if (user) {
+  //         // localStorage.setItem("token", user._delegate.accessToken);
+  //       }
+  //     });
+  //     return unsubscribe;
+  //   }, []);
 
   return (
     <div className="booking_modal">
@@ -156,7 +162,15 @@ const Login = ({ closeModal, modalOpened }) => {
           {status === "login" && (
             <div className="booking_input">
               <p className="phone_label">Phone Number*</p>
-              <PhoneInput country={"in"} enableAreaCodes="true" />
+
+              <PhoneInput
+                country={"in"}
+                enableAreaCodes="true"
+                onChange={(phone) => {
+                  setPhoneNumber(phone);
+                }}
+              />
+              <div id="recaptcha-container" />
             </div>
           )}
           {status === "otp" && (
@@ -201,7 +215,6 @@ const Login = ({ closeModal, modalOpened }) => {
                 className="booking_btn"
                 onClick={() => {
                   getOtp();
-                  setStatus("otp");
                 }}
               >
                 Send OTP

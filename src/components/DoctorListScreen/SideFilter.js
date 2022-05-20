@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./SideFilter.css";
-// import Slider from "@mui/material";
+import Slider from "@mui/material";
 
 const marks = [
   {
@@ -15,8 +15,29 @@ const marks = [
 
 const SideFilter = () => {
   const [value, setValue] = useState([0, 100]);
+  const [speciality, setSpeciality] = useState({ type: [] });
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://reservefree-backend.herokuapp.com/get/docters")
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, []);
   const handleOnChange = (e) => {
     setValue(e.target.value);
+  };
+  const handlespecialityfilter = (e) => {
+    const { value, checked } = e.target;
+    const { type } = speciality;
+    if (checked) {
+      setSpeciality({
+        type: [...type, value],
+      });
+    } else {
+      setSpeciality({
+        type: type.filter((e) => e !== value),
+      });
+    }
   };
   return (
     <div className="side_filter">
@@ -40,7 +61,7 @@ const SideFilter = () => {
               name="input1"
               value="0"
             />
-            <label for="input1">Free</label>
+            <label htmlFor="input1">Free</label>
             <br />
           </div>
           <div className="d-flex justify-content-start mb-2">
@@ -51,7 +72,7 @@ const SideFilter = () => {
               name="input2"
               value="1"
             />
-            <label for="input2">₹01-₹200</label>
+            <label htmlFor="input2">₹01-₹200</label>
             <br />
           </div>
           <div className="d-flex justify-content-start mb-2">
@@ -62,7 +83,7 @@ const SideFilter = () => {
               name="input3"
               value="2"
             />
-            <label for="input3">₹200-₹500</label>
+            <label htmlFor="input3">₹200-₹500</label>
             <br />
           </div>
           <div className="d-flex justify-content-start">
@@ -73,7 +94,7 @@ const SideFilter = () => {
               name="input4"
               value="3"
             />
-            <label for="input4">₹501+</label>
+            <label htmlFor="input4">₹501+</label>
           </div>
         </form>
       </div>
@@ -89,7 +110,7 @@ const SideFilter = () => {
               name="input1"
               value="0"
             />
-            <label for="input1">Physical Meet</label>
+            <label htmlFor="input1">Physical Meet</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
@@ -99,7 +120,7 @@ const SideFilter = () => {
               name="input2"
               value="1"
             />
-            <label for="input2">Online Consult</label>
+            <label htmlFor="input2">Online Consult</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
@@ -109,7 +130,7 @@ const SideFilter = () => {
               name="input3"
               value="2"
             />
-            <label for="input3">Home Visit</label>
+            <label htmlFor="input3">Home Visit</label>
           </div>
         </form>
       </div>
@@ -124,8 +145,9 @@ const SideFilter = () => {
               id="input1"
               name="input1"
               value="0"
+              onChange={handlespecialityfilter}
             />
-            <label for="input1">Orthopedics</label>
+            <label htmlFor="input1">Orthopedics</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
@@ -134,8 +156,9 @@ const SideFilter = () => {
               id="input2"
               name="input2"
               value="1"
+              onChange={handlespecialityfilter}
             />
-            <label for="input2">Neck bone surgery</label>
+            <label htmlFor="input2">Neck bone surgery</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
@@ -144,8 +167,9 @@ const SideFilter = () => {
               id="input3"
               name="input3"
               value="2"
+              onChange={handlespecialityfilter}
             />
-            <label for="input3">Joint Replacement Surgeont</label>
+            <label htmlFor="input3">Joint Replacement Surgeont</label>
           </div>
         </form>
         <button>+View More</button>
@@ -162,7 +186,7 @@ const SideFilter = () => {
               name="input1"
               value="0"
             />
-            <label for="input1">Relevance</label>
+            <label htmlFor="input1">Relevance</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
@@ -172,7 +196,7 @@ const SideFilter = () => {
               name="input2"
               value="1"
             />
-            <label for="input2">Earliest Available</label>
+            <label htmlFor="input2">Earliest Available</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
@@ -182,7 +206,7 @@ const SideFilter = () => {
               name="input3"
               value="2"
             />
-            <label for="input3">Price- Low to High</label>
+            <label htmlFor="input3">Price- Low to High</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
@@ -192,7 +216,7 @@ const SideFilter = () => {
               name="input3"
               value="2"
             />
-            <label for="input3">Price- High to Low</label>
+            <label htmlFor="input3">Price- High to Low</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
@@ -202,7 +226,7 @@ const SideFilter = () => {
               name="input3"
               value="2"
             />
-            <label for="input3">Year of Experience</label>
+            <label htmlFor="input3">Year of Experience</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
@@ -212,7 +236,7 @@ const SideFilter = () => {
               name="input3"
               value="2"
             />
-            <label for="input3">Recommendation</label>
+            <label htmlFor="input3">Recommendation</label>
           </div>
         </form>
       </div>

@@ -6,8 +6,6 @@ import directionicon from "../../assets/images/directionicon.png";
 import likeicon from "../../assets/images/likeicon.png";
 import { useNavigate } from "react-router-dom";
 const DoctorCard = ({ doctor }) => {
-  console.log(doctor);
-
   const { specialities } = doctor;
   const speciality = Object.values(specialities)[0];
   let navigate = useNavigate();

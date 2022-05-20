@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-
+import { AuthProvider } from "./components/context/AuthContext";
 // Importing components
 import DoctorDetails from "./components/DoctorDetails/DoctorDetails";
 import DoctorListScreen from "./components/DoctorListScreen/DoctorListScreen";
