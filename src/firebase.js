@@ -10,14 +10,14 @@ import "firebase/compat/auth";
 // });
 
 const app = firebase.initializeApp({
-    apiKey: "AIzaSyAUtVZIizhld7K5crmNbp1Oi3-Q5mmXRBY",
-    authDomain: "reservefree-patients.firebaseapp.com",
-    projectId: "reservefree-patients",
-    storageBucket: "reservefree-patients.appspot.com",
-    messagingSenderId: "637814495794",
-    appId: "1:637814495794:web:4d7c73f831cb7acc84fa2b",
-    measurementId: "G-8N3P3ECH2Q"
-  });
+  apiKey: "AIzaSyAUtVZIizhld7K5crmNbp1Oi3-Q5mmXRBY",
+  authDomain: "reservefree-patients.firebaseapp.com",
+  projectId: "reservefree-patients",
+  storageBucket: "reservefree-patients.appspot.com",
+  messagingSenderId: "637814495794",
+  appId: "1:637814495794:web:4d7c73f831cb7acc84fa2b",
+  measurementId: "G-8N3P3ECH2Q",
+});
 
 export const authentication = app.auth();
 export default app;

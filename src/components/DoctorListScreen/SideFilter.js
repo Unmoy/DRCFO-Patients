@@ -13,9 +13,9 @@ const marks = [
   },
 ];
 
-const SideFilter = () => {
+const SideFilter = ({ changeChecked }) => {
   const [value, setValue] = useState([0, 100]);
-  const [speciality, setSpeciality] = useState({ type: [] });
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -26,19 +26,7 @@ const SideFilter = () => {
   const handleOnChange = (e) => {
     setValue(e.target.value);
   };
-  const handlespecialityfilter = (e) => {
-    const { value, checked } = e.target;
-    const { type } = speciality;
-    if (checked) {
-      setSpeciality({
-        type: [...type, value],
-      });
-    } else {
-      setSpeciality({
-        type: type.filter((e) => e !== value),
-      });
-    }
-  };
+
   return (
     <div className="side_filter">
       <div className="d-flex justify-content-between align-items-center">
@@ -144,8 +132,8 @@ const SideFilter = () => {
               type="checkbox"
               id="input1"
               name="input1"
-              value="0"
-              onChange={handlespecialityfilter}
+              value="orthopedist"
+              onChange={changeChecked}
             />
             <label htmlFor="input1">Orthopedics</label>
           </div>
@@ -155,8 +143,8 @@ const SideFilter = () => {
               type="checkbox"
               id="input2"
               name="input2"
-              value="1"
-              onChange={handlespecialityfilter}
+              value="Neck bone surgery"
+              onChange={changeChecked}
             />
             <label htmlFor="input2">Neck bone surgery</label>
           </div>
@@ -166,8 +154,8 @@ const SideFilter = () => {
               type="checkbox"
               id="input3"
               name="input3"
-              value="2"
-              onChange={handlespecialityfilter}
+              value="Joint Replacement Surgeont"
+              onChange={changeChecked}
             />
             <label htmlFor="input3">Joint Replacement Surgeont</label>
           </div>

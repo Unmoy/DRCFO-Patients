@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import "./Login.css";
 import loginlogo from "../../assets/images/login_logo.png";
@@ -44,10 +44,6 @@ const Login = ({ closeModal, modalOpened }) => {
     }
     try {
       let newNumber = "+" + phoneNumber;
-      //   const response = await signInWithPhone(newNumber);
-      await setStatus("otp");
-      console.log("getotp");
-      //   setResult(response);
       const response = await signInWithPhone(newNumber);
       setStatus("otp");
       console.log("getotp");
@@ -60,13 +56,14 @@ const Login = ({ closeModal, modalOpened }) => {
   };
   const verifyOtp = async () => {
     let otp1 = "";
-    otp.map((o) => {
-      otp1 += o;
-    });
+    otp.map((o) => (otp1 += o));
     if (otp1 === "" || otp1 === null) return;
     try {
       await signInWithOtp(result, otp1);
-    } catch (err) {}
+      setStatus("loggedIn");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -91,7 +88,6 @@ const Login = ({ closeModal, modalOpened }) => {
           {status === "login" && (
             <div className="booking_input">
               <p className="phone_label">Phone Number*</p>
-
               <PhoneInput
                 country={"in"}
                 enableAreaCodes="true"

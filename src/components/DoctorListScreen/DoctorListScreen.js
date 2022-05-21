@@ -12,14 +12,50 @@ import Navbar from "../Navbar/Navbar";
 
 const DoctorListScreen = () => {
   const [doctorsList, setDoctorsList] = useState([]);
+  const [speciality, setSpeciality] = useState({ categories: [] });
+  // console.log(speciality.categories);
   useEffect(() => {
     fetch("https://reservefree-backend.herokuapp.com/get/docters")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setDoctorsList(data);
       });
   }, []);
+  const handleChangeChecked = (e) => {
+    const { value, checked } = e.target;
+    const { categories } = speciality;
+    if (checked) {
+      setSpeciality({
+        categories: [...categories, value.toLowerCase()],
+      });
+    } else {
+      setSpeciality({
+        categories: categories.filter((e) => e !== value),
+      });
+    }
+  };
+  const applyFilters = () => {
+    const list = doctorsList;
+    // console.log(list);
+    if (speciality.categories.length) {
+      // var updatedList = list.filter((item) =>
+      //   speciality.categories.includes(Object.values(item.specialities))
+      // );
+      let result = list.filter((item) => {
+        speciality.categories.filter((obj) => {
+          console.log(item.specialities);
+          console.log(obj);
+          return item.specialities.includes(obj);
+        });
+      });
+      console.log(result);
+      // setDoctorsList(updatedList);
+    }
+  };
+
+  useEffect(() => {
+    applyFilters();
+  }, [speciality]);
   return (
     <>
       <Navbar />
@@ -56,7 +92,7 @@ const DoctorListScreen = () => {
             </div>
             {/* Left Side Filters Start */}
             <div className="col-12 col-md-4">
-              <SideFilter />
+              <SideFilter changeChecked={handleChangeChecked} />
             </div>
             {/* Left Side Filters Ends */}
             {/* Properties Lists Start */}
