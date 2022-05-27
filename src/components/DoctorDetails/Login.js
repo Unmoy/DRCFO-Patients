@@ -5,7 +5,7 @@ import loginlogo from "../../assets/images/login_logo.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useAuth } from "../context/AuthContext";
-
+import { useNavigate } from "react-router-dom";
 const customStyles = {
   content: {
     top: "50%",
@@ -24,7 +24,7 @@ const Login = ({ closeModal, modalOpened }) => {
   const [result, setResult] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState(new Array(6).fill(""));
-
+  const navigate = useNavigate();
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return false;
     setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
@@ -61,6 +61,7 @@ const Login = ({ closeModal, modalOpened }) => {
     try {
       await signInWithOtp(result, otp1);
       setStatus("loggedIn");
+      navigate("/patientdetails");
     } catch (err) {
       console.log(err);
     }

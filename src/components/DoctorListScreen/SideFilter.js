@@ -132,7 +132,7 @@ const SideFilter = ({ changeChecked }) => {
               type="checkbox"
               id="input1"
               name="input1"
-              value="orthopedist"
+              value="Orthopedics"
               onChange={changeChecked}
             />
             <label htmlFor="input1">Orthopedics</label>
@@ -154,7 +154,7 @@ const SideFilter = ({ changeChecked }) => {
               type="checkbox"
               id="input3"
               name="input3"
-              value="Joint Replacement Surgeont"
+              value="Joint Replacement Surgeon"
               onChange={changeChecked}
             />
             <label htmlFor="input3">Joint Replacement Surgeont</label>

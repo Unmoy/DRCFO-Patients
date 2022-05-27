@@ -4,7 +4,7 @@ const Doctor = ({ doctor }) => {
   return (
     <div className="col-md-6">
       <div className="doctor_card">
-        <div class="doctor_img"></div>
+        <div className="doctor_img"></div>
         <div className="d-flex justify-content-end">
           <h1 className="recommended">Highly recommended</h1>
         </div>

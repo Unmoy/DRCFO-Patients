@@ -1,0 +1,105 @@
+.confirm_header h1 {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 34px;
+  color: #000000;
+}
+.confirm_header {
+  padding: 30px 90px;
+}
+.confirm_header p {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 19px;
+  color: #194af5;
+}
+.confimation_details h6 {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: #b7b7b7;
+}
+.confimation_details p {
+  font-weight: 400;
+  font-size: 17px;
+  color: #000;
+}
+.confirmation_wrapper {
+  border-bottom: 1px solid rgba(208, 208, 208, 0.8);
+  padding-bottom: 30px;
+}
+.pay_wrapper h1 {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 34px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+.pay_wrapper {
+  padding: 30px 90px;
+}
+.pay_type_selector {
+  display: flex;
+}
+.pay_type_selector .payment_radio_input:checked,
+.payment_radio_input:not(:checked) {
+  position: absolute;
+  left: -9999px;
+}
+.pay_type_selector .payment_radio_input:checked + label,
+.payment_radio_input:not(:checked) + label {
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  line-height: 20px;
+  display: inline-block;
+  color: #666;
+  margin-right: 30px;
+  font-weight: 400;
+  font-size: 18px;
+  color: #232526;
+}
+.pay_type_selector .payment_radio_input:checked + label:before,
+.payment_radio_input:not(:checked) + label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ddd;
+  border-radius: 100%;
+  background: #fff;
+}
+.pay_type_selector .payment_radio_input:checked + label:after,
+.payment_radio_input:not(:checked) + label:after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background: #194af5;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  border-radius: 100%;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.pay_type_selector .payment_radio_input:not(:checked) + label:after {
+  opacity: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+.pay_type_selector .payment_radio_input:checked + label:after {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+.proceed_pay_btn {
+  border: none;
+  background: #e6ebff;
+  border-radius: 2px;
+  padding: 8px 100px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #b7b7b7;
+}

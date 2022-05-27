@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }) => {
       const res = await result.confirm(otp);
       const user = res.user;
       if (user) {
-        console.log(user);
         setCurrentUser({
           user_phone: user.phoneNumber,
           user_uid: user.uid,
@@ -58,15 +57,7 @@ export const AuthProvider = ({ children }) => {
           .then((data) => {
             console.log(data);
             if (data.message === "SUCCESS") {
-              localStorage.setItem("patient_id", data.id);
-              if (data.patient) {
-                console.log("old");
-                document.location.replace("/"); // Redirect to dahboard
-              } else {
-                // redirect him to clicnic
-                document.location.replace("/doctors");
-                console.log("new");
-              }
+              localStorage.setItem("patientId", data.id);
             }
           });
       }
@@ -81,40 +72,15 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = authentication.onAuthStateChanged((user) => {
-      // console.log(user);
       if (user) {
-        console.log(user);
         setCurrentUser({
-          user_phone: user.phoneNumber,
-          user_uid: user.uid,
+          user_phone: user._delegate.phoneNumber,
+          user_uid: user._delegate.auth.currentUser.uid,
         });
-        console.log(currentUser);
-        // fetch("https://reservefree-backend.herokuapp.com/auth/docter", {
-        //   method: "POST",
-        //   headers: {
-        //     Accept: "application/json",
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     token: user.accessToken,
-        //     phone: user.phoneNumber,
-        //   }),
-        // })
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     console.log(data);
-        //     if (data.message === "SUCCESS") {
-        //       localStorage.setItem("doctor_id", data.id);
-        //       if (data.docter) {
-        //         console.log("docotr");
-        //         document.location.replace("/dashboard"); // Redirect to dahboard
-        //       } else {
-        //         // redirect him to clicnic
-        //         document.location.replace("/clinicdetails");
-        //         console.log("not doc");
-        //       }
-        //     }
-        //   });
+        console.log(
+          user._delegate.phoneNumber,
+          user._delegate.auth.currentUser.uid
+        );
       }
       setLoading(false);
     });

@@ -6,72 +6,93 @@ import Carousel from "react-elastic-carousel";
 import TimeCard from "./TimeCard";
 import Login from "./Login";
 import Navbar from "../Navbar/Navbar";
-import { useParams } from "react-router";
-const carouselItem = [
-  {
-    id: 1,
-    title: "Today",
-    spots: 0,
-  },
-  {
-    id: 2,
-    title: "Tomorrow",
-    spots: 1,
-  },
-  {
-    id: 3,
-    title: "Wed, 13 Apr",
-    spots: 1,
-  },
-  {
-    id: 4,
-    title: "Thu, 14 Apr",
-    spots: 3,
-  },
-  {
-    id: 5,
-    title: "Fri, 15 Apr",
-    spots: 0,
-  },
-  {
-    id: 6,
-    title: "Sat, 16 Apr",
-    spots: 8,
-  },
-];
-const detailText =
-  "Dr. Ziwei Gao grew up on Long Island, she then received Doctorate of Dental Surgery from Stony Brook School of Dental Medicine. Following dental school, she completed a one-year advanced training in General Practice Dentistry at Health  Dr. Ziwei Gao grew up on Long Island, she then received Doctorate of Dental Surgery from Stony Brook School of Dental Medicine. Following dental school, she completed a one-year advanced training in General Practice Dentistry at Health in";
+import { useParams, useNavigate } from "react-router";
+import DatePicker from "../DatePicker";
+import { useAuth } from "../context/AuthContext";
+
 const DoctorDetails = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [singleDoctor, setSingleDoctor] = useState({});
   const [docspecialities, setDocSpecialities] = useState([]);
-
+  const [slots, setSlots] = useState([]);
   const { id } = useParams();
-  console.log(singleDoctor);
+  const speciality = Object.values(docspecialities)[0];
+  const { currentUser } = useAuth();
+  const [selectedDate, setSelectedDate] = useState("");
+  const navigate = useNavigate();
 
-  const [showMore, setShowMore] = useState(false);
   function openModal() {
-    setIsOpen(true);
+    if (currentUser.user_phone) {
+      navigate("/patientdetails");
+    } else {
+      setIsOpen(true);
+    }
   }
-
   function closeModal() {
     setIsOpen(false);
   }
+  var gsDayNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const selectedDay = (val) => {
+    var monthName = gsDayNames[val.getMonth()];
+    var day = val.getDate();
+    if (day < 10) {
+      day = "0" + day;
+    }
+    var month = val.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    var year = val.getFullYear();
+    setSelectedDate(year + "-" + month + "-" + day);
+    localStorage.setItem("selectedDate", monthName + +day + "," + year);
+  };
+  const getValue = (e) => {
+    console.log(e.target.value);
+    localStorage.setItem("selectedTime", e.target.value);
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetch(`https://reservefree-backend.herokuapp.com/get/docter?id=${id}`)
+    fetch(
+      `https://reservefree-backend.herokuapp.com/get/list/docter-clinic?clinicId=${id}`
+    )
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setSingleDoctor(data);
-
         const propertyValues = Object.values(data.specialities);
         setDocSpecialities(propertyValues);
       });
   }, [id]);
 
+  useEffect(() => {
+    fetch(
+      `https://reservefree-backend.herokuapp.com/get/subslots?clinicId=${id}&date=${selectedDate}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        setSlots(data);
+      });
+  }, [selectedDate]);
+
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div>
         <div className="container-fluid">
           <div className="row">
@@ -79,15 +100,15 @@ const DoctorDetails = () => {
               <div className="doctor_header_card">
                 <img src={docimage} alt="docimage" />
                 <div className="doctor_header_card_description">
-                  <h5 className="doc_name mb-2">{singleDoctor.name}</h5>
-                  <span className="mb-2 header_pointer">Orthopedist</span>
+                  <h5 className="doc_name mb-2">{singleDoctor.docterName}</h5>
+                  <span className="mb-2 header_pointer">{speciality}</span>
                   <ul className="mb-2">
-                    <li>Own Clinic</li>
+                    <li>{singleDoctor.clinicName}</li>
                   </ul>
                   <p className="mb-5">14 years experience overall</p>
                   <div className="doctor_visit_info">
                     <div className="consultation">
-                      <span className="fee">₹600</span>
+                      <span className="fee">₹{singleDoctor.fees}</span>
                       <p className="consult_text">Consultation fee</p>
                     </div>
                     <div className="kms_distance">
@@ -102,14 +123,11 @@ const DoctorDetails = () => {
               <div className="doctor_detail_card">
                 <div className="doc_about">
                   <h3>About Dr. Krishnanand</h3>
-                  <p>
-                    {showMore
-                      ? detailText
-                      : `${detailText.substring(0, 200)}...`}
-                  </p>
-                  <button onClick={() => setShowMore(!showMore)}>
-                    {showMore ? "show less" : "show more"}
-                  </button>
+                  <p>{singleDoctor.bio}</p>
+                </div>
+                <div className="doc_language">
+                  <h3>Clinic Name</h3>
+                  <p>{singleDoctor.clinicName}</p>
                 </div>
                 <div className="doc_speciality">
                   <h3>Specialties</h3>
@@ -132,10 +150,7 @@ const DoctorDetails = () => {
                     </li>
                   </ul>
                 </div>
-                <div className="doc_language">
-                  <h3>Language</h3>
-                  <p>English,Hindi,Kanada,Marathi</p>
-                </div>
+
                 <div className="doc_address">
                   <h3>Address</h3>
                   <span>IHM Hospital 7 Ressearch Center</span>
@@ -152,39 +167,30 @@ const DoctorDetails = () => {
                   <p>Select available time</p>
                 </div>
                 <div className="time_table">
-                  <div className="time_table_carousel">
-                    <Carousel
-                      itemsToShow={3}
-                      showArrows={true}
-                      pagination={false}
-                    >
-                      {carouselItem?.map((timestamp) => {
-                        return (
-                          <TimeCard key={timestamp.id} timestamp={timestamp} />
-                        );
-                      })}
-                    </Carousel>
+                  <div className="date_picker_wrapper">
+                    <DatePicker getSelectedDay={selectedDay} />
                   </div>
-                  <div className="time_box">
-                    <div>
-                      <h2>Morning (6 slots)</h2>
-                    </div>
-                    <div className="d-flex justify-content-evenly flex-wrap time_wrapper">
-                      <p>10:30AM-11:30AM</p>
-                      <p>10:30AM-11:30AM</p>
-                      <p>10:30AM-11:30AM</p>
-                      <p>10:30AM-11:30AM</p>
-                    </div>
-                  </div>
-                  <div className="time_box">
-                    <div>
-                      <h2>Evening (6 slots)</h2>
-                    </div>
-                    <div className="d-flex justify-content-evenly flex-wrap time_wrapper">
-                      <p>10:30AM-11:30AM</p>
-                      <p>10:30AM-11:30AM</p>
-                      <p>10:30AM-11:30AM</p>
-                      <p>10:30AM-11:30AM</p>
+
+                  <div className="d-flex justify-content-evenly flex-wrap">
+                    <div className="date_selector_wrapper">
+                      {slots.length
+                        ? slots.map((slot, index) => (
+                            <span className="radio_inputs" key={index}>
+                              <label htmlFor={"slot" + (index + 1).toString()}>
+                                {slot.from.timefrom} {slot.from.fromdayTime} -
+                                {slot.to.timeto} {slot.to.todayTime}
+                              </label>
+                              <input
+                                className="radio_input_tool"
+                                type="radio"
+                                name="slot"
+                                id={"slot" + (index + 1).toString()}
+                                onChange={getValue}
+                                value={`${slot.from.timefrom} ${slot.from.fromdayTime} ${slot.to.timeto} ${slot.to.todayTime}`}
+                              />
+                            </span>
+                          ))
+                        : "No Slots available"}
                     </div>
                   </div>
                 </div>

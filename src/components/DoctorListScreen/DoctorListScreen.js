@@ -12,53 +12,51 @@ import Navbar from "../Navbar/Navbar";
 
 const DoctorListScreen = () => {
   const [doctorsList, setDoctorsList] = useState([]);
-  const [speciality, setSpeciality] = useState({ categories: [] });
-  // console.log(speciality.categories);
+  const [speciality, setSpeciality] = useState([]);
+  const [list, setList] = useState([]);
+
   useEffect(() => {
-    fetch("https://reservefree-backend.herokuapp.com/get/docters")
+    fetch("https://reservefree-backend.herokuapp.com/get/list/docter-clinic")
       .then((res) => res.json())
       .then((data) => {
+        setList(data);
         setDoctorsList(data);
       });
   }, []);
   const handleChangeChecked = (e) => {
     const { value, checked } = e.target;
-    const { categories } = speciality;
     if (checked) {
-      setSpeciality({
-        categories: [...categories, value.toLowerCase()],
-      });
+      setSpeciality([...speciality, value]);
     } else {
-      setSpeciality({
-        categories: categories.filter((e) => e !== value),
-      });
-    }
-  };
-  const applyFilters = () => {
-    const list = doctorsList;
-    // console.log(list);
-    if (speciality.categories.length) {
-      // var updatedList = list.filter((item) =>
-      //   speciality.categories.includes(Object.values(item.specialities))
-      // );
-      let result = list.filter((item) => {
-        speciality.categories.filter((obj) => {
-          console.log(item.specialities);
-          console.log(obj);
-          return item.specialities.includes(obj);
-        });
-      });
-      console.log(result);
-      // setDoctorsList(updatedList);
+      setSpeciality(speciality.filter((e) => e !== value));
     }
   };
 
+  const applyFilters = () => {
+    const newList = list;
+    if (speciality.length) {
+      let res = false;
+      let result = newList.filter((item) => {
+        speciality.map((obj) => {
+          if (item.specialities.includes(obj)) {
+            res = true;
+          }
+        });
+        if (res) {
+          res = false;
+          return item;
+        }
+      });
+      setDoctorsList(result);
+    } else {
+      setDoctorsList(newList);
+    }
+  };
   useEffect(() => {
     applyFilters();
   }, [speciality]);
   return (
     <>
-      <Navbar />
       <div className="doctor_screen">
         <div className="container-fluid">
           <div className="row">
@@ -105,7 +103,7 @@ const DoctorListScreen = () => {
                 </p>
               </div>
               {doctorsList.map((doctor) => (
-                <DoctorCard key={doctor._id} doctor={doctor} />
+                <DoctorCard key={doctor.clinicId} doctor={doctor} />
               ))}
             </div>
             {/* Properties Lists End */}

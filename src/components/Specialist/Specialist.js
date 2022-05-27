@@ -6,9 +6,9 @@ import icon4 from "../../assets/images/s4.svg";
 import ItemCard from "./ItemCard";
 const itemsList = [
   { id: 1, title: "Critical Care", icon: icon1 },
-  { id: 1, title: "Primary  Care", icon: icon2 },
-  { id: 1, title: "Orthopedics", icon: icon3 },
-  { id: 1, title: "Neuro Surgen", icon: icon4 },
+  { id: 2, title: "Primary  Care", icon: icon2 },
+  { id: 3, title: "Orthopedics", icon: icon3 },
+  { id: 4, title: "Neuro Surgen", icon: icon4 },
 ];
 const Specialist = () => {
   return (

@@ -9,7 +9,7 @@ import Specialist from "../Specialist/Specialist";
 const HomePage = () => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Header />
       <Specialist />
       <Doctors />

@@ -211,63 +211,36 @@
 .bookbtn_link:hover {
   color: #fff;
 }
-.time_table .rec .rec-arrow {
-  background: transparent;
-  color: #194af5;
-  border-radius: 0;
-  box-shadow: none;
-  border: none;
+
+/* Date Picker CSS Start */
+
+.date_picker_wrapper {
+  width: 600px;
+  margin: 0 auto;
+  overflow: hidden !important;
 }
-.time_table .rec .rec-arrow:hover {
-  background: transparent;
-  color: #194af5;
-  border-radius: 0;
-  box-shadow: none;
-  border: none;
+
+.DatePicker_monthYearLabel__jJgno {
+  display: none;
 }
-.time_table .rec .rec-arrow:focus {
-  background-color: #fff;
-  color: #194af5;
-  border: none !important;
-  outline: none;
-  border-radius: 0;
-  box-shadow: none;
-  border: none;
+.DatePicker_dateDayItem__2pL0r {
+  width: 170px !important;
+  margin: 0 !important;
+  margin-right: 1px !important;
 }
-.time_table .eAyARa:disabled {
-  color: #c4c4c4;
-  cursor: pointer;
+.DatePicker_container__KZyAL {
+  overflow: hidden !important;
 }
-.time_table .eAyARa:disabled:hover {
-  color: #c4c4c4;
+/* Date Picker CSS End */
+.date_selector_wrapper {
+  display: flex;
+  flex-wrap: wrap;
 }
-/* .time_table_carousel h3:nth-child(2n) {
+.radio_inputs {
+  margin-bottom: 15px;
+  padding: 20px;
+  /* background-color: cadetblue; */
+}
+.radio_input_tool:checked {
   color: red;
-} */
-.time_box {
-  padding: 10px 30px;
-  max-width: 500px;
-}
-.time_box h2 {
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 22px;
-  letter-spacing: 0.01em;
-  color: #000000;
-  padding: 10px 30px;
-}
-.time_box p {
-  background: #f7f8f9;
-  border: 1px solid #9aa2b6;
-  border-radius: 4px;
-  padding: 8px 10px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
-  letter-spacing: 0.01em;
-  margin: 10px;
-  color: #2e2e2e;
-}
-.time_wrapper {
-  /* margin-left: 60px; */
 }
