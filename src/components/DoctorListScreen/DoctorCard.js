@@ -11,12 +11,12 @@ const DoctorCard = ({ doctor }) => {
   const speciality = Object.values(specialities)[0];
   let navigate = useNavigate();
   const handleClick = () => {
+    localStorage.setItem("clinicId", doctor.clinicId);
+    localStorage.setItem("docterId", doctor.docterId);
     const url = `/detail/${doctor.clinicId}`;
     navigate(url);
   };
   useEffect(() => {
-    localStorage.setItem("clinicId", doctor.clinicId);
-    localStorage.setItem("docterId", doctor.docterId);
   }, []);
   return (
     <div>
