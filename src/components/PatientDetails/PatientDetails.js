@@ -16,7 +16,7 @@ const PatientDetails = () => {
   const [gender, setGender] = useState("");
   const [doctorId, setDoctorId] = useState("");
   const [clinicId, setClinicId] = useState(localStorage.getItem("clinicId"));
-  const [patientId, setPatientId] = useState("");
+  const [patientId, setPatientId] = useState(localStorage.getItem("patientId"));
   const [number, setNumber] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -30,7 +30,7 @@ const PatientDetails = () => {
     setDate(localStorage.getItem("selectedDate"));
     setTime(localStorage.getItem("selectedTime"));
     setDoctorId(localStorage.getItem("docterId"));
-    setPatientId(localStorage.getItem("patientId"));
+    // setPatientId(localStorage.getItem("patientId"));
     fetch(
       `https://reservefree-backend.herokuapp.com/get/list/docter-clinic?clinicId=${clinicId}`
     )
@@ -52,7 +52,7 @@ const PatientDetails = () => {
     data.date = date;
     data.clinicId = clinicId;
     data.docterId = doctorId;
-    data.patientId = patientId;
+    data.patientId = localStorage.getItem("patientId");
 
     setApptData(data);
     setPage(false);
