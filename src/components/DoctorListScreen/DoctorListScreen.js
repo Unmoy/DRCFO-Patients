@@ -14,6 +14,7 @@ const DoctorListScreen = () => {
   const [speciality, setSpeciality] = useState([]);
   const [list, setList] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState([0, 5000]);
+  const [sort, setSort] = useState(0);
 
   useEffect(() => {
     fetch(
@@ -40,9 +41,51 @@ const DoctorListScreen = () => {
   };
   const applyFilters = () => {
     const newList = list;
+    const minPrice = selectedPrice[0];
+    const maxPrice = selectedPrice[1];
+    console.log("min", minPrice);
+    console.log("max", maxPrice);
+    let priceResult = newList.filter(
+      (item) => item.fees >= minPrice && item.fees <= maxPrice
+    );
+    let sortlist = []
+    if(sort!=0){
+      sortlist = priceResult.sort((a, b)=>{
+        if(sort==1){
+          if(a.fees>b.fees){
+            return 1;
+          } else if(a.fees<b.fees){
+            return -1;
+          } else {
+            return 0;
+          }
+        } else if(sort==2){
+          if(a.fees>b.fees){
+            return -1;
+          } else if(a.fees<b.fees){
+            return 1;
+          } else {
+            return 0;
+          }
+        } if(sort==3){
+          if(a.experience>b.experience){
+            console.log(a.experience, b.experience);
+            return -1;
+          } else if(a.experience<b.experience){
+            console.log(a.experience, b.experience);
+            return 1;
+          } else {
+            console.log(a.experience, b.experience);
+            return 0;
+          }
+        }
+      })
+    } else {
+      sortlist = priceResult;
+    }
     if (speciality.length) {
       let res = false;
-      let result = newList.filter((item) => {
+      let result = sortlist.filter((item) => {
         speciality.map((obj) => {
           if (item.specialities.includes(obj)) {
             res = true;
@@ -55,20 +98,18 @@ const DoctorListScreen = () => {
       });
       setDoctorsList(result);
     } else {
-      setDoctorsList(newList);
+      setDoctorsList(sortlist);
     }
-    // const minPrice = selectedPrice[0];
-    // const maxPrice = selectedPrice[1];
-    // console.log("min", minPrice);
-    // console.log("max", maxPrice);
-    // let priceResult = newList.filter(
-    //   (item) => item.fees >= minPrice && item.fees <= maxPrice
-    // );
-    // console.log(priceResult);
   };
   useEffect(() => {
     applyFilters();
-  }, [speciality, selectedPrice]);
+  }, [speciality, selectedPrice, sort]);
+  useEffect(() => {
+    console.log(selectedPrice)
+  }, [selectedPrice]);
+  useEffect(() => {
+    console.log(sort)
+  }, [sort]);
   return (
     <>
       <div className="doctor_screen">
@@ -107,7 +148,9 @@ const DoctorListScreen = () => {
               <SideFilter
                 changeChecked={handleChangeChecked}
                 selectedPrice={selectedPrice}
+                setSelectedPrice={setSelectedPrice}
                 changedPrice={handleChangePrice}
+                setSort={setSort}
               />
             </div>
             {/* Left Side Filters Ends */}

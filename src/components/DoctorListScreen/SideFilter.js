@@ -13,10 +13,40 @@ const marks = [
   },
 ];
 
-const SideFilter = ({ changeChecked, changedPrice, selectedPrice }) => {
+const SideFilter = ({
+  changeChecked,
+  changedPrice,
+  selectedPrice,
+  setSelectedPrice,
+  setSort
+}) => {
+  const [price, setPrice] = useState([0, 5000]);
   const [value, setValue] = useState([0, 100]);
   // console.log(value);
   const [data, setData] = useState([]);
+
+  const pricefilter = (e) => {
+    if (e.target.value == 0) {
+      setSelectedPrice([0, 0]);
+    } else if (e.target.value == 1) {
+      setSelectedPrice([1, 200]);
+    } else if (e.target.value == 2) {
+      setSelectedPrice([200, 500]);
+    } else if (e.target.value == 3) {
+      setSelectedPrice([500, 5000]);
+    } else {
+      setSelectedPrice([0, 5000]);
+    }
+    // console.log(price);
+  };
+
+  const sortfilter = (e) => {
+    if(e.target.value == 1 || e.target.value ==2 || e.target.value==3|| e.target.value==4){
+      setSort(e.target.value);
+    } else {
+      setSort(0);
+    }
+  }
 
   useEffect(() => {
     fetch("https://reservefree-backend.herokuapp.com/get/docters")
@@ -44,45 +74,57 @@ const SideFilter = ({ changeChecked, changedPrice, selectedPrice }) => {
           <div className="d-flex justify-content-start mb-2">
             <input
               type="radio"
-              id="radio"
-              name="radio"
-              value="0-0"
-              onChange={changedPrice}
+              id="price0"
+              name="price"
+              value="0"
+              onChange={(e) => {
+                pricefilter(e);
+                console.log(e.target.value);
+              }}
             />
-            <label htmlFor="input1">Free</label>
+            <label htmlFor="price0">Free</label>
             <br />
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
               type="radio"
-              id="radio"
-              name="radio"
-              value="1-200"
-              onChange={changedPrice}
+              id="price1"
+              name="price"
+              value="1"
+              onChange={(e) => {
+                pricefilter(e);
+                console.log(e.target.value);
+              }}
             />
-            <label htmlFor="input2">₹01-₹200</label>
+            <label htmlFor="price1">₹01-₹200</label>
             <br />
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
               type="radio"
-              id="radio"
-              name="radio"
-              value="200-500"
-              onChange={changedPrice}
+              id="price2"
+              name="price"
+              value="2"
+              onChange={(e) => {
+                pricefilter(e);
+                console.log(e.target.value);
+              }}
             />
-            <label htmlFor="input3">₹200-₹500</label>
+            <label htmlFor="price2">₹200-₹500</label>
             <br />
           </div>
           <div className="d-flex justify-content-start">
             <input
               type="radio"
-              id="radio"
-              name="radio"
-              value="0-5000"
-              onChange={changedPrice}
+              id="price3"
+              name="price"
+              value="3"
+              onChange={(e) => {
+                pricefilter(e);
+                console.log(e.target.value);
+              }}
             />
-            <label htmlFor="input4">₹501+</label>
+            <label htmlFor="price3">₹501+</label>
           </div>
         </form>
       </div>
@@ -133,62 +175,58 @@ const SideFilter = ({ changeChecked, changedPrice, selectedPrice }) => {
           <div className="d-flex justify-content-start mb-2">
             <input
               className="checkmark"
-              type="checkbox"
-              id="input1"
-              name="input1"
-              value="0"
-            />
-            <label htmlFor="input1">Relevance</label>
-          </div>
-          <div className="d-flex justify-content-start mb-2">
-            <input
-              className="checkmark"
-              type="checkbox"
-              id="input2"
-              name="input2"
+              type="radio"
+              id="sort1"
+              name="sort"
               value="1"
+              onChange={(e) => {
+                sortfilter(e);
+                // console.log(e.target.value);
+              }}
             />
-            <label htmlFor="input2">Earliest Available</label>
+            <label htmlFor="sort1">Price- Low to High</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
               className="checkmark"
-              type="checkbox"
-              id="input3"
-              name="input3"
+              type="radio"
+              id="sort2"
+              name="sort"
               value="2"
+              onChange={(e) => {
+                sortfilter(e);
+                // console.log(e.target.value);
+              }}
             />
-            <label htmlFor="input3">Price- Low to High</label>
+            <label htmlFor="sort2">Price- High to Low</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
               className="checkmark"
-              type="checkbox"
-              id="input3"
-              name="input3"
-              value="2"
+              type="radio"
+              id="sort3"
+              name="sort"
+              value="3"
+              onChange={(e) => {
+                sortfilter(e);
+                // console.log(e.target.value);
+              }}
             />
-            <label htmlFor="input3">Price- High to Low</label>
+            <label htmlFor="sort3">Year of Experience</label>
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
               className="checkmark"
-              type="checkbox"
-              id="input3"
-              name="input3"
-              value="2"
+              type="radio"
+              id="sort4"
+              name="sort"
+              value="4"
+              onChange={(e) => {
+                sortfilter(e);
+                // console.log(e.target.value);
+              }}
             />
-            <label htmlFor="input3">Year of Experience</label>
-          </div>
-          <div className="d-flex justify-content-start mb-2">
-            <input
-              className="checkmark"
-              type="checkbox"
-              id="input3"
-              name="input3"
-              value="2"
-            />
-            <label htmlFor="input3">Recommendation</label>
+            <label htmlFor="sort4">Recommendation</label>
           </div>
         </form>
       </div>

@@ -34,7 +34,7 @@ const DoctorCard = ({ doctor }) => {
               <ul className="mb-2">
                 <li>{doctor.clinicName}</li>
               </ul>
-              <p className="mb-2">14 years experience overall</p>
+              <p className="mb-2">{doctor.experience} years experience overall</p>
               <p className="distance_kms">5.2 KM</p>
               <h5 className="consult">
                 Consultation fee at clinic
