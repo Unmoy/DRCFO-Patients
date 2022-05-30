@@ -148,6 +148,22 @@ const PatientDetails = () => {
                   placeholder="Please enter full name"
                 />
               </div>
+              <div>
+                <label htmlFor="age">Age</label>
+                <div className="patient_input_icon">
+                  <img
+                    src={emailicon}
+                    alt=""
+                    className="input_icon_patient_2"
+                  />
+                </div>
+                <input
+                  {...register("age")}
+                  type="text"
+                  className="patient_details_input"
+                  placeholder="Please enter Age"
+                />
+              </div>
               <div className="gender_box">
                 <label htmlFor="gender">Gender</label>
                 <input

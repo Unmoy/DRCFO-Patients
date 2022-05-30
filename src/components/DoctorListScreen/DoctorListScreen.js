@@ -8,15 +8,17 @@ import mapmarkericon from "../../assets/images/map-marker.png";
 import calendericon from "../../assets/images/calendericon.png";
 import searcbtnicon from "../../assets/images/searcbtnicon.png";
 import Footer from "../Footer/Footer";
-import Navbar from "../Navbar/Navbar";
 
 const DoctorListScreen = () => {
   const [doctorsList, setDoctorsList] = useState([]);
   const [speciality, setSpeciality] = useState([]);
   const [list, setList] = useState([]);
+  const [selectedPrice, setSelectedPrice] = useState([0, 5000]);
 
   useEffect(() => {
-    fetch("https://reservefree-backend.herokuapp.com/get/list/docter-clinic")
+    fetch(
+      "https://reservefree-backend.herokuapp.com/get/list/docter-clinic?active=true"
+    )
       .then((res) => res.json())
       .then((data) => {
         setList(data);
@@ -31,7 +33,11 @@ const DoctorListScreen = () => {
       setSpeciality(speciality.filter((e) => e !== value));
     }
   };
-
+  const handleChangePrice = (event, value) => {
+    setSelectedPrice(event.target.value);
+    const usingSplit = event.target.value.split("-");
+    console.log(usingSplit);
+  };
   const applyFilters = () => {
     const newList = list;
     if (speciality.length) {
@@ -51,10 +57,18 @@ const DoctorListScreen = () => {
     } else {
       setDoctorsList(newList);
     }
+    // const minPrice = selectedPrice[0];
+    // const maxPrice = selectedPrice[1];
+    // console.log("min", minPrice);
+    // console.log("max", maxPrice);
+    // let priceResult = newList.filter(
+    //   (item) => item.fees >= minPrice && item.fees <= maxPrice
+    // );
+    // console.log(priceResult);
   };
   useEffect(() => {
     applyFilters();
-  }, [speciality]);
+  }, [speciality, selectedPrice]);
   return (
     <>
       <div className="doctor_screen">
@@ -90,7 +104,11 @@ const DoctorListScreen = () => {
             </div>
             {/* Left Side Filters Start */}
             <div className="col-12 col-md-4">
-              <SideFilter changeChecked={handleChangeChecked} />
+              <SideFilter
+                changeChecked={handleChangeChecked}
+                selectedPrice={selectedPrice}
+                changedPrice={handleChangePrice}
+              />
             </div>
             {/* Left Side Filters Ends */}
             {/* Properties Lists Start */}

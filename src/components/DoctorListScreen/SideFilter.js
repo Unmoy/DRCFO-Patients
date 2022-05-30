@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./SideFilter.css";
-import Slider from "@mui/material";
+import Slider from "@mui/material/Slider";
 
 const marks = [
   {
@@ -13,9 +13,9 @@ const marks = [
   },
 ];
 
-const SideFilter = ({ changeChecked }) => {
+const SideFilter = ({ changeChecked, changedPrice, selectedPrice }) => {
   const [value, setValue] = useState([0, 100]);
-
+  // console.log(value);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const SideFilter = ({ changeChecked }) => {
       </div>
       <div className="location_filter">
         <p>location</p>
-        {/* <Slider value={value} onChange={handleOnChange} marks={marks} /> */}
+        <Slider value={value} onChange={handleOnChange} marks={marks} />
       </div>
       <hr />
       <div className="price_filter">
@@ -43,82 +43,46 @@ const SideFilter = ({ changeChecked }) => {
         <form>
           <div className="d-flex justify-content-start mb-2">
             <input
-              className="checkmark"
-              type="checkbox"
-              id="input1"
-              name="input1"
-              value="0"
+              type="radio"
+              id="radio"
+              name="radio"
+              value="0-0"
+              onChange={changedPrice}
             />
             <label htmlFor="input1">Free</label>
             <br />
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
-              className="checkmark"
-              type="checkbox"
-              id="input2"
-              name="input2"
-              value="1"
+              type="radio"
+              id="radio"
+              name="radio"
+              value="1-200"
+              onChange={changedPrice}
             />
             <label htmlFor="input2">₹01-₹200</label>
             <br />
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
-              className="checkmark"
-              type="checkbox"
-              id="input3"
-              name="input3"
-              value="2"
+              type="radio"
+              id="radio"
+              name="radio"
+              value="200-500"
+              onChange={changedPrice}
             />
             <label htmlFor="input3">₹200-₹500</label>
             <br />
           </div>
           <div className="d-flex justify-content-start">
             <input
-              className="checkmark"
-              type="checkbox"
-              id="input4"
-              name="input4"
-              value="3"
+              type="radio"
+              id="radio"
+              name="radio"
+              value="0-5000"
+              onChange={changedPrice}
             />
             <label htmlFor="input4">₹501+</label>
-          </div>
-        </form>
-      </div>
-      <hr />
-      <div className="type_filter">
-        <p className="mb-4">Doctor Type</p>
-        <form>
-          <div className="d-flex justify-content-start mb-2">
-            <input
-              className="checkmark"
-              type="checkbox"
-              id="input1"
-              name="input1"
-              value="0"
-            />
-            <label htmlFor="input1">Physical Meet</label>
-          </div>
-          <div className="d-flex justify-content-start mb-2">
-            <input
-              className="checkmark"
-              type="checkbox"
-              id="input2"
-              name="input2"
-              value="1"
-            />
-            <label htmlFor="input2">Online Consult</label>
-          </div>
-          <div className="d-flex justify-content-start mb-2">
-            <input
-              className="checkmark"
-              type="checkbox"
-              id="input3"
-              name="input3"
-              value="2"
-            />
-            <label htmlFor="input3">Home Visit</label>
           </div>
         </form>
       </div>
