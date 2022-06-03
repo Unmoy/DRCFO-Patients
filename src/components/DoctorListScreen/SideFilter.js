@@ -18,12 +18,10 @@ const SideFilter = ({
   changedPrice,
   selectedPrice,
   setSelectedPrice,
-  setSort
+  setSort,
 }) => {
-  const [price, setPrice] = useState([0, 5000]);
   const [value, setValue] = useState([0, 100]);
-  // console.log(value);
-  const [data, setData] = useState([]);
+  const [viewmore, setViewMore] = useState(false);
 
   const pricefilter = (e) => {
     if (e.target.value == 0) {
@@ -41,22 +39,25 @@ const SideFilter = ({
   };
 
   const sortfilter = (e) => {
-    if(e.target.value == 1 || e.target.value ==2 || e.target.value==3|| e.target.value==4){
+    console.log(e.target.value);
+    if (
+      e.target.value == 1 ||
+      e.target.value == 2 ||
+      e.target.value == 3 ||
+      e.target.value == 4
+    ) {
       setSort(e.target.value);
+      console.log(e.target.value);
     } else {
       setSort(0);
+      console.log(e.target.value);
     }
-  }
+  };
 
-  useEffect(() => {
-    fetch("https://reservefree-backend.herokuapp.com/get/docters")
-      .then((res) => res.json())
-      .then((data) => setData(data));
-  }, []);
   const handleOnChange = (e) => {
     setValue(e.target.value);
   };
-
+  const showmore = () => {};
   return (
     <div className="side_filter">
       <div className="d-flex justify-content-between align-items-center">
@@ -73,6 +74,7 @@ const SideFilter = ({
         <form>
           <div className="d-flex justify-content-start mb-2">
             <input
+              className="checkmark"
               type="radio"
               id="price0"
               name="price"
@@ -87,6 +89,7 @@ const SideFilter = ({
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
+              className="checkmark"
               type="radio"
               id="price1"
               name="price"
@@ -101,6 +104,7 @@ const SideFilter = ({
           </div>
           <div className="d-flex justify-content-start mb-2">
             <input
+              className="checkmark"
               type="radio"
               id="price2"
               name="price"
@@ -115,6 +119,7 @@ const SideFilter = ({
           </div>
           <div className="d-flex justify-content-start">
             <input
+              className="checkmark"
               type="radio"
               id="price3"
               name="price"
@@ -165,8 +170,47 @@ const SideFilter = ({
             />
             <label htmlFor="input3">Joint Replacement Surgeont</label>
           </div>
+          {viewmore ? (
+            <>
+              <div className="d-flex justify-content-start mb-2">
+                <input
+                  className="checkmark"
+                  type="checkbox"
+                  id="input4"
+                  name="input4"
+                  value="Knee Surgery"
+                  onChange={changeChecked}
+                />
+                <label htmlFor="input4">Knee Surgery</label>
+              </div>
+              <div className="d-flex justify-content-start mb-2">
+                <input
+                  className="checkmark"
+                  type="checkbox"
+                  id="input5"
+                  name="input5"
+                  value="Accident fracture Surgery"
+                  onChange={changeChecked}
+                />
+                <label htmlFor="input5">Accident fracture Surgery</label>
+              </div>
+              <div className="d-flex justify-content-start mb-2">
+                <input
+                  className="checkmark"
+                  type="checkbox"
+                  id="input6"
+                  name="input6"
+                  value="Joint Pain"
+                  onChange={changeChecked}
+                />
+                <label htmlFor="input6">Joint Pain</label>
+              </div>
+            </>
+          ) : null}
         </form>
-        <button>+View More</button>
+        <button onClick={() => setViewMore(!viewmore)}>
+          {viewmore ? "-View Less" : "+View More"}
+        </button>
       </div>
       <hr />
       <div className="sort_filter">
@@ -181,7 +225,7 @@ const SideFilter = ({
               value="1"
               onChange={(e) => {
                 sortfilter(e);
-                // console.log(e.target.value);
+                console.log(e.target.value);
               }}
             />
             <label htmlFor="sort1">Price- Low to High</label>
@@ -195,7 +239,7 @@ const SideFilter = ({
               value="2"
               onChange={(e) => {
                 sortfilter(e);
-                // console.log(e.target.value);
+                console.log(e.target.value);
               }}
             />
             <label htmlFor="sort2">Price- High to Low</label>
@@ -209,7 +253,7 @@ const SideFilter = ({
               value="3"
               onChange={(e) => {
                 sortfilter(e);
-                // console.log(e.target.value);
+                console.log(e.target.value);
               }}
             />
             <label htmlFor="sort3">Year of Experience</label>

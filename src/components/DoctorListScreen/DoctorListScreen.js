@@ -8,23 +8,40 @@ import mapmarkericon from "../../assets/images/map-marker.png";
 import calendericon from "../../assets/images/calendericon.png";
 import searcbtnicon from "../../assets/images/searcbtnicon.png";
 import Footer from "../Footer/Footer";
+import Loader from "../Loader/Loader";
+import { useParams } from "react-router-dom";
 
 const DoctorListScreen = () => {
+  const { text } = useParams();
+  console.log(text);
   const [doctorsList, setDoctorsList] = useState([]);
   const [speciality, setSpeciality] = useState([]);
   const [list, setList] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState([0, 5000]);
   const [sort, setSort] = useState(0);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    fetch(
-      "https://reservefree-backend.herokuapp.com/get/list/docter-clinic?active=true"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setList(data);
-        setDoctorsList(data);
-      });
+    setLoading(true);
+    if (text.length) {
+      fetch(
+        `https://reservefree-backend.herokuapp.com/search?query=${text}&search=all`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setDoctorsList(data);
+          setLoading(false);
+        });
+    } else {
+      fetch(
+        "https://reservefree-backend.herokuapp.com/get/list/docter-clinic?active=true"
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setList(data);
+          setDoctorsList(data);
+          setLoading(false);
+        });
+    }
   }, []);
   const handleChangeChecked = (e) => {
     const { value, checked } = e.target;
@@ -34,44 +51,43 @@ const DoctorListScreen = () => {
       setSpeciality(speciality.filter((e) => e !== value));
     }
   };
-  const handleChangePrice = (event, value) => {
+  const handleChangePrice = (event) => {
     setSelectedPrice(event.target.value);
-    const usingSplit = event.target.value.split("-");
-    console.log(usingSplit);
   };
   const applyFilters = () => {
+    setLoading(true);
     const newList = list;
     const minPrice = selectedPrice[0];
     const maxPrice = selectedPrice[1];
-    console.log("min", minPrice);
-    console.log("max", maxPrice);
     let priceResult = newList.filter(
       (item) => item.fees >= minPrice && item.fees <= maxPrice
     );
-    let sortlist = []
-    if(sort!=0){
-      sortlist = priceResult.sort((a, b)=>{
-        if(sort==1){
-          if(a.fees>b.fees){
+    let sortlist = [];
+    console.log(sort);
+    if (sort != 0) {
+      sortlist = priceResult.sort((a, b) => {
+        if (sort == 1) {
+          if (a.fees > b.fees) {
             return 1;
-          } else if(a.fees<b.fees){
+          } else if (a.fees < b.fees) {
             return -1;
           } else {
             return 0;
           }
-        } else if(sort==2){
-          if(a.fees>b.fees){
+        } else if (sort == 2) {
+          if (a.fees > b.fees) {
             return -1;
-          } else if(a.fees<b.fees){
+          } else if (a.fees < b.fees) {
             return 1;
           } else {
             return 0;
           }
-        } if(sort==3){
-          if(a.experience>b.experience){
+        }
+        if (sort == 3) {
+          if (a.experience > b.experience) {
             console.log(a.experience, b.experience);
             return -1;
-          } else if(a.experience<b.experience){
+          } else if (a.experience < b.experience) {
             console.log(a.experience, b.experience);
             return 1;
           } else {
@@ -79,7 +95,7 @@ const DoctorListScreen = () => {
             return 0;
           }
         }
-      })
+      });
     } else {
       sortlist = priceResult;
     }
@@ -100,16 +116,24 @@ const DoctorListScreen = () => {
     } else {
       setDoctorsList(sortlist);
     }
+    setLoading(false);
   };
   useEffect(() => {
     applyFilters();
-  }, [speciality, selectedPrice, sort]);
-  useEffect(() => {
-    console.log(selectedPrice)
-  }, [selectedPrice]);
-  useEffect(() => {
-    console.log(sort)
-  }, [sort]);
+  }, [speciality, selectedPrice, sort, selectedPrice]);
+
+  const handleSearch = (e) => {
+    console.log(e.target.value);
+    setLoading(true);
+    fetch(
+      `https://reservefree-backend.herokuapp.com/search?query=${e.target.value}&search=all`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setDoctorsList(data);
+        setLoading(false);
+      });
+  };
   return (
     <>
       <div className="doctor_screen">
@@ -123,8 +147,12 @@ const DoctorListScreen = () => {
                   <input
                     placeholder="Orthopedics Doctor"
                     type="text"
-                    name=""
-                    id=""
+                    defaultValue={text}
+                    onChange={(e) =>
+                      e.target.value != ""
+                        ? handleSearch(e)
+                        : setDoctorsList(list)
+                    }
                   />
                 </div>
                 <div className="top_doctor_search_input">
@@ -163,9 +191,13 @@ const DoctorListScreen = () => {
                   details
                 </p>
               </div>
-              {doctorsList.map((doctor) => (
-                <DoctorCard key={doctor.clinicId} doctor={doctor} />
-              ))}
+              {loading ? (
+                <Loader />
+              ) : (
+                doctorsList.map((doctor) => (
+                  <DoctorCard key={doctor.clinicId} doctor={doctor} />
+                ))
+              )}
             </div>
             {/* Properties Lists End */}
           </div>

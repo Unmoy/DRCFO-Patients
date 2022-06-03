@@ -235,12 +235,41 @@
 .date_selector_wrapper {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  padding: 50px 0;
 }
-.radio_inputs {
-  margin-bottom: 15px;
-  padding: 20px;
-  /* background-color: cadetblue; */
+
+.radio_toolbar .booking_date_radio_input {
+  opacity: 0;
+  position: fixed;
+  width: 0;
 }
-.radio_input_tool:checked {
-  color: red;
+.radio_toolbar label {
+  display: inline-block;
+  padding: 8px 0;
+  width: 180px;
+  text-align: center;
+  background: #f7f8f9;
+  border: 1px solid #9aa2b6;
+  border-radius: 2px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.01em;
+  color: #2e2e2e;
+  margin: 10px 20px;
+}
+.radio_toolbar label:hover {
+  background: #e6ebff;
+  border: 1px solid #194af5;
+  color: #194af5;
+}
+
+.booking_date_radio_input:checked + .date_input_label {
+  background: #e6ebff;
+  color: #194af5;
+  border: 1px solid #194af5;
 }

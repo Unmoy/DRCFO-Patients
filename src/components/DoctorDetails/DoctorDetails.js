@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./DoctorDetails.css";
 import docimage from "../../assets/images/docimage.png";
 import blackmarker from "../../assets/images/black-marker.png";
-import Carousel from "react-elastic-carousel";
-import TimeCard from "./TimeCard";
 import Login from "./Login";
-import Navbar from "../Navbar/Navbar";
 import { useParams, useNavigate } from "react-router";
 import DatePicker from "../DatePicker";
 import { useAuth } from "../context/AuthContext";
@@ -19,6 +16,8 @@ const DoctorDetails = () => {
   const speciality = Object.values(docspecialities)[0];
   const { currentUser } = useAuth();
   const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setselectedTime] = useState("");
+  console.log(selectedTime);
   const navigate = useNavigate();
 
   function openModal() {
@@ -61,8 +60,9 @@ const DoctorDetails = () => {
     localStorage.setItem("selectedDate", monthName + +day + "," + year);
   };
   const getValue = (e) => {
-    console.log(e.target.value);
     localStorage.setItem("selectedTime", e.target.value);
+    setselectedTime(e.target.value);
+    // console.log(e.target.checked);
   };
 
   useEffect(() => {
@@ -72,7 +72,6 @@ const DoctorDetails = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setSingleDoctor(data);
         const propertyValues = Object.values(data.specialities);
         setDocSpecialities(propertyValues);
@@ -85,14 +84,12 @@ const DoctorDetails = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
         setSlots(data);
       });
   }, [selectedDate]);
 
   return (
     <>
-      {/* <Navbar /> */}
       <div>
         <div className="container-fluid">
           <div className="row">
@@ -105,7 +102,9 @@ const DoctorDetails = () => {
                   <ul className="mb-2">
                     <li>{singleDoctor.clinicName}</li>
                   </ul>
-                  <p className="mb-5">14 years experience overall</p>
+                  <p className="mb-5">
+                    {singleDoctor.experience} years experience overall
+                  </p>
                   <div className="doctor_visit_info">
                     <div className="consultation">
                       <span className="fee">₹{singleDoctor.fees}</span>
@@ -122,7 +121,7 @@ const DoctorDetails = () => {
               </div>
               <div className="doctor_detail_card">
                 <div className="doc_about">
-                  <h3>About Dr. Krishnanand</h3>
+                  <h3>About Dr. {singleDoctor.docterName}</h3>
                   <p>{singleDoctor.bio}</p>
                 </div>
                 <div className="doc_language">
@@ -140,14 +139,7 @@ const DoctorDetails = () => {
                 <div className="doc_education">
                   <h3>Education and training</h3>
                   <ul>
-                    <li>
-                      State University of New York, Stony Brook, MBBS in
-                      Orthopedist
-                    </li>
-                    <li>
-                      State University of New York, Stony Brook, MS in
-                      Orthopedist Surgery
-                    </li>
+                    <li>{singleDoctor.education}</li>
                   </ul>
                 </div>
 
@@ -175,20 +167,30 @@ const DoctorDetails = () => {
                     <div className="date_selector_wrapper">
                       {slots.length
                         ? slots.map((slot, index) => (
-                            <span className="radio_inputs" key={index}>
-                              <label htmlFor={"slot" + (index + 1).toString()}>
-                                {slot.from.timefrom} {slot.from.fromdayTime} -
-                                {slot.to.timeto} {slot.to.todayTime}
+                            <div className="radio_toolbar" key={index}>
+                              <label
+                                htmlFor={"slot" + (index + 1).toString()}
+                                className="date_input_label"
+                              >
+                                {slot.from.timefrom}
+                                {slot.from.fromdayTime}-{slot.to.timeto}
+                                {slot.to.todayTime}
                               </label>
                               <input
-                                className="radio_input_tool"
+                                className="booking_date_radio_input"
                                 type="radio"
                                 name="slot"
                                 id={"slot" + (index + 1).toString()}
                                 onChange={getValue}
                                 value={`${slot.from.timefrom} ${slot.from.fromdayTime} ${slot.to.timeto} ${slot.to.todayTime}`}
+                                checked={
+                                  selectedTime ===
+                                  `${slot.from.timefrom} ${slot.from.fromdayTime} ${slot.to.timeto} ${slot.to.todayTime}`
+                                    ? true
+                                    : false
+                                }
                               />
-                            </span>
+                            </div>
                           ))
                         : "No Slots available"}
                     </div>

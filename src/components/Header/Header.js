@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css";
 import doctorImage1 from "../../assets/images/d1.png";
 import doctorImage2 from "../../assets/images/d2.png";
@@ -8,8 +8,13 @@ import geolocationicon from "../../assets/images/geolocation.png";
 import mapmarkericon from "../../assets/images/map-marker.png";
 import calendericon from "../../assets/images/calendericon.png";
 import searcbtnicon from "../../assets/images/searcbtnicon.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 const Header = () => {
+  const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
+  const handleSearch = () => {
+    navigate(`/doctors/${searchText}`);
+  };
   return (
     <div className="header_wrapper">
       <div className="header_screen">
@@ -32,6 +37,7 @@ const Header = () => {
               type="text"
               name=""
               id=""
+              onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
           <div className="searchInput_1">
@@ -51,11 +57,11 @@ const Header = () => {
             <span>Today</span>
           </div>
         </div>
-        <Link to="/doctors" className="route_link">
-          <button className="search_btn2">
-            <img src={searcbtnicon} alt="searcbtnicon" />
-          </button>
-        </Link>
+        {/* <Link to="/doctors" className="route_link"> */}
+        <button className="search_btn2">
+          <img src={searcbtnicon} alt="searcbtnicon" onClick={handleSearch} />
+        </button>
+        {/* </Link> */}
       </div>
     </div>
   );

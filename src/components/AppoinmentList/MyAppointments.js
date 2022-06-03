@@ -40,6 +40,7 @@ function MyAppointment() {
   );
 }
 function AppointmentCard({ item }) {
+  console.log(item);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   useEffect(() => {
@@ -63,25 +64,27 @@ function AppointmentCard({ item }) {
               {item?.docter.speciality} &bull; {item.clinic.name}
             </span>
             <span className="myappointment--card--header--detials">
-              14 years experience overall
+              {item?.docter.experience} years experience overall
             </span>
           </div>
         </div>
         <div>
-          <button className="myappointment--card--status status--upcoming">
-            Yet to Visit
-          </button>
-        </div>
-        {/* {props.status === "completed" && (
-          <div className="myappointment--card--status status--completed">
-            Appointment completed
-          </div>
-        )}
-        {props.status === "cancelled" && (
+          {item.status.status === "YET_TO_VISIT" && (
+            <button className="myappointment--card--status status--upcoming">
+              Yet to Visit
+            </button>
+          )}
+          {item.status.status === "COMPLETED" && (
+            <div className="myappointment--card--status status--completed">
+              Appointment completed
+            </div>
+          )}
+          {/* {props.status === "cancelled" && (
           <div className="myappointment--card--status status--cancelled">
             Cancelled
           </div>
-        )} */}
+        )}  */}
+        </div>
       </div>
       <div className="myappointment--card--detials">
         <div className="myappointment--card--detials--section">
@@ -137,33 +140,22 @@ function AppointmentCard({ item }) {
         </div>
       </div>
       <div className="myappointment--card--footer">
-        {/* {props.status === "upcoming" && props.response === "confirmed" && (
-          <span className="myappointment--card--footer--detials footer--confirmed">
-            Booking Confirmed
-          </span>
-        )}
-        {props.status === "upcoming" && props.response === "pending" && (
-          <span className="myappointment--card--footer--detials footer--pending">
-            Confirmation Pending
-          </span>
-        )}
-        {props.status === "upcoming" && props.response === "rejected" && (
-          <span className="myappointment--card--footer--detials footer--rejected">
-            Rejected
-          </span>
-        )}
-        {props.status === "completed" && (
-          <span className="myappointment--card--footer--detials footer--completed">
-            Download Prescription
-          </span>
-        )}
-        {props.status === "cancelled" && (
+        {/* {props.status === "cancelled" && (
           <span className="myappointment--card--footer--detials footer--cancelled">
             Booking Cancelled
           </span>
         )} */}
         <span className="myappointment--card--footer--booking--btn">
-          <span className="booking_status">Booking Confirmed</span>
+          {item.status.confirmation === "PENDING" && (
+            <span className="myappointment--card--footer--detials footer--pending">
+              Confirmation Pending
+            </span>
+          )}
+          {item.status.confirmation === "CONFIRMED" && (
+            <span className="myappointment--card--footer--detials footer--confirmed">
+              Booking Confirmed
+            </span>
+          )}
           <button className="myappointment--card--footer--booking">
             Booking Details
           </button>
