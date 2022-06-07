@@ -9,7 +9,7 @@
   cursor: pointer;
   width: 220px;
   height: 220px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .logo img {
   max-width: 100%;
@@ -73,6 +73,12 @@
   font-weight: 700;
 }
 @media screen and (max-width: 960px) {
+  .logo {
+    cursor: pointer;
+    width: 180px;
+    height: 180px;
+    margin-bottom: 10px;
+  }
   .NavbarItems {
     position: relative;
   }

@@ -31,7 +31,8 @@
 .top_doctor_search_input input[type="text"] {
   border: none;
   font-family: "Inter", sans-serif;
-  padding: 8px;
+  padding: 8px 15px;
+  font-size: 17px;
 }
 
 .top_doctor_search_input input[type="text"]::placeholder {
@@ -43,14 +44,20 @@
 .searchInput_2 {
   width: auto;
 }
-.icon_color {
+.searchicon {
+  height: 1.3em;
+}
+/* .icon_color {
   color: #1472e5;
   margin-right: 5px;
   font-size: 20px;
-}
+} */
 
 .top_doctor_search_calender_input span {
   color: #48484b;
+}
+.search_btn_wrap {
+  height: 100%;
 }
 .search_btn2 {
   background: #1472e5;
@@ -61,4 +68,37 @@
   padding: 0 30px;
   font-size: 20px;
   cursor: pointer;
+}
+.nomatchtext {
+  font-size: 30px;
+  font-weight: 500;
+  text-align: center;
+}
+@media only screen and (max-width: 600px) {
+  .top_doctor_search {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: column;
+    height: 200px;
+    margin-top: 100px;
+  }
+  .top_doctor_search_input {
+    margin-bottom: 20px;
+  }
+  .top_doctor_search_calender_input {
+    margin-bottom: 20px;
+  }
+  .search_btn2 {
+    height: 50%;
+    /* padding: 0 30px; */
+    border-radius: 4px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .searcbtnicon {
+    width: 80%;
+  }
 }

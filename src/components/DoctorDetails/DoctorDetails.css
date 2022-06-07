@@ -7,6 +7,9 @@
 .doctor_header_card_description {
   padding-left: 30px;
 }
+.experience {
+  margin-bottom: 40px;
+}
 .doctor_header_card_description ul {
   margin: 0;
   padding: 0;
@@ -34,8 +37,7 @@
 
 .doctor_visit_info {
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  /* align-items: center; */
   margin-top: 20px;
 }
 .doctor_visit_info p {
@@ -61,6 +63,7 @@
   font-size: 18px;
   line-height: 22px;
   color: #000000;
+  margin-bottom: 9px !important;
 }
 .consult_text {
   font-weight: 500;
@@ -191,6 +194,7 @@
   margin-bottom: 20px;
   border: 1px solid #d6d6d6;
   border-radius: 6px;
+  /* padding: 20px; */
 }
 .bookbtn {
   background: #194af5;
@@ -215,7 +219,7 @@
 /* Date Picker CSS Start */
 
 .date_picker_wrapper {
-  width: 600px;
+  width: 100%;
   margin: 0 auto;
   overflow: hidden !important;
 }
@@ -272,4 +276,19 @@
   background: #e6ebff;
   color: #194af5;
   border: 1px solid #194af5;
+}
+@media only screen and (max-width: 600px) {
+  .doctor_header_card {
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 20px;
+  }
+  .docotr_card_image_2 {
+    width: 40%;
+  }
+  .doctor_header_card_description {
+    padding-left: 0px;
+  }
 }

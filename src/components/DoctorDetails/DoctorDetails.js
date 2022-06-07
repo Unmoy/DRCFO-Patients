@@ -17,7 +17,6 @@ const DoctorDetails = () => {
   const { currentUser } = useAuth();
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setselectedTime] = useState("");
-  console.log(selectedTime);
   const navigate = useNavigate();
 
   function openModal() {
@@ -62,7 +61,6 @@ const DoctorDetails = () => {
   const getValue = (e) => {
     localStorage.setItem("selectedTime", e.target.value);
     setselectedTime(e.target.value);
-    // console.log(e.target.checked);
   };
 
   useEffect(() => {
@@ -79,14 +77,16 @@ const DoctorDetails = () => {
   }, [id]);
 
   useEffect(() => {
+    console.log(selectedDate);
     fetch(
       `https://reservefree-backend.herokuapp.com/get/subslots?clinicId=${id}&date=${selectedDate}`
     )
       .then((res) => res.json())
       .then((data) => {
         setSlots(data);
+        console.log(data);
       });
-  }, [selectedDate]);
+  }, [id, selectedDate]);
 
   return (
     <>
@@ -95,23 +95,23 @@ const DoctorDetails = () => {
           <div className="row">
             <div className="col-md-6">
               <div className="doctor_header_card">
-                <img src={docimage} alt="docimage" />
+                <img src={docimage} alt="docimage" className="docotr_card_image_2"/>
                 <div className="doctor_header_card_description">
                   <h5 className="doc_name mb-2">{singleDoctor.docterName}</h5>
                   <span className="mb-2 header_pointer">{speciality}</span>
                   <ul className="mb-2">
                     <li>{singleDoctor.clinicName}</li>
                   </ul>
-                  <p className="mb-5">
+                  <p className="experience">
                     {singleDoctor.experience} years experience overall
                   </p>
                   <div className="doctor_visit_info">
                     <div className="consultation">
-                      <span className="fee">₹{singleDoctor.fees}</span>
+                      <span className="fee">₹ {singleDoctor.fees}</span>
                       <p className="consult_text">Consultation fee</p>
                     </div>
                     <div className="kms_distance">
-                      <p className="kmph mb-2">
+                      <p className="kmph">
                         <img src={blackmarker} alt="" className="mb-1" /> 5.2 KM
                       </p>
                       <p className="direction_btn">Get Direction</p>
@@ -160,9 +160,8 @@ const DoctorDetails = () => {
                 </div>
                 <div className="time_table">
                   <div className="date_picker_wrapper">
-                    <DatePicker getSelectedDay={selectedDay} />
+                    <DatePicker getSelectedDay={selectedDay} slots={slots} />
                   </div>
-
                   <div className="d-flex justify-content-evenly flex-wrap">
                     <div className="date_selector_wrapper">
                       {slots.length

@@ -8,7 +8,7 @@ import geolocationicon from "../../assets/images/geolocation.png";
 import mapmarkericon from "../../assets/images/map-marker.png";
 import calendericon from "../../assets/images/calendericon.png";
 import searcbtnicon from "../../assets/images/searcbtnicon.png";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Header = () => {
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();

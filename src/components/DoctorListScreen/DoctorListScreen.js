@@ -10,24 +10,27 @@ import searcbtnicon from "../../assets/images/searcbtnicon.png";
 import Footer from "../Footer/Footer";
 import Loader from "../Loader/Loader";
 import { useParams } from "react-router-dom";
+import DoctorPage from "./DoctorPage";
+import NoMatch from "./NoMatch";
 
 const DoctorListScreen = () => {
   const { text } = useParams();
-  console.log(text);
   const [doctorsList, setDoctorsList] = useState([]);
   const [speciality, setSpeciality] = useState([]);
   const [list, setList] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState([0, 5000]);
   const [sort, setSort] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [resultsFound, setResultsFound] = useState(true);
   useEffect(() => {
     setLoading(true);
-    if (text.length) {
+    if (text) {
       fetch(
         `https://reservefree-backend.herokuapp.com/search?query=${text}&search=all`
       )
         .then((res) => res.json())
         .then((data) => {
+          setList(data);
           setDoctorsList(data);
           setLoading(false);
         });
@@ -39,10 +42,11 @@ const DoctorListScreen = () => {
         .then((data) => {
           setList(data);
           setDoctorsList(data);
-          setLoading(false);
         });
     }
-  }, []);
+    // setLoading(false);
+    // console.log(loading);
+  }, [text]);
   const handleChangeChecked = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -55,7 +59,6 @@ const DoctorListScreen = () => {
     setSelectedPrice(event.target.value);
   };
   const applyFilters = () => {
-    setLoading(true);
     const newList = list;
     const minPrice = selectedPrice[0];
     const maxPrice = selectedPrice[1];
@@ -63,7 +66,6 @@ const DoctorListScreen = () => {
       (item) => item.fees >= minPrice && item.fees <= maxPrice
     );
     let sortlist = [];
-    console.log(sort);
     if (sort != 0) {
       sortlist = priceResult.sort((a, b) => {
         if (sort == 1) {
@@ -116,15 +118,17 @@ const DoctorListScreen = () => {
     } else {
       setDoctorsList(sortlist);
     }
-    setLoading(false);
+    // setLoading(false);
+    !newList.length ? setResultsFound(false) : setResultsFound(true);
   };
   useEffect(() => {
     applyFilters();
   }, [speciality, selectedPrice, sort, selectedPrice]);
 
   const handleSearch = (e) => {
-    console.log(e.target.value);
+    e.preventDefault();
     setLoading(true);
+    console.log(e.target.value);
     fetch(
       `https://reservefree-backend.herokuapp.com/search?query=${e.target.value}&search=all`
     )
@@ -143,7 +147,7 @@ const DoctorListScreen = () => {
             <div className="col-md-12 top_doctor_search_heading">
               <div className="top_doctor_search">
                 <div className="top_doctor_search_input">
-                  <img src={searchicon} alt="searcbtnicon" />
+                  <img src={searchicon} alt="searcbtnicon" className="searchicon"/>
                   <input
                     placeholder="Orthopedics Doctor"
                     type="text"
@@ -166,9 +170,11 @@ const DoctorListScreen = () => {
 
                   <span className="ps-2">Today</span>
                 </div>
-                <button className="search_btn2">
-                  <img src={searcbtnicon} alt="searcbtnicon" />
-                </button>
+                <div className="search_btn_wrap">
+                  <button className="search_btn2">
+                    <img src={searcbtnicon} alt="searcbtnicon" />
+                  </button>
+                </div>
               </div>
             </div>
             {/* Left Side Filters Start */}
@@ -185,18 +191,16 @@ const DoctorListScreen = () => {
             {/* Properties Lists Start */}
             <div className="col-12 col-md-8">
               <div className="doctors_list_header">
-                <h1>241 Orthopedics Doctor Around me</h1>
+                <h1>{doctorsList.length} Orthopedics Doctor Around you</h1>
                 <p>
                   Book appointments with minimum wait-time & verified doctor
                   details
                 </p>
               </div>
-              {loading ? (
-                <Loader />
+              {doctorsList.length ? (
+                <DoctorPage doctorsList={doctorsList} loading={loading} />
               ) : (
-                doctorsList.map((doctor) => (
-                  <DoctorCard key={doctor.clinicId} doctor={doctor} />
-                ))
+                <NoMatch />
               )}
             </div>
             {/* Properties Lists End */}

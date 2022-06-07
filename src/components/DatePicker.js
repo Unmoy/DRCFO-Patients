@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import styles from "./DatePicker.module.css";
 import {
@@ -18,13 +17,12 @@ export default function DatePicker({
   getSelectedDay,
   color,
   labelFormat,
+  slots,
 }) {
   const today = new Date();
   const tomorrow = new Date(today);
-
-  const [selectedDate, setSelectedDate] = useState(
-    tomorrow.setDate(tomorrow.getDate() + 1)
-  );
+  const [selectedDate, setSelectedDate] = useState(tomorrow.getDate() + 1);
+  console.log(selectedDate);
   const firstSection = { marginLeft: "40px" };
   const startDate = new Date();
   const lastDate = addDays(startDate, endDate || 90);
@@ -82,6 +80,11 @@ export default function DatePicker({
               {format(addDays(month, j), dateFormat)}
             </div>
             <p className={styles.slots}>Slots available</p>
+            {/* {slots.length > 0 ? (
+              <p className={styles.slots}>Slots available</p>
+            ) : (
+              <p className={styles.Noslots}>No Slots available</p>
+            )} */}
           </div>
         );
       }
@@ -108,6 +111,7 @@ export default function DatePicker({
   }
 
   const onDateClick = (day) => {
+    console.log(day);
     setSelectedDate(day);
     if (getSelectedDay) {
       getSelectedDay(day);
@@ -122,7 +126,7 @@ export default function DatePicker({
         getSelectedDay(startDate);
       }
     }
-  }, []);
+  }, [getSelectedDay, selectDate]);
 
   useEffect(() => {
     if (selectDate) {
@@ -140,7 +144,7 @@ export default function DatePicker({
         }, 20);
       }
     }
-  }, [selectDate]);
+  }, [selectDate, selectedDate]);
 
   const nextWeek = () => {
     const e = document.getElementById("container");

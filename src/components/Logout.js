@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 const Logout = () => {
   const { logout } = useAuth();
   let navigate = useNavigate();
-  const logoutUser= ()=>{
+  const logoutUser = () => {
     logout();
-  }
+  };
 
   return (
     <div>

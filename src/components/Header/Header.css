@@ -94,7 +94,7 @@
   outline: none;
 }
 .searchInput_1 img {
-  height: 22px;
+  height: 1.3em;
 }
 
 .locate_btn {
@@ -192,6 +192,7 @@
     padding: 20px 30px;
   }
   .header_bottom {
+    align-items: flex-start;
     flex-direction: column;
     height: 200px;
     gap: 10px;
@@ -203,7 +204,8 @@
   .input_left {
     flex-direction: column;
   }
-
+  .header_bottom {
+  }
   .header_right {
     margin-left: 0px;
     min-width: 400px;

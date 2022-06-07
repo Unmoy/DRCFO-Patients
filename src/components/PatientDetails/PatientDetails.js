@@ -85,7 +85,7 @@ const PatientDetails = () => {
   return (
     <div className="container py-5">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="patient_details_header row">
+        <div className="patient_details_header row d-flex justify-content-center">
           <div className="patient_detail_column_1 col-4">
             <img
               className="patient_image_small"
