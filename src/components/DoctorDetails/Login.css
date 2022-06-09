@@ -148,12 +148,11 @@
 .verify_btn {
   width: 100%;
   cursor: pointer;
-  background: #e6ebff;
+  background: #194af5;
   border-radius: 2px;
-  font-weight: 500;
+  color: #fff;
   font-size: 18px;
-  line-height: 27px;
-  color: #b7b7b7;
+  font-weight: 600;
   padding: 8px 25px;
   margin: 10px;
   border: none;

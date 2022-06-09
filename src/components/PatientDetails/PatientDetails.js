@@ -30,7 +30,6 @@ const PatientDetails = () => {
     setDate(localStorage.getItem("selectedDate"));
     setTime(localStorage.getItem("selectedTime"));
     setDoctorId(localStorage.getItem("docterId"));
-    // setPatientId(localStorage.getItem("patientId"));
     fetch(
       `https://reservefree-backend.herokuapp.com/get/list/docter-clinic?clinicId=${clinicId}`
     )

@@ -240,13 +240,14 @@
   color: #7d818b;
 }
 .appt_confirm_btn {
-  background: #e6ebff;
+  background: #194af5;
   border-radius: 2px;
   width: 100%;
   border: none;
   padding: 8px 0;
   margin-top: 20px;
-  color: #b7b7b7;
+  color: #fff;
+  font-weight: 500;
 }
 .appt_footer {
   max-width: 436px;

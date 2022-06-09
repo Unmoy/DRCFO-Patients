@@ -10,6 +10,7 @@ import { useAuth } from "../context/AuthContext";
 const DoctorDetails = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [singleDoctor, setSingleDoctor] = useState({});
+  console.log(singleDoctor);
   const [docspecialities, setDocSpecialities] = useState([]);
   const [slots, setSlots] = useState([]);
   const { id } = useParams();
@@ -77,16 +78,16 @@ const DoctorDetails = () => {
   }, [id]);
 
   useEffect(() => {
-    console.log(selectedDate);
-    fetch(
-      `https://reservefree-backend.herokuapp.com/get/subslots?clinicId=${id}&date=${selectedDate}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setSlots(data);
-        console.log(data);
-      });
-  }, [id, selectedDate]);
+    if (selectedDate) {
+      fetch(
+        `https://reservefree-backend.herokuapp.com/get/subslots?clinicId=${id}&date=${selectedDate}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setSlots(data);
+        });
+    }
+  }, [selectedDate, id]);
 
   return (
     <>
@@ -95,7 +96,11 @@ const DoctorDetails = () => {
           <div className="row">
             <div className="col-md-6">
               <div className="doctor_header_card">
-                <img src={docimage} alt="docimage" className="docotr_card_image_2"/>
+                <img
+                  src={docimage}
+                  alt="docimage"
+                  className="docotr_card_image_2"
+                />
                 <div className="doctor_header_card_description">
                   <h5 className="doc_name mb-2">{singleDoctor.docterName}</h5>
                   <span className="mb-2 header_pointer">{speciality}</span>
@@ -145,9 +150,11 @@ const DoctorDetails = () => {
 
                 <div className="doc_address">
                   <h3>Address</h3>
-                  <span>IHM Hospital 7 Ressearch Center</span>
                   <p>
-                    Ardee city, Sec-52, Block c, gurugram, Haryana India-170003
+                    {singleDoctor?.address?.street},{" "}
+                    {singleDoctor?.address?.area}, {singleDoctor?.address?.pin},{" "}
+                    {singleDoctor?.address?.city},{" "}
+                    {singleDoctor?.address?.state}
                   </p>
                 </div>
               </div>

@@ -21,7 +21,6 @@ const DoctorListScreen = () => {
   const [selectedPrice, setSelectedPrice] = useState([0, 5000]);
   const [sort, setSort] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [resultsFound, setResultsFound] = useState(true);
   useEffect(() => {
     setLoading(true);
     if (text) {
@@ -35,6 +34,7 @@ const DoctorListScreen = () => {
           setLoading(false);
         });
     } else {
+      setLoading(true);
       fetch(
         "https://reservefree-backend.herokuapp.com/get/list/docter-clinic?active=true"
       )
@@ -42,10 +42,9 @@ const DoctorListScreen = () => {
         .then((data) => {
           setList(data);
           setDoctorsList(data);
+          setLoading(false);
         });
     }
-    // setLoading(false);
-    // console.log(loading);
   }, [text]);
   const handleChangeChecked = (e) => {
     const { value, checked } = e.target;
@@ -118,8 +117,6 @@ const DoctorListScreen = () => {
     } else {
       setDoctorsList(sortlist);
     }
-    // setLoading(false);
-    !newList.length ? setResultsFound(false) : setResultsFound(true);
   };
   useEffect(() => {
     applyFilters();
@@ -147,7 +144,11 @@ const DoctorListScreen = () => {
             <div className="col-md-12 top_doctor_search_heading">
               <div className="top_doctor_search">
                 <div className="top_doctor_search_input">
-                  <img src={searchicon} alt="searcbtnicon" className="searchicon"/>
+                  <img
+                    src={searchicon}
+                    alt="searcbtnicon"
+                    className="searchicon"
+                  />
                   <input
                     placeholder="Orthopedics Doctor"
                     type="text"
@@ -200,7 +201,7 @@ const DoctorListScreen = () => {
               {doctorsList.length ? (
                 <DoctorPage doctorsList={doctorsList} loading={loading} />
               ) : (
-                <NoMatch />
+                <>{!loading ? <NoMatch /> : <Loader />}</>
               )}
             </div>
             {/* Properties Lists End */}

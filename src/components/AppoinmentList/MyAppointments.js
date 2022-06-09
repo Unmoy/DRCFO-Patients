@@ -1,10 +1,12 @@
 import "./MyAppointment.css";
 import docImage from "../../assets/images/docimage.png";
 import { useState, useEffect } from "react";
+import Loader from "../Loader/Loader";
 
 function MyAppointment() {
   const [list, setList] = useState([]);
   const [patientId, setPatientId] = useState(localStorage.getItem("patientId"));
+  const [loader, setLoader] = useState(true);
   useEffect(() => {
     fetch(
       `https://reservefree-backend.herokuapp.com/get/appointments?patientId=${patientId}`
@@ -13,6 +15,7 @@ function MyAppointment() {
       .then((data) => {
         console.log(data);
         setList(data);
+        setLoader(false);
       });
   }, [patientId]);
   return (
@@ -33,9 +36,16 @@ function MyAppointment() {
         </svg>
         <span className="myappointment--text">My Appointments</span>
       </div>
-      {list.map((item) => (
-        <AppointmentCard item={item} />
-      ))}
+      {loader ? (
+        <Loader />
+      ) : (
+        <>
+          {" "}
+          {list.map((item) => (
+            <AppointmentCard item={item} />
+          ))}
+        </>
+      )}
     </div>
   );
 }

@@ -18,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route exact path="doctors/:text" element={<DoctorListScreen />} />
+        <Route exact path="doctors" element={<DoctorListScreen />} />
         <Route exact path="detail/:id" element={<DoctorDetails />} />
         <Route exact path="login" element={<UserLogin />} />
         <Route exact path="patientdetails" element={<PatientDetails />} />

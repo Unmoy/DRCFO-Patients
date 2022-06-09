@@ -1,7 +1,7 @@
 export const MenuList = [
   {
     title: "Help",
-    url: "/patientdetails",
+    url: "/doctors",
   },
   {
     title: "About Us",

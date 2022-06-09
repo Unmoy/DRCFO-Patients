@@ -19,10 +19,8 @@ export default function DatePicker({
   labelFormat,
   slots,
 }) {
-  const today = new Date();
-  const tomorrow = new Date(today);
-  const [selectedDate, setSelectedDate] = useState(tomorrow.getDate() + 1);
-  console.log(selectedDate);
+  var Tommorow = new Date(new Date().setDate(new Date().getDate() + 1));
+  const [selectedDate, setSelectedDate] = useState(Tommorow);
   const firstSection = { marginLeft: "40px" };
   const startDate = new Date();
   const lastDate = addDays(startDate, endDate || 90);
@@ -113,20 +111,16 @@ export default function DatePicker({
   const onDateClick = (day) => {
     console.log(day);
     setSelectedDate(day);
-    if (getSelectedDay) {
-      getSelectedDay(day);
-    }
+    getSelectedDay(day);
   };
 
   useEffect(() => {
-    if (getSelectedDay) {
-      if (selectDate) {
-        getSelectedDay(selectDate);
-      } else {
-        getSelectedDay(startDate);
-      }
+    if (selectedDate) {
+      getSelectedDay(selectedDate);
+    } else {
+      getSelectedDay(selectedDate);
     }
-  }, [getSelectedDay, selectDate]);
+  }, [selectedDate]);
 
   useEffect(() => {
     if (selectDate) {

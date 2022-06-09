@@ -13,7 +13,14 @@ const Header = () => {
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
   const handleSearch = () => {
-    navigate(`/doctors/${searchText}`);
+    if (searchText.length) {
+      navigate(`/doctors/${searchText}`);
+    } else {
+      document.getElementById("myTextField").focus();
+    }
+  };
+  const handleChange = (e) => {
+    setSearchText(e.target.value);
   };
   return (
     <div className="header_wrapper">
@@ -30,19 +37,18 @@ const Header = () => {
       </div>
       <div className="header_bottom">
         <div className="input_left">
-          <div className="searchInput_1">
+          <div className="searchInput_1 ms-4">
             <img src={searchicon} alt="" />
             <input
-              placeholder="Condition,Procedure,Doctor..."
+              id="myTextField"
+              placeholder="Condition,Procedure,Doctor.."
               type="text"
-              name=""
-              id=""
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={handleChange}
             />
           </div>
-          <div className="searchInput_1">
+          <div className="searchInput_1 header_location">
             <img src={mapmarkericon} alt="" />
-            <input placeholder="Your Location" type="text" name="" id="" />
+            <input placeholder="Your Location" type="text" />
           </div>
         </div>
         <div className="input_right">
@@ -58,8 +64,8 @@ const Header = () => {
           </div>
         </div>
         {/* <Link to="/doctors" className="route_link"> */}
-        <button className="search_btn2">
-          <img src={searcbtnicon} alt="searcbtnicon" onClick={handleSearch} />
+        <button className="search_btn2" onClick={handleSearch}>
+          <img src={searcbtnicon} alt="searcbtnicon" />
         </button>
         {/* </Link> */}
       </div>

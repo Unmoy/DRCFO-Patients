@@ -50,15 +50,13 @@
 }
 .header_bottom {
   position: absolute;
-  width: 90%;
+  width: 85%;
   bottom: 25%;
-  padding-left: 50px;
-  left: 5%;
+  left: 8%;
   display: flex;
   justify-content: space-between;
-  margin: 0 auto;
   align-items: center;
-  height: 80px;
+  height: 78px;
   background-color: #fff;
   border: 1.5px solid #91d5ff;
   border-radius: 4px;
@@ -67,20 +65,22 @@
 }
 .input_left {
   display: flex;
-  flex-basis: 700px;
   justify-content: space-around;
   align-items: center;
 }
 .input_right {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   flex-basis: 500px;
 }
 .searchInput_1 {
-  margin-left: 15px;
+  /* margin-left: 50px; */
   display: flex;
   align-items: center;
+}
+.header_location {
+  margin-left: 80px;
 }
 .searchInput_1 input[type="text"] {
   border: none;
@@ -104,12 +104,15 @@
   font-size: 16px;
   line-height: 19px;
   background-color: #fff;
-  padding: 10px 12px;
-  cursor: pointer;
+  padding: 8px 12px;
+  /* cursor: pointer; */
   font-family: "Inter", sans-serif;
 }
 .locate_btn img {
   margin-right: 8px;
+}
+.calender {
+  margin-left: 100px;
 }
 .calender span {
   color: #abacae;

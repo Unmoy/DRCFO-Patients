@@ -222,6 +222,7 @@
   width: 100%;
   margin: 0 auto;
   overflow: hidden !important;
+  padding: 10px 0;
 }
 
 .DatePicker_monthYearLabel__jJgno {
