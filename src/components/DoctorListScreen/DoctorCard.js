@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import image from "../../assets/images/d2.png";
 import "./DoctorCard.css";
 import directionicon from "../../assets/images/directionicon.png";
 import likeicon from "../../assets/images/likeicon.png";
 import { useNavigate } from "react-router-dom";
-const DoctorCard = ({ doctor }) => {
-  // console.log(doctor);
+const DoctorCard = ({ doctor, location }) => {
+  const [distance, setDistance] = useState(0);
+  // console.log(location, doctor);
   const { specialities } = doctor;
   const speciality = Object.values(specialities)[0];
   let navigate = useNavigate();
@@ -17,7 +18,36 @@ const DoctorCard = ({ doctor }) => {
     navigate(url);
   };
   useEffect(() => {
+    if (doctor.address.location) {
+      let d = getDistanceFromLatLonInKm(
+        doctor.address.location.latitude,
+        doctor.address.location.longitude,
+        location.latitude,
+        location.longitude
+      );
+      setDistance(Math.round(d * 100) / 100);
+    } else {
+      setDistance(-1);
+    }
   }, []);
+  function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1); // deg2rad below
+    var dLon = deg2rad(lon2 - lon1);
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) *
+        Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+  }
+
+  function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+  }
   return (
     <div>
       <div className="mb-3 single_doctors_card">
@@ -34,8 +64,12 @@ const DoctorCard = ({ doctor }) => {
               <ul className="mb-2">
                 <li>{doctor.clinicName}</li>
               </ul>
-              <p className="mb-2">{doctor.experience} years experience overall</p>
-              <p className="distance_kms">5.2 KM</p>
+              <p className="mb-2">
+                {doctor.experience} years experience overall
+              </p>
+              <p className="distance_kms">
+                {distance > -1 ? `${distance} KM` : "- -"}
+              </p>
               <h5 className="consult">
                 Consultation fee at clinic
                 <span className="distance_kms"> ₹{doctor.fees} </span>

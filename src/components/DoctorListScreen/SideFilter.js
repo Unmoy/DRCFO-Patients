@@ -19,8 +19,10 @@ const SideFilter = ({
   selectedPrice,
   setSelectedPrice,
   setSort,
+  setLocationRange,
+  locationRange,
 }) => {
-  const [value, setValue] = useState([0, 100]);
+  // const [value, setValue] = useState([0, 100]);
   const [viewmore, setViewMore] = useState(false);
 
   const pricefilter = (e) => {
@@ -55,7 +57,8 @@ const SideFilter = ({
   };
 
   const handleOnChange = (e) => {
-    setValue(e.target.value);
+    setLocationRange(e.target.value);
+    // console.log(e.target.value);
   };
   const showmore = () => {};
   return (
@@ -66,7 +69,7 @@ const SideFilter = ({
       </div>
       <div className="location_filter">
         <p>location</p>
-        <Slider value={value} onChange={handleOnChange} marks={marks} />
+        <Slider value={locationRange} onChange={handleOnChange} marks={marks} />
       </div>
       <hr />
       <div className="price_filter">

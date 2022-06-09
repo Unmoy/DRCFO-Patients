@@ -40,7 +40,6 @@ function MyAppointment() {
         <Loader />
       ) : (
         <>
-          {" "}
           {list.map((item) => (
             <AppointmentCard item={item} />
           ))}

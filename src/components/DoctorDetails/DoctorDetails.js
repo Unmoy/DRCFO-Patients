@@ -10,6 +10,7 @@ import { useAuth } from "../context/AuthContext";
 const DoctorDetails = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [singleDoctor, setSingleDoctor] = useState({});
+  const [distance, setDistance] = useState(0);
   console.log(singleDoctor);
   const [docspecialities, setDocSpecialities] = useState([]);
   const [slots, setSlots] = useState([]);
@@ -19,7 +20,77 @@ const DoctorDetails = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setselectedTime] = useState("");
   const navigate = useNavigate();
+  const [location, setLocation] = useState({});
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fetch(
+      `https://reservefree-backend.herokuapp.com/get/list/docter-clinic?clinicId=${id}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setSingleDoctor(data);
+        const propertyValues = Object.values(data.specialities);
+        setDocSpecialities(propertyValues);
+      });
+    console.log(singleDoctor);
+  }, [id]);
+  useEffect(() => {
+    if (selectedDate) {
+      fetch(
+        `https://reservefree-backend.herokuapp.com/get/subslots?clinicId=${id}&date=${selectedDate}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setSlots(data);
+        });
+    }
+  }, [selectedDate, id]);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+      setLocation({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+    if (singleDoctor.address) {
+      if (singleDoctor.address && singleDoctor.address.location) {
+        let d = getDistanceFromLatLonInKm(
+          singleDoctor.address.location.latitude,
+          singleDoctor.address.location.longitude,
+          location.latitude,
+          location.longitude
+        );
+        setDistance(Math.round(d * 100) / 100);
+        console.log("if");
+      } else {
+        console.log("else");
+        setDistance(-1);
+      }
+    }
+  }, [singleDoctor]);
+  useEffect(() => {
+    // console.log(singleDoctor.address.location);
+  }, []);
 
+  function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1); // deg2rad below
+    var dLon = deg2rad(lon2 - lon1);
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) *
+        Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+  }
+  function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+  }
   function openModal() {
     if (currentUser.user_phone) {
       navigate("/patientdetails");
@@ -64,31 +135,6 @@ const DoctorDetails = () => {
     setselectedTime(e.target.value);
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    fetch(
-      `https://reservefree-backend.herokuapp.com/get/list/docter-clinic?clinicId=${id}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setSingleDoctor(data);
-        const propertyValues = Object.values(data.specialities);
-        setDocSpecialities(propertyValues);
-      });
-  }, [id]);
-
-  useEffect(() => {
-    if (selectedDate) {
-      fetch(
-        `https://reservefree-backend.herokuapp.com/get/subslots?clinicId=${id}&date=${selectedDate}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setSlots(data);
-        });
-    }
-  }, [selectedDate, id]);
-
   return (
     <>
       <div>
@@ -117,7 +163,8 @@ const DoctorDetails = () => {
                     </div>
                     <div className="kms_distance">
                       <p className="kmph">
-                        <img src={blackmarker} alt="" className="mb-1" /> 5.2 KM
+                        <img src={blackmarker} alt="" className="mb-1" />{" "}
+                        {distance > -1 ? `${distance} KM` : "- -"}
                       </p>
                       <p className="direction_btn">Get Direction</p>
                     </div>

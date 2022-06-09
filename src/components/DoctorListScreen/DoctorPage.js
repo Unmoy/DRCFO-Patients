@@ -2,7 +2,7 @@ import React from "react";
 import Loader from "../Loader/Loader";
 import DoctorCard from "./DoctorCard";
 
-const DoctorPage = ({ doctorsList, loading }) => {
+const DoctorPage = ({ doctorsList, loading, location }) => {
   console.log(doctorsList, loading);
   return (
     <div>
@@ -10,7 +10,11 @@ const DoctorPage = ({ doctorsList, loading }) => {
         <Loader />
       ) : (
         doctorsList.map((doctor) => (
-          <DoctorCard key={doctor.clinicId} doctor={doctor} />
+          <DoctorCard
+            key={doctor.clinicId}
+            doctor={doctor}
+            location={location}
+          />
         ))
       )}
     </div>

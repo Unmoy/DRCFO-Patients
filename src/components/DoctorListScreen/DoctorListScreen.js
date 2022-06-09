@@ -21,6 +21,19 @@ const DoctorListScreen = () => {
   const [selectedPrice, setSelectedPrice] = useState([0, 5000]);
   const [sort, setSort] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState({});
+  const [locationRange, setLocationRange] = useState([0, 100]);
+  console.log(locationRange);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+      setLocation({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+  }, []);
   useEffect(() => {
     setLoading(true);
     if (text) {
@@ -57,12 +70,44 @@ const DoctorListScreen = () => {
   const handleChangePrice = (event) => {
     setSelectedPrice(event.target.value);
   };
+  const distanceResult = (clinicLocation) => {
+    let lat2 = clinicLocation.latitude;
+    let lon2 = clinicLocation.longitude;
+    let lat1 = location.latitude;
+    let lon1 = location.longitude;
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1); // deg2rad below
+    var dLon = deg2rad(lon2 - lon1);
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) *
+        Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+  };
+
+  function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+  }
   const applyFilters = () => {
     const newList = list;
+
+    // Distance Filter
+    const mind = locationRange[0] * 20;
+    const maxd = locationRange[1] * 20;
     const minPrice = selectedPrice[0];
     const maxPrice = selectedPrice[1];
     let priceResult = newList.filter(
-      (item) => item.fees >= minPrice && item.fees <= maxPrice
+      (item) =>
+        item.fees >= minPrice &&
+        item.fees <= maxPrice &&
+        (item.address.location
+          ? distanceResult(item?.address?.location) >= mind &&
+            distanceResult(item?.address?.location) <= maxd
+          : true)
     );
     let sortlist = [];
     if (sort != 0) {
@@ -120,7 +165,7 @@ const DoctorListScreen = () => {
   };
   useEffect(() => {
     applyFilters();
-  }, [speciality, selectedPrice, sort, selectedPrice]);
+  }, [speciality, selectedPrice, sort, selectedPrice, locationRange]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -186,6 +231,8 @@ const DoctorListScreen = () => {
                 setSelectedPrice={setSelectedPrice}
                 changedPrice={handleChangePrice}
                 setSort={setSort}
+                setLocationRange={setLocationRange}
+                locationRange={locationRange}
               />
             </div>
             {/* Left Side Filters Ends */}
@@ -199,7 +246,11 @@ const DoctorListScreen = () => {
                 </p>
               </div>
               {doctorsList.length ? (
-                <DoctorPage doctorsList={doctorsList} loading={loading} />
+                <DoctorPage
+                  doctorsList={doctorsList}
+                  loading={loading}
+                  location={location}
+                />
               ) : (
                 <>{!loading ? <NoMatch /> : <Loader />}</>
               )}
