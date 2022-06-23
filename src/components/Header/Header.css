@@ -206,12 +206,19 @@
 @media only screen and (max-width: 600px) {
   .input_left {
     flex-direction: column;
+    align-items: flex-start;
+    /* margin-left: 0; */
+  }
+  .header_location {
+    margin-left: 40px;
   }
   .header_bottom {
+    /* overflow: hidden; */
   }
   .header_right {
-    margin-left: 0px;
-    min-width: 400px;
+    /* margin-left: 0px;
+    min-width: 400px; */
+    display: none;
   }
   .doctorImage2 {
     left: -12px;
@@ -225,5 +232,20 @@
   }
   .input_right {
     justify-content: flex-start;
+  }
+
+  .calender {
+    margin-left: 0px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .header_left h1 {
+    font-size: 50px;
+    line-height: 60px;
+    letter-spacing: 0.02em;
+    margin-top: 30px;
+  }
+  .header_left p {
+    font-size: 18px;
   }
 }

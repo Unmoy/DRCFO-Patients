@@ -6,14 +6,13 @@
   padding-top: 20px;
 }
 .logo {
-  cursor: pointer;
-  width: 220px;
-  height: 220px;
   margin-bottom: 10px;
 }
-.logo img {
-  max-width: 100%;
+.logoImage {
+  max-width: 220px;
+  cursor: pointer;
 }
+
 .menu_icon {
   display: none;
   font-size: 20px;

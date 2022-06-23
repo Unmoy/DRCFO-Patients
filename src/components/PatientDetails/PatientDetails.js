@@ -80,12 +80,14 @@ const PatientDetails = () => {
       });
   };
   const { register, handleSubmit } = useForm();
-
+  const displayTime = time.substring(0, 8) + " - " + time.substring(9, 17);
+  const displayDate =
+    date.substring(0, 4) + " " + date.substring(4, 6) + date.substring(6, 11);
   return (
     <div className="container py-5">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="patient_details_header row d-flex justify-content-center">
-          <div className="patient_detail_column_1 col-4">
+          <div className="patient_detail_column_1 col-md-4 col-sm-6">
             <img
               className="patient_image_small"
               src={patientImage}
@@ -102,25 +104,28 @@ const PatientDetails = () => {
               <p className="">14 years experience overall</p>
             </div>
           </div>
-          <div className="patient_detail_column_2 col-4 px-5">
-            <h6 className="ps-5">location</h6>
-            <p className="px-5">
+          <div className="patient_detail_column_2 col-md-4 col-sm-6">
+            <h6 className="patientLocation_res">Location</h6>
+            <p className="patientLocation_res">
               {doctorData?.address?.street}, {doctorData?.address?.area},{" "}
               {doctorData?.address?.city}, {doctorData?.address?.state}-
               {doctorData?.address?.pincode}
             </p>
           </div>
-          <div className="patient_detail_column_3 col-4">
+          <div className="patient_detail_column_3 col-md-4 col-sm-6">
             <div>
               <h5 className="book_time">Booking Date & Time</h5>
               <p>
-                <img className="appt_logo" src={calender} alt="" /> On {date}
+                <img className="appt_logo" src={calender} alt="" /> On{" "}
+                {displayDate}
               </p>
             </div>
             <div>
-              <h5 className="change_time">Change Date & Time</h5>
+              <h5 className="change_time" onClick={() => navigate(-1)}>
+                Change Date & Time
+              </h5>
               <p>
-                <img className="appt_logo" src={clock} alt="" /> {time}
+                <img className="appt_logo" src={clock} alt="" /> {displayTime}
               </p>
             </div>
           </div>
@@ -254,7 +259,7 @@ const PatientDetails = () => {
             <div className="confirmation_wrapper">
               <div className="confirm_header d-flex justify-content-between align-items-center">
                 <h1>Your Details</h1>
-                <p>Change Details</p>
+                <p onClick={() => setPage(true)}>Change Details</p>
               </div>
               <div className="confimation_details d-flex justify-content-around ">
                 <div className="detail_col_1">
@@ -304,7 +309,7 @@ const PatientDetails = () => {
             </div>
             <div className="d-flex justify-content-center align-items-center mt-5">
               <button className="proceed_pay_btn" onClick={proceedtoPay}>
-                Proceed To Payment
+                Confirm Booking
               </button>
             </div>
           </>

@@ -6,6 +6,8 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 // import { useAuth } from "../../context/AuthContext";
 import logo from "../../assets/images/logo.png";
+import logo2 from "../../assets/images/logo2.png";
+import logo3 from "../../assets/images/logo3.png";
 const Navbar = () => {
   const [navBg, setNavBg] = useState("#fff");
   const location = useLocation();
@@ -37,7 +39,7 @@ const Navbar = () => {
     <nav style={{ backgroundColor: navBg }} className="NavbarItems">
       <div className="logo">
         <Link to="/">
-          <img src={logo} alt="logo" />
+          <img src={logo2} alt="logo" className="logoImage" />
         </Link>
       </div>
       <div className="menu_icon" onClick={handleClick}>

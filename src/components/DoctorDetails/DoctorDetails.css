@@ -215,7 +215,11 @@
 .bookbtn_link:hover {
   color: #fff;
 }
-
+.checkedSlot {
+  background: #e6ebff !important;
+  color: #194af5 !important;
+  border: 1px solid #194af5 !important;
+}
 /* Date Picker CSS Start */
 
 .date_picker_wrapper {
@@ -282,14 +286,20 @@
   .doctor_header_card {
     display: flex;
     justify-content: start;
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
     padding: 20px;
+    margin-bottom: 20px;
   }
   .docotr_card_image_2 {
     width: 40%;
   }
   .doctor_header_card_description {
     padding-left: 0px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .doctor_header_card_description {
+    text-align: center;
   }
 }

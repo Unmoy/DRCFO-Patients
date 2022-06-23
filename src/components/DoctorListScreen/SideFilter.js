@@ -69,7 +69,12 @@ const SideFilter = ({
       </div>
       <div className="location_filter">
         <p>location</p>
-        <Slider value={locationRange} onChange={handleOnChange} marks={marks} />
+        <Slider
+          value={locationRange}
+          onChange={handleOnChange}
+          marks={marks}
+          valueLabelDisplay="auto"
+        />
       </div>
       <hr />
       <div className="price_filter">

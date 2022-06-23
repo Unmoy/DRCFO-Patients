@@ -15,12 +15,12 @@
   color: #194af5;
 }
 .location_filter {
-  width: 300px;
   margin: 20px;
   font-weight: 500;
   font-size: 22px;
   line-height: 27px;
   color: #000000;
+  padding: 0 20px;
 }
 .location_filter .MuiSlider-thumbColorPrimary {
   color: #194af5;
@@ -85,4 +85,9 @@
   font-size: 18px;
   line-height: 22px;
   color: #232526;
+}
+@media only screen and (max-width: 400px) {
+  .side_filter {
+    border-right: none;
+  }
 }

@@ -221,10 +221,24 @@ const DoctorDetails = () => {
                       {slots.length
                         ? slots.map((slot, index) => (
                             <div className="radio_toolbar" key={index}>
-                              <label
+                              {/* <label
                                 htmlFor={"slot" + (index + 1).toString()}
                                 className="date_input_label"
                               >
+                                {slot.from.timefrom}
+                                {slot.from.fromdayTime}-{slot.to.timeto}
+                                {slot.to.todayTime}
+                              </label> */}
+                              <label
+                                htmlFor={"slot" + (index + 1).toString()}
+                                className={`date_input_label ${
+                                  selectedTime ===
+                                  `${slot.from.timefrom} ${slot.from.fromdayTime} ${slot.to.timeto} ${slot.to.todayTime}`
+                                    ? "checkedSlot"
+                                    : ""
+                                }`}
+                              >
+                                {" "}
                                 {slot.from.timefrom}
                                 {slot.from.fromdayTime}-{slot.to.timeto}
                                 {slot.to.todayTime}

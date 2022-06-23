@@ -9,14 +9,19 @@
   display: table;
   margin-bottom: 2em;
 }
-
+.home_link {
+  text-decoration: none;
+  color: #000;
+}
 .myappointment--backarrow {
-  margin-right: 1.5em;
+  margin-right: 1em;
   height: 1.5em;
   display: table-cell;
   vertical-align: middle;
 }
-
+.myappointment--textbox:hover .myappointment--backarrow path {
+  fill: #194af5;
+}
 .myappointment--text {
   display: table-cell;
   vertical-align: middle;

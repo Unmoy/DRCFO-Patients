@@ -111,6 +111,7 @@
   line-height: 19px;
   color: #194af5;
   margin-bottom: 20px;
+  cursor: pointer;
 }
 .appt_logo {
   width: 20px;
@@ -266,8 +267,29 @@
   color: #194af5;
   font-weight: 500;
 }
+.patientLocation_res {
+  padding: 0 50px;
+}
 @media only screen and (max-width: 600px) {
   .patient_details_header {
+    display: flex !important;
+    justify-content: flex-start !important;
+    flex-direction: column !important;
+  }
+  .patient_detail_column_2 {
+    padding-top: 30px;
+  }
+  .patientLocation_res {
+    padding: 0 20px;
+  }
+  .patient_detail_column_3 {
+    padding: 20px 30px !important;
     display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .patient_detail_column_1::before {
+    display: none;
   }
 }

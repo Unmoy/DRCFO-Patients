@@ -5,6 +5,6 @@ export const MenuList = [
   },
   {
     title: "About Us",
-    url: "/confirmdetails",
+    url: "/",
   },
 ];
