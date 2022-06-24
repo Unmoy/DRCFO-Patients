@@ -94,7 +94,6 @@ const DoctorListScreen = () => {
   }
   const applyFilters = () => {
     const newList = list;
-
     // Distance Filter
     const mind = locationRange[0] * 20;
     const maxd = locationRange[1] * 20;

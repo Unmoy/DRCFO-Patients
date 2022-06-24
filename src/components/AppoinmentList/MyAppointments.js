@@ -73,7 +73,8 @@ function AppointmentCard({ item }) {
               {item?.docter?.name}
             </span>
             <span className="myappointment--card--header--detials">
-              {item?.docter.speciality} &bull; {item.clinic.name}
+              {item?.docter?.speciality} &bull;
+              {item?.clinic?.name}
             </span>
             <span className="myappointment--card--header--detials">
               {item?.docter.experience} years experience overall
