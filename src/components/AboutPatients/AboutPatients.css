@@ -104,3 +104,7 @@
   font-size: 16px;
   color: #fff;
 }
+.proceed_pay_btn:disabled {
+  background: #e6ebff;
+  color: #000;
+}

@@ -125,6 +125,7 @@
 }
 .gender_box {
   margin-bottom: 15px;
+
 }
 .gender_box .checkbox-tools:checked,
 .checkbox-tools:not(:checked) {

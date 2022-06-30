@@ -9,6 +9,7 @@ import phoneicon from "../../assets/images/phone.png";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
 
 const PatientDetails = () => {
   const [date, setDate] = useState("");
@@ -22,10 +23,12 @@ const PatientDetails = () => {
   const [name, setName] = useState("");
   const [apptdata, setApptData] = useState("");
   const [doctorData, setDoctorData] = useState({});
+  const [disableBtn, setDisableBtn] = useState(false);
   const { currentUser } = useAuth();
   const [page, setPage] = useState(true);
   const [payType, setPayType] = useState("");
   const navigate = useNavigate();
+  window.scrollTo(0, 0);
   useEffect(() => {
     setDate(localStorage.getItem("selectedDate"));
     setTime(localStorage.getItem("selectedTime"));
@@ -52,15 +55,28 @@ const PatientDetails = () => {
     data.clinicId = clinicId;
     data.docterId = doctorId;
     data.patientId = localStorage.getItem("patientId");
-
     setApptData(data);
     setPage(false);
   };
   const getPaymentDetail = (e) => {
     setPayType(e.target.value);
   };
+  const socket = io.connect("https://reservefree-backend.herokuapp.com");
+  const [message, setMessage] = useState("");
+  const joinRoom = () => {
+    if (doctorId !== "") {
+      socket.emit("join_room", doctorId);
+    }
+  };
+  const sendMessage = () => {
+    socket.emit("send_message", { message, doctorId });
+  };
+
   const proceedtoPay = () => {
+    setDisableBtn(true);
     apptdata.payment = payType;
+    apptdata.fees = doctorData.fees;
+    apptdata.booking = "Online";
     console.log(apptdata);
     fetch("https://reservefree-backend.herokuapp.com/add/appointment", {
       method: "POST",
@@ -79,6 +95,7 @@ const PatientDetails = () => {
         localStorage.setItem("appointmentId", data.id);
       });
   };
+
   const { register, handleSubmit } = useForm();
   const displayTime = time.substring(0, 8) + " - " + time.substring(9, 17);
   const displayDate =
@@ -308,8 +325,12 @@ const PatientDetails = () => {
               </div>
             </div>
             <div className="d-flex justify-content-center align-items-center mt-5">
-              <button className="proceed_pay_btn" onClick={proceedtoPay}>
-                Confirm Booking
+              <button
+                disabled={disableBtn}
+                className="proceed_pay_btn"
+                onClick={proceedtoPay}
+              >
+                {disableBtn ? "Please Wait..." : "Confirm Booking"}
               </button>
             </div>
           </>
