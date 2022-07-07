@@ -3,7 +3,7 @@ import Loader from "../Loader/Loader";
 import DoctorCard from "./DoctorCard";
 
 const DoctorPage = ({ doctorsList, loading, location }) => {
-  console.log(doctorsList, loading);
+  // console.log(doctorsList);
   return (
     <div>
       {loading ? (

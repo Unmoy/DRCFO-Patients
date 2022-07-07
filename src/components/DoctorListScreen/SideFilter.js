@@ -15,7 +15,6 @@ const marks = [
 
 const SideFilter = ({
   changeChecked,
-  changedPrice,
   selectedPrice,
   setSelectedPrice,
   setSort,
@@ -60,12 +59,18 @@ const SideFilter = ({
     setLocationRange(e.target.value);
     // console.log(e.target.value);
   };
-  const showmore = () => {};
+  const resetFilters = () => {
+    setLocationRange([0, 100]);
+    setSelectedPrice([0, 5000]);
+    setSort(0);
+  };
   return (
     <div className="side_filter">
       <div className="d-flex justify-content-between align-items-center">
         <h1 className="filter_header">Filters</h1>
-        <h6 className="clear_filter">Clear All</h6>
+        <h6 className="clear_filter" onClick={resetFilters}>
+          Clear All
+        </h6>
       </div>
       <div className="location_filter">
         <p>location</p>
@@ -89,7 +94,6 @@ const SideFilter = ({
               value="0"
               onChange={(e) => {
                 pricefilter(e);
-                console.log(e.target.value);
               }}
             />
             <label htmlFor="price0">Free</label>

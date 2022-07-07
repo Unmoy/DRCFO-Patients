@@ -7,7 +7,10 @@ import likeicon from "../../assets/images/likeicon.png";
 import { useNavigate } from "react-router-dom";
 const DoctorCard = ({ doctor, location }) => {
   const [distance, setDistance] = useState(0);
-  // console.log(location, doctor);
+  // console.log(
+  //   doctor?.address?.location?.latitude,
+  //   doctor?.address?.location?.longitude
+  // );
   const { specialities } = doctor;
   const speciality = Object.values(specialities)[0];
   let navigate = useNavigate();
@@ -60,7 +63,7 @@ const DoctorCard = ({ doctor, location }) => {
           <div className="col-sm-12 col-md-6">
             <div className="doctor_card_detail">
               <h5 className="doctor_name mb-2">{doctor.docterName}</h5>
-              <span className="mb-2">{speciality}</span>
+              <span className="mb-2">{doctor.speciality}</span>
               <ul className="mb-2">
                 <li>{doctor.clinicName}</li>
               </ul>
@@ -75,16 +78,25 @@ const DoctorCard = ({ doctor, location }) => {
                 <span className="distance_kms"> ₹{doctor.fees} </span>
               </h5>
               <button className="doctor_rating">
-                <img src={likeicon} alt="likeicon"></img> 60%
+                <img src={likeicon} alt="likeicon"></img>{" "}
+                {doctor?.recommendation?.count}%
               </button>
             </div>
           </div>
           <div className="col-sm-12 col-md-3">
             <div className="doctor_card_right">
-              <button className="direction_btn">
-                <img src={directionicon} alt="directionicon"></img>
-                Get Direction
-              </button>
+              {doctor?.address?.location?.latitude &&
+                doctor?.address?.location?.longitude && (
+                  <a
+                    className="direction_btn"
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`https://www.google.com/maps/search/?api=1&query=${doctor?.address?.location?.latitude}%2C${doctor?.address?.location?.longitude}`}
+                  >
+                    <img src={directionicon} alt="directionicon"></img>
+                    View in map
+                  </a>
+                )}
               <button className="book_appt_btn" onClick={handleClick}>
                 Book Appointment
               </button>

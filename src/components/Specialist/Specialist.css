@@ -16,6 +16,7 @@
   text-align: center;
 }
 .item_card {
+  cursor: pointer;
   background: linear-gradient(
     136.23deg,
     #e2efff -31.67%,
@@ -28,7 +29,9 @@
   align-items: center;
   flex-direction: column;
   margin: 0 30px;
-  padding: 20px 30px;
+  padding: 20px 20px;
+  width: 13em;
+  height: 13em;
 }
 .item_card img {
   width: 100px;
@@ -37,8 +40,9 @@
 .item_card p {
   padding-top: 25px;
   font-weight: 600;
-  font-size: 21px;
+  font-size: 18px;
   margin-bottom: 0;
+  text-align: center;
 }
 @media only screen and (max-width: 600px) {
   .specialist_item_box {

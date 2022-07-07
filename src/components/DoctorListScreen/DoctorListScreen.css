@@ -37,6 +37,7 @@
 
 .top_doctor_search_input input[type="text"]::placeholder {
   color: #48484b;
+  opacity: 0.5;
 }
 .top_doctor_search_input input[type="text"]:focus {
   outline: none;
@@ -47,7 +48,20 @@
 .searchicon {
   height: 1.3em;
 }
-
+.custom-input-class {
+  /* background-color: #1472e5; */
+  width: 12em;
+}
+.top_doctor_search_calender_input {
+}
+.reset_btn {
+  font-size: 18px;
+  padding: 5px;
+  cursor: pointer;
+}
+.reset_btn:hover {
+  color: #1472e5;
+}
 .top_doctor_search_calender_input span {
   color: #48484b;
 }
@@ -69,6 +83,7 @@
   font-weight: 500;
   text-align: center;
 }
+
 @media only screen and (max-width: 600px) {
   .top_doctor_search {
     display: flex;

@@ -17,7 +17,16 @@ const Listing = () => {
             <li>Fill last-minute openings in your schedule</li>
             <li>Strengthen your online reputation with verified reviews</li>
           </ul>
-          <button>List yourself on DR.CFO</button>
+          <button>
+            <a
+              className="to_doctors_side"
+              href="https://reservefree-49b84.web.app/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              List yourself on DR.CFO
+            </a>
+          </button>
         </div>
       </div>
     </section>

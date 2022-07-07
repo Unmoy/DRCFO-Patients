@@ -1,35 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Doctor from "./Doctor";
 import "./Doctors.css";
-const doctorsList = [
-  {
-    id: 1,
-    title: "DR. Vikash Kumar Mehta",
-    specailist: "ENT Specialist",
-    distance: "0.5",
-    cost: "250",
-  },
-  {
-    id: 2,
-    title: "DR. Vikash Kumar Mehta",
-    specailist: "ENT Specialist",
-    distance: "0.5",
-    cost: "250",
-  },
-];
+
 const Doctors = () => {
+  const [topratedDoctors, setTopRatedDoctors] = useState([]);
+  const [doctorsAround, setDoctorsAround] = useState([]);
+  console.log(topratedDoctors);
+  const navigate = useNavigate();
+  const seemore = (value) => {
+    navigate("/doctors");
+    localStorage.setItem("doctorfilter", value);
+  };
+  const seearound = (value) => {
+    navigate("/doctors");
+    localStorage.setItem("seearound", value);
+  };
+  useEffect(() => {
+    fetch(
+      "https://reservefree-backend.herokuapp.com/get/list/docter-clinic?active=true"
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setTopRatedDoctors(data.slice(0, 2));
+        setDoctorsAround(data.slice(2, 4));
+      });
+  }, []);
   return (
     <div className="doctors_wrapper">
       <div className="container">
         <div className="row">
           <div className="top_left_doctors col-md-4">
-            <h5>Top-rated primary care doctors</h5>
+            <h5>Top-rated doctors</h5>
             <p>90% of patients gave these primary care doctors 5 stars</p>
-            <button>See More</button>
+            <button onClick={() => seemore("top")}>See More</button>
           </div>
           <div className="top_right_doctors col-md-8">
             <div className="row">
-              {doctorsList.map((doctor) => (
+              {topratedDoctors.map((doctor) => (
                 <Doctor key={doctor.id} doctor={doctor} />
               ))}
             </div>
@@ -42,11 +52,11 @@ const Doctors = () => {
               91% of patients spent less than 30 minutes in the waiting room for
               these Doctor
             </p>
-            <button>See More</button>
+            <button onClick={() => seearound("around")}>See More</button>
           </div>
           <div className="top_right_doctors col-md-8">
             <div className="row">
-              {doctorsList.map((doctor) => (
+              {doctorsAround.map((doctor) => (
                 <Doctor key={doctor.id} doctor={doctor} />
               ))}
             </div>

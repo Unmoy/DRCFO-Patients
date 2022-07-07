@@ -13,6 +13,7 @@
   font-size: 17px;
   line-height: 22px;
   color: #194af5;
+  cursor: pointer;
 }
 .location_filter {
   margin: 20px;
