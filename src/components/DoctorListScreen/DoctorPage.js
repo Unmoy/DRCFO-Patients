@@ -1,5 +1,6 @@
 import React from "react";
 import Loader from "../Loader/Loader";
+import CSSloader from "./CSSloader";
 import DoctorCard from "./DoctorCard";
 
 const DoctorPage = ({ doctorsList, loading, location }) => {
@@ -7,7 +8,7 @@ const DoctorPage = ({ doctorsList, loading, location }) => {
   return (
     <div>
       {loading ? (
-        <Loader />
+        <CSSloader />
       ) : (
         doctorsList.map((doctor) => (
           <DoctorCard

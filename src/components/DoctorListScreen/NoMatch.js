@@ -1,5 +1,5 @@
 import React from "react";
-import Lottie from "react-lottie";
+// import Lottie from "react-lottie";
 import * as animationData from "./noMatch.json";
 import "./DoctorListScreen.css";
 const NoMatch = () => {
@@ -14,7 +14,7 @@ const NoMatch = () => {
 
   return (
     <div>
-      <Lottie options={defaultOptions} height={200} width={200} />
+      {/* <Lottie options={defaultOptions} height={200} width={200} /> */}
       <h1 className="nomatchtext">No Match Found</h1>
     </div>
   );

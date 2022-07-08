@@ -18,13 +18,22 @@ const Header = () => {
 
   const navigate = useNavigate();
   const handleSearch = () => {
-    if (searchText.length) {
-      navigate(`/doctors/${searchText}`);
-    }
-    // else if (formatDay) {
-    //   navigate(`/doctors/${{ id: "fd", formatDay }}`);
+    // if (searchText.length) {
+    //   navigate(`/doctors/${searchText}`);
     // }
-    else {
+    // // else if (formatDay) {
+    // //   navigate(`/doctors/${{ id: "fd", formatDay }}`);
+    // // }
+    // else {
+    //   document.getElementById("myTextField").focus();
+    // }
+
+    const searchItems = { day: formatDay, text: searchText };
+    console.log(searchItems);
+    if (searchText.length || formatDay.length) {
+      localStorage.setItem("searchItems", JSON.stringify(searchItems));
+      navigate("/doctors");
+    } else {
       document.getElementById("myTextField").focus();
     }
   };
@@ -111,7 +120,6 @@ const Header = () => {
             <span className="ps-2">
               <DatePicker
                 value={selectedDay}
-                inputPlaceholder="Select a date"
                 onChange={setSelectedDay}
                 renderInput={renderCustomInput}
               />

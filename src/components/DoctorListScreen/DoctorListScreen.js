@@ -8,13 +8,15 @@ import calendericon from "../../assets/images/calendericon.png";
 import searcbtnicon from "../../assets/images/searcbtnicon.png";
 import Footer from "../Footer/Footer";
 import Loader from "../Loader/Loader";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
+
 import DoctorPage from "./DoctorPage";
 import NoMatch from "./NoMatch";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import DatePicker from "@hassanmojab/react-modern-calendar-datepicker";
+import CSSloader from "./CSSloader";
 const DoctorListScreen = () => {
-  const { text } = useParams();
+  // const { text } = useParams();
   const [doctorsList, setDoctorsList] = useState([]);
   const [speciality, setSpeciality] = useState([]);
   const [datefilterData, setDateFilterData] = useState([]);
@@ -27,6 +29,9 @@ const DoctorListScreen = () => {
   const [searchSpeaciality, setSearchSpeaciality] = useState("");
   const [selectedDay, setSelectedDay] = useState(null);
   const [categoryText, setCategorytext] = useState(null);
+  const [locationInput, setLocationInput] = useState("");
+  var searchItems = JSON.parse(localStorage.getItem("searchItems"));
+  // console.log(searchItems.text);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
       setLocation({
@@ -38,9 +43,9 @@ const DoctorListScreen = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setLoading(true);
-    if (text) {
+    if (searchItems?.text) {
       fetch(
-        `https://reservefree-backend.herokuapp.com/search?query=${text}&search=all`
+        `https://reservefree-backend.herokuapp.com/search?query=${searchItems.text}&search=all`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -61,7 +66,7 @@ const DoctorListScreen = () => {
           console.log(data);
         });
     }
-  }, [text]);
+  }, [searchItems?.text]);
   useEffect(() => {
     const searchSpecialityfromhome = localStorage.getItem(
       "speciality_search_item"
@@ -234,22 +239,19 @@ const DoctorListScreen = () => {
         setLoading(false);
       });
   };
+  // `${
+  //             selectedDay.day < 10 ? `0${selectedDay.day}` : selectedDay.day
+  //           }-${
+  //             selectedDay.month > 10
+  //               ? selectedDay.month
+  //               : `0${selectedDay.month}`
+  //           }-${selectedDay.year}`
   const renderCustomInput = ({ ref }) => (
     <input
       readOnly
       ref={ref}
       placeholder="Today"
-      value={
-        selectedDay
-          ? `${
-              selectedDay.day > 10 ? selectedDay.day : `0${selectedDay.day}`
-            }-${
-              selectedDay.month > 10
-                ? selectedDay.month
-                : `0${selectedDay.month}`
-            }-${selectedDay.year}`
-          : ""
-      }
+      value={selectedDay ? selectedDay.day : ""}
       style={{
         textAlign: "left",
         padding: "8px",
@@ -278,8 +280,17 @@ const DoctorListScreen = () => {
         .then((data) => {
           setDateFilterData(data);
         });
+    } else if (searchItems?.day) {
+      fetch(
+        `https://reservefree-backend.herokuapp.com/get/availability?date=${searchItems.day}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("date found");
+          setDateFilterData(data);
+        });
     }
-  }, [selectedDay]);
+  }, [selectedDay, searchItems?.day]);
   useEffect(() => {
     if (sort !== 0) {
       setCategorytext("Doctors Sorted for you");
@@ -303,21 +314,24 @@ const DoctorListScreen = () => {
     setSelectedDay(null);
     setDoctorsList(list);
   };
-
-  // function getCoordinates(address) {
+  // const apikey = "AIzaSyBvOqEi52OxFtXFwGXSTEKJJaj5geC-Lgc";
+  // const getCoordinates = (address) => {
   //   fetch(
-  //     "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-  //       address +
-  //       "&key=" +
-  //       API_KEY
+  //     `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apikey}`
   //   )
   //     .then((response) => response.json())
   //     .then((data) => {
-  //       const latitude = data.results.geometry.location.lat;
-  //       const longitude = data.results.geometry.location.lng;
+  //       const latitude = data?.results?.geometry?.location?.lat;
+  //       const longitude = data?.results?.geometry?.location?.lng;
   //       console.log({ latitude, longitude });
   //     });
-  // }
+  // };
+  // const handleLcoationInput = (e) => {
+  //   setLocationInput(e.target.value);
+  //   if (locationInput) {
+  //     getCoordinates(locationInput);
+  //   }
+  // };
   return (
     <>
       <div className="doctor_screen">
@@ -335,7 +349,7 @@ const DoctorListScreen = () => {
                   <input
                     placeholder="Paediatric Doctor"
                     type="text"
-                    defaultValue={text}
+                    defaultValue={searchItems?.text}
                     onChange={(e) =>
                       e.target.value != ""
                         ? handleSearch(e)
@@ -346,7 +360,7 @@ const DoctorListScreen = () => {
                 <div className="top_doctor_search_input">
                   <img src={mapmarkericon} alt="searcbtnicon" />
                   <span className="ps-2">
-                    Ardee city, Sec-52, Block c, gurugram...
+                    <input type="text" />
                   </span>
                 </div>
                 <div className="top_doctor_search_calender_input">
@@ -402,7 +416,7 @@ const DoctorListScreen = () => {
                   location={location}
                 />
               ) : (
-                <>{!loading ? <NoMatch /> : <Loader />}</>
+                <>{!loading ? <CSSloader /> : <CSSloader />}</>
               )}
             </div>
             {/* Properties Lists End */}
