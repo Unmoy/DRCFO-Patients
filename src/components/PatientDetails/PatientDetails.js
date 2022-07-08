@@ -9,7 +9,6 @@ import phoneicon from "../../assets/images/phone.png";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import io from "socket.io-client";
 
 const PatientDetails = () => {
   const [date, setDate] = useState("");
@@ -27,6 +26,7 @@ const PatientDetails = () => {
   const { currentUser } = useAuth();
   const [page, setPage] = useState(true);
   const [payType, setPayType] = useState("");
+  const [amount, setAmount] = useState(1000);
   const navigate = useNavigate();
   window.scrollTo(0, 0);
   useEffect(() => {
@@ -39,6 +39,7 @@ const PatientDetails = () => {
       .then((res) => res.json())
       .then((data) => {
         setDoctorData(data);
+        setAmount(data.fees * 100);
       });
   }, [clinicId]);
 
@@ -61,40 +62,143 @@ const PatientDetails = () => {
   const getPaymentDetail = (e) => {
     setPayType(e.target.value);
   };
-  const socket = io.connect("https://reservefree-backend.herokuapp.com");
-  const [message, setMessage] = useState("");
-  const joinRoom = () => {
-    if (doctorId !== "") {
-      socket.emit("join_room", doctorId);
-    }
-  };
-  const sendMessage = () => {
-    socket.emit("send_message", { message, doctorId });
-  };
 
   const proceedtoPay = () => {
     setDisableBtn(true);
-    apptdata.payment = payType;
-    apptdata.fees = doctorData.fees;
-    apptdata.booking = "Online";
-    console.log(apptdata);
-    fetch("https://reservefree-backend.herokuapp.com/add/appointment", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(apptdata),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        if (data.message === "SUCCESS") {
-          navigate("/appointmentlist");
-        }
-        localStorage.setItem("appointmentId", data.id);
-      });
+    if (payType === "PAY_ON_VISIT") {
+      apptdata.payment = payType;
+      apptdata.fees = doctorData.fees;
+      apptdata.booking = "Online";
+      console.log(apptdata);
+      fetch("https://reservefree-backend.herokuapp.com/add/appointment", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(apptdata),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          if (data.message === "SUCCESS") {
+            navigate("/appointmentlist");
+          }
+          localStorage.setItem("appointmentId", data.id);
+        });
+    } else if (payType === "PAID_ONLINE") {
+      fetch("https://reservefree-backend.herokuapp.com/payment/new", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount,
+          notes: { patientId, doctorId, clinicId },
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          displayRazorpay(data);
+        });
+    }
   };
+
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  }
+  async function displayRazorpay(result) {
+    const res = await loadScript(
+      "https://checkout.razorpay.com/v1/checkout.js"
+    );
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
+    if (!result) {
+      alert("Server error. Are you online?");
+      return;
+    }
+
+    const { amount, id: order_id, currency } = result;
+
+    const options = {
+      key: "rzp_test_UYJNa41aNnBTG6", // Enter the Key ID generated from the Dashboard
+      amount,
+      currency: currency,
+      name: "Soumya Corp.",
+      description: "Test Transaction",
+      // image: { logo },
+      order_id: order_id,
+      handler: async function (response) {
+        const data = {
+          orderCreationId: order_id,
+          razorpayPaymentId: response.razorpay_payment_id,
+          razorpayOrderId: response.razorpay_order_id,
+          razorpaySignature: response.razorpay_signature,
+        };
+        console.log(response, data);
+
+        setDisableBtn(true);
+        apptdata.payment = payType;
+        apptdata.paymentDetails = data;
+        apptdata.fees = doctorData.fees;
+        apptdata.booking = "Online";
+        console.log(apptdata);
+        fetch("https://reservefree-backend.herokuapp.com/add/appointment", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(apptdata),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            if (data.message === "SUCCESS") {
+              navigate("/appointmentlist");
+            }
+            localStorage.setItem("appointmentId", data.id);
+          });
+
+        // const result = await axios.post(
+        //   "http://localhost:5000/payment/success",
+        //   data
+        // );
+
+        // alert(result.data.msg);
+      },
+      prefill: {
+        name: "Soumya Dey",
+        email: "SoumyaDey@example.com",
+        contact: "9999999999",
+      },
+      notes: {
+        address: "Soumya Dey Corporate Office",
+      },
+      theme: {
+        color: "#61dafb",
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  }
 
   const { register, handleSubmit } = useForm();
   const displayTime = time.substring(0, 8) + " - " + time.substring(9, 17);
@@ -330,7 +434,11 @@ const PatientDetails = () => {
                 className="proceed_pay_btn"
                 onClick={proceedtoPay}
               >
-                {disableBtn ? "Please Wait..." : "Confirm Booking"}
+                {disableBtn
+                  ? "Please Wait..."
+                  : payType === "PAY_ON_VISIT"
+                  ? "Confirm Booking"
+                  : "Proceed to Payment"}
               </button>
             </div>
           </>
