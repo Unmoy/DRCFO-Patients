@@ -9,7 +9,6 @@ import phoneicon from "../../assets/images/phone.png";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import io from "socket.io-client";
 
 const PatientDetails = () => {
   const [date, setDate] = useState("");
@@ -61,16 +60,16 @@ const PatientDetails = () => {
   const getPaymentDetail = (e) => {
     setPayType(e.target.value);
   };
-  const socket = io.connect("https://reservefree-backend.herokuapp.com");
-  const [message, setMessage] = useState("");
-  const joinRoom = () => {
-    if (doctorId !== "") {
-      socket.emit("join_room", doctorId);
-    }
-  };
-  const sendMessage = () => {
-    socket.emit("send_message", { message, doctorId });
-  };
+  // const socket = io.connect("https://reservefree-backend.herokuapp.com");
+  // const [message, setMessage] = useState("");
+  // const joinRoom = () => {
+  //   if (doctorId !== "") {
+  //     socket.emit("join_room", doctorId);
+  //   }
+  // };
+  // const sendMessage = () => {
+  //   socket.emit("send_message", { message, doctorId });
+  // };
 
   const proceedtoPay = () => {
     setDisableBtn(true);
@@ -88,7 +87,7 @@ const PatientDetails = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.message === "SUCCESS") {
           navigate("/appointmentlist");
         }
