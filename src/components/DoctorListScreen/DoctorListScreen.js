@@ -30,8 +30,11 @@ const DoctorListScreen = () => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [categoryText, setCategorytext] = useState(null);
   const [locationInput, setLocationInput] = useState("");
+  // const [searchItems, setsearchItems] = useState({});
   var searchItems = JSON.parse(localStorage.getItem("searchItems"));
-  // console.log(searchItems.text);
+  // console.log(searchItems);
+  // const searchItemshome = JSON.parse(localStorage.getItem("searchItems"));
+  // setsearchItems(searchItemshome);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
       setLocation({
@@ -45,14 +48,14 @@ const DoctorListScreen = () => {
     setLoading(true);
     if (searchItems?.text) {
       fetch(
-        `https://reservefree-backend.herokuapp.com/search?query=${searchItems.text}&search=all`
+        `https://reservefree-backend.herokuapp.com/search?query=${searchItems?.text}&search=all`
       )
         .then((res) => res.json())
         .then((data) => {
-          setList(data);
           setDoctorsList(data);
           setLoading(false);
         });
+      localStorage.removeItem("searchItems");
     } else {
       setLoading(true);
       fetch(
@@ -63,10 +66,9 @@ const DoctorListScreen = () => {
           setList(data);
           setDoctorsList(data);
           setLoading(false);
-          console.log(data);
         });
     }
-  }, [searchItems?.text]);
+  }, []);
   useEffect(() => {
     const searchSpecialityfromhome = localStorage.getItem(
       "speciality_search_item"
@@ -229,7 +231,6 @@ const DoctorListScreen = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     setLoading(true);
-
     fetch(
       `https://reservefree-backend.herokuapp.com/search?query=${e.target.value}&search=all`
     )
@@ -239,19 +240,25 @@ const DoctorListScreen = () => {
         setLoading(false);
       });
   };
-  // `${
-  //             selectedDay.day < 10 ? `0${selectedDay.day}` : selectedDay.day
-  //           }-${
-  //             selectedDay.month > 10
-  //               ? selectedDay.month
-  //               : `0${selectedDay.month}`
-  //           }-${selectedDay.year}`
+  // `${selectedDay.day < 10 ? `0${selectedDay.day}` : selectedDay.day}-${
+  //   selectedDay.month > 10 ? selectedDay.month : `0${selectedDay.month}`
+  // }-${selectedDay.year}`;
   const renderCustomInput = ({ ref }) => (
     <input
       readOnly
       ref={ref}
       placeholder="Today"
-      value={selectedDay ? selectedDay.day : ""}
+      value={
+        selectedDay
+          ? `${
+              selectedDay.day < 10 ? `0${selectedDay.day}` : selectedDay.day
+            }-${
+              selectedDay.month > 10
+                ? selectedDay.month
+                : `0${selectedDay.month}`
+            }-${selectedDay?.year}`
+          : ""
+      }
       style={{
         textAlign: "left",
         padding: "8px",
@@ -281,16 +288,19 @@ const DoctorListScreen = () => {
           setDateFilterData(data);
         });
     } else if (searchItems?.day) {
+      console.log("1");
       fetch(
         `https://reservefree-backend.herokuapp.com/get/availability?date=${searchItems.day}`
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log("date found");
           setDateFilterData(data);
+          console.log("2");
         });
+      localStorage.removeItem("searchItems");
     }
-  }, [selectedDay, searchItems?.day]);
+    // localStorage.removeItem("searchItems");
+  }, [selectedDay]);
   useEffect(() => {
     if (sort !== 0) {
       setCategorytext("Doctors Sorted for you");
@@ -314,10 +324,10 @@ const DoctorListScreen = () => {
     setSelectedDay(null);
     setDoctorsList(list);
   };
-  // const apikey = "AIzaSyBvOqEi52OxFtXFwGXSTEKJJaj5geC-Lgc";
+  const apikey = "AIzaSyBa3BEfAf0HqafHkZCkrPBQfmssAhLdvDo";
   // const getCoordinates = (address) => {
   //   fetch(
-  //     `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apikey}`
+  //     `https://maps.googleapis.com/maps/api/geocode/json?language=en&address=${address}`
   //   )
   //     .then((response) => response.json())
   //     .then((data) => {
@@ -326,12 +336,48 @@ const DoctorListScreen = () => {
   //       console.log({ latitude, longitude });
   //     });
   // };
-  // const handleLcoationInput = (e) => {
-  //   setLocationInput(e.target.value);
-  //   if (locationInput) {
-  //     getCoordinates(locationInput);
-  //   }
-  // };
+  // function loadScript(src) {
+  //   return new Promise((resolve) => {
+  //     const script = document.createElement("script");
+  //     script.src = src;
+  //     script.onload = () => {
+  //       resolve(true);
+  //     };
+  //     script.onerror = () => {
+  //       resolve(false);
+  //     };
+  //     document.body.appendChild(script);
+  //   });
+  // }
+  // async function coordinates(address) {
+  //   const res = await loadScript(
+  //     "https://maps.googleapis.com/maps/api/js?key=AIzaSyBa3BEfAf0HqafHkZCkrPBQfmssAhLdvDo&address=India&callback=initMap"
+  //   );
+  //   console.log(res);
+  // }
+
+  // function codeAddress() {
+  //   var address = document.getElementById("address").value;
+  //   const geocoder.geocode({ address: address }, function (results, status) {
+  //     if (status == "OK") {
+  //       map.setCenter(results[0].geometry.location);
+  //       var marker = new google.maps.Marker({
+  //         map: map,
+  //         position: results[0].geometry.location,
+  //       });
+  //     } else {
+  //       alert("Geocode was not successful for the following reason: " + status);
+  //     }
+  //   });
+  // }
+  const handleLocationInput = (e) => {
+    setLocationInput(e.target.value);
+    if (locationInput) {
+      // getCoordinates(locationInput);
+      // coordinates();
+    }
+  };
+
   return (
     <>
       <div className="doctor_screen">
@@ -360,7 +406,11 @@ const DoctorListScreen = () => {
                 <div className="top_doctor_search_input">
                   <img src={mapmarkericon} alt="searcbtnicon" />
                   <span className="ps-2">
-                    <input type="text" />
+                    <input
+                      type="text"
+                      placeholder="Enter a location"
+                      onChange={handleLocationInput}
+                    />
                   </span>
                 </div>
                 <div className="top_doctor_search_calender_input">
@@ -368,7 +418,6 @@ const DoctorListScreen = () => {
                   <span className="ps-2">
                     <DatePicker
                       value={selectedDay}
-                      inputPlaceholder="Select a date"
                       onChange={setSelectedDay}
                       renderInput={renderCustomInput}
                     />
@@ -416,7 +465,7 @@ const DoctorListScreen = () => {
                   location={location}
                 />
               ) : (
-                <>{!loading ? <CSSloader /> : <CSSloader />}</>
+                <>{!loading ? "CSSloader" : <CSSloader />}</>
               )}
             </div>
             {/* Properties Lists End */}

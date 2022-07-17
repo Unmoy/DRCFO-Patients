@@ -43,12 +43,11 @@
   position: relative;
   padding: 20px;
   margin: 20px 0;
+  cursor: pointer;
 }
 .doctor_img {
   height: 100px;
   width: 100px;
-  /* background: url("../../assets/images/d2.png"); */
-  /* transform: matrix(-1, 0, 0, 1, 0, 0); */
   background-size: cover;
   position: absolute;
   top: -40px;

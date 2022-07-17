@@ -125,7 +125,6 @@
 }
 .gender_box {
   margin-bottom: 15px;
-
 }
 .gender_box .checkbox-tools:checked,
 .checkbox-tools:not(:checked) {
@@ -250,6 +249,12 @@
   margin-top: 20px;
   color: #fff;
   font-weight: 500;
+}
+.appt_confirm_btn:active {
+  transform: scale(0.99);
+}
+.proceed_pay_btn:active {
+  transform: scale(0.99);
 }
 .appt_footer {
   max-width: 436px;

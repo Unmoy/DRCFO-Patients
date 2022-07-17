@@ -69,7 +69,7 @@ const PatientDetails = () => {
       apptdata.payment = payType;
       apptdata.fees = doctorData.fees;
       apptdata.booking = "Online";
-      console.log(apptdata);
+      // console.log(apptdata);
       fetch("https://reservefree-backend.herokuapp.com/add/appointment", {
         method: "POST",
         headers: {
@@ -428,7 +428,7 @@ const PatientDetails = () => {
                 </p>
               </div>
             </div>
-            <div className="d-flex justify-content-center align-items-center mt-5">
+            <div className="d-flex justify-content-center align-items-center mt-3">
               <button
                 disabled={disableBtn}
                 className="proceed_pay_btn"

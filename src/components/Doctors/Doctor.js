@@ -1,10 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import defaultdoctor from "../../assets/images/defaultdoctor.png";
 const Doctor = ({ doctor }) => {
   console.log(doctor);
+  let navigate = useNavigate();
+  const handleNavigation = () => {
+    const url = `/detail/${doctor.clinicId}`;
+    navigate(url);
+  };
   return (
     <div className="col-md-6">
-      <div className="doctor_card">
+      <div className="doctor_card" onClick={handleNavigation}>
         <div className="doctor_img">
           {doctor?.image ? (
             <img

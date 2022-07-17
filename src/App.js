@@ -4,7 +4,7 @@ import { AuthProvider } from "./components/context/AuthContext";
 import DoctorDetails from "./components/DoctorDetails/DoctorDetails";
 import DoctorListScreen from "./components/DoctorListScreen/DoctorListScreen";
 import HomePage from "./components/HomePage/HomePage";
-import UserLogin from "./components/DoctorDetails/UserLogin";
+// import UserLogin from "./components/DoctorDetails/UserLogin";
 import PatientDetails from "./components/PatientDetails/PatientDetails";
 import AboutPatients from "./components/AboutPatients/AboutPatients";
 import Logout from "./components/Logout";
@@ -20,7 +20,7 @@ function App() {
         <Route exact path="doctors/:text" element={<DoctorListScreen />} />
         <Route exact path="doctors" element={<DoctorListScreen />} />
         <Route exact path="detail/:id" element={<DoctorDetails />} />
-        <Route exact path="login" element={<UserLogin />} />
+        {/* <Route exact path="login" element={<UserLogin />} /> */}
         <Route exact path="patientdetails" element={<PatientDetails />} />
         <Route exact path="confirmdetails" element={<AboutPatients />} />
         <Route exact path="appointmentlist" element={<MyAppointment />} />

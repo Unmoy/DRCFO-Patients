@@ -7,7 +7,6 @@ import "./Doctors.css";
 const Doctors = () => {
   const [topratedDoctors, setTopRatedDoctors] = useState([]);
   const [doctorsAround, setDoctorsAround] = useState([]);
-  console.log(topratedDoctors);
   const navigate = useNavigate();
   const seemore = (value) => {
     navigate("/doctors");
@@ -23,7 +22,6 @@ const Doctors = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setTopRatedDoctors(data.slice(0, 2));
         setDoctorsAround(data.slice(2, 4));
       });
@@ -40,7 +38,7 @@ const Doctors = () => {
           <div className="top_right_doctors col-md-8">
             <div className="row">
               {topratedDoctors.map((doctor) => (
-                <Doctor key={doctor.id} doctor={doctor} />
+                <Doctor key={doctor._id} doctor={doctor} />
               ))}
             </div>
           </div>
@@ -57,7 +55,7 @@ const Doctors = () => {
           <div className="top_right_doctors col-md-8">
             <div className="row">
               {doctorsAround.map((doctor) => (
-                <Doctor key={doctor.id} doctor={doctor} />
+                <Doctor key={doctor._id} doctor={doctor} />
               ))}
             </div>
           </div>

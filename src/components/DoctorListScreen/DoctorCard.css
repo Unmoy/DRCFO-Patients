@@ -46,6 +46,9 @@
   color: #fff;
   padding: 10px 20px;
 }
+.book_appt_btn:active {
+  transform: scale(0.99);
+}
 .direction_btn {
   text-align: right;
   background: transparent;
