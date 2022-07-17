@@ -324,7 +324,17 @@ const DoctorListScreen = () => {
     setSelectedDay(null);
     setDoctorsList(list);
   };
-  const apikey = "AIzaSyBa3BEfAf0HqafHkZCkrPBQfmssAhLdvDo";
+  const apikey = process.env.REACT_APP_MAPS_API_KEY;
+  async function getCoordinates(InputLocation) {
+    fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${InputLocation}&key=${apikey}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  }
+
   // const getCoordinates = (address) => {
   //   fetch(
   //     `https://maps.googleapis.com/maps/api/geocode/json?language=en&address=${address}`
@@ -372,8 +382,8 @@ const DoctorListScreen = () => {
   // }
   const handleLocationInput = (e) => {
     setLocationInput(e.target.value);
-    if (locationInput) {
-      // getCoordinates(locationInput);
+    if (e.target.value) {
+      getCoordinates(e.target.value);
       // coordinates();
     }
   };
