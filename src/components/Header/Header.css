@@ -81,6 +81,7 @@
 }
 .header_location {
   margin-left: 80px;
+  position: relative;
 }
 .searchInput_1 input[type="text"] {
   border: none;
@@ -131,6 +132,16 @@
   padding: 0 30px;
   font-size: 20px;
   cursor: pointer;
+}
+.home_location_suggestion {
+  background-color: #fff;
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  z-index: 10;
+  box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px,
+    rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+  width: 25em;
 }
 @media only screen and (min-width: 1024px) {
   .header_left h1 {

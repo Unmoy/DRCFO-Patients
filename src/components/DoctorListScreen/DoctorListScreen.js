@@ -9,7 +9,6 @@ import searcbtnicon from "../../assets/images/searcbtnicon.png";
 import Footer from "../Footer/Footer";
 import Loader from "../Loader/Loader";
 // import { useParams } from "react-router-dom";
-
 import DoctorPage from "./DoctorPage";
 import NoMatch from "./NoMatch";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
@@ -25,13 +24,17 @@ const DoctorListScreen = () => {
   const [sort, setSort] = useState(0);
   const [loading, setLoading] = useState(false);
   const [location, setLocation] = useState({});
+  // console.log(location);
   const [locationRange, setLocationRange] = useState([0, 100]);
   const [searchSpeaciality, setSearchSpeaciality] = useState("");
   const [selectedDay, setSelectedDay] = useState(null);
   const [categoryText, setCategorytext] = useState(null);
   const [locationInput, setLocationInput] = useState("");
-  // const [searchItems, setsearchItems] = useState({});
+  const [filterLocation, setFilterLocation] = useState("");
+  const [suggestion, setSuggestion] = useState([]);
+  const [googleGeometry, setGoogleGeometry] = useState({});
   var searchItems = JSON.parse(localStorage.getItem("searchItems"));
+  // console.log(suggestion);
   // console.log(searchItems);
   // const searchItemshome = JSON.parse(localStorage.getItem("searchItems"));
   // setsearchItems(searchItemshome);
@@ -98,6 +101,15 @@ const DoctorListScreen = () => {
       if (recommendationData) {
         setSort(4);
         localStorage.removeItem("doctorfilter");
+      }
+    }
+  }, [list]);
+  useEffect(() => {
+    if (list.length) {
+      const locationData = localStorage.getItem("locateme");
+      if (locationData) {
+        setLocationRange([0, 20]);
+        localStorage.removeItem("locateme");
       }
     }
   }, [list]);
@@ -226,6 +238,7 @@ const DoctorListScreen = () => {
     selectedPrice,
     locationRange,
     datefilterData,
+    location,
   ]);
 
   const handleSearch = (e) => {
@@ -325,9 +338,24 @@ const DoctorListScreen = () => {
     setDoctorsList(list);
   };
   const apikey = process.env.REACT_APP_MAPS_API_KEY;
-  async function getCoordinates(InputLocation) {
+  // async function getCoordinates(InputLocation) {
+  //   fetch(
+  //     `https://maps.googleapis.com/maps/api/geocode/json?address=${InputLocation}&key=${apikey}`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       console.log(data.results[0]);
+  //       // setSuggestion(data.results[0]?.formatted_address);
+  //       data.results.map((add) => {
+  //         setSuggestion([add.formatted_address]);
+  //         setGoogleGeometry(add.geometry.location);
+  //       });
+  //     });
+  // }
+  async function getAddress(InputLocation) {
     fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${InputLocation}&key=${apikey}`
+      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${InputLocation}&key=${apikey}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -335,59 +363,41 @@ const DoctorListScreen = () => {
       });
   }
 
-  // const getCoordinates = (address) => {
-  //   fetch(
-  //     `https://maps.googleapis.com/maps/api/geocode/json?language=en&address=${address}`
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const latitude = data?.results?.geometry?.location?.lat;
-  //       const longitude = data?.results?.geometry?.location?.lng;
-  //       console.log({ latitude, longitude });
-  //     });
-  // };
-  // function loadScript(src) {
-  //   return new Promise((resolve) => {
-  //     const script = document.createElement("script");
-  //     script.src = src;
-  //     script.onload = () => {
-  //       resolve(true);
-  //     };
-  //     script.onerror = () => {
-  //       resolve(false);
-  //     };
-  //     document.body.appendChild(script);
-  //   });
-  // }
-  // async function coordinates(address) {
-  //   const res = await loadScript(
-  //     "https://maps.googleapis.com/maps/api/js?key=AIzaSyBa3BEfAf0HqafHkZCkrPBQfmssAhLdvDo&address=India&callback=initMap"
-  //   );
-  //   console.log(res);
-  // }
-
-  // function codeAddress() {
-  //   var address = document.getElementById("address").value;
-  //   const geocoder.geocode({ address: address }, function (results, status) {
-  //     if (status == "OK") {
-  //       map.setCenter(results[0].geometry.location);
-  //       var marker = new google.maps.Marker({
-  //         map: map,
-  //         position: results[0].geometry.location,
-  //       });
-  //     } else {
-  //       alert("Geocode was not successful for the following reason: " + status);
-  //     }
-  //   });
-  // }
   const handleLocationInput = (e) => {
     setLocationInput(e.target.value);
     if (e.target.value) {
-      getCoordinates(e.target.value);
-      // coordinates();
+      getAddress(e.target.value);
     }
   };
-
+  const onSuggestHandler = (value) => {
+    console.log(value);
+    setLocationInput(value);
+    setFilterLocation(value);
+    setSuggestion([]);
+  };
+  useEffect(() => {
+    if (filterLocation) {
+      setLocation({
+        latitude: googleGeometry.lat,
+        longitude: googleGeometry.lng,
+      });
+      setLocationRange([0, 20]);
+    }
+  }, [filterLocation, googleGeometry]);
+  useEffect(() => {
+    var locationItem = JSON.parse(localStorage.getItem("searchItems"));
+    if (searchItems && list.length) {
+      // console.log(locationItem.location.lng);
+      setLocation({
+        latitude: locationItem.location.lat,
+        longitude: locationItem.location.lng,
+      });
+      localStorage.removeItem("searchItems");
+      setLocationRange([0, 20]);
+    } else {
+      setDoctorsList(list);
+    }
+  }, [list]);
   return (
     <>
       <div className="doctor_screen">
@@ -420,8 +430,30 @@ const DoctorListScreen = () => {
                       type="text"
                       placeholder="Enter a location"
                       onChange={handleLocationInput}
+                      value={locationInput}
                     />
                   </span>
+
+                  {suggestion.length > 0 ? (
+                    <div className="location_suggestion">
+                      {suggestion.map((add, index) => (
+                        <div
+                          key={index}
+                          className="location_suggestion_card"
+                          onClick={() => onSuggestHandler(add)}
+                          onBlur={() => {
+                            setTimeout(() => {
+                              setSuggestion([]);
+                            }, 100);
+                          }}
+                        >
+                          {add}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="top_doctor_search_calender_input">
                   <img src={calendericon} alt="searcbtnicon" />

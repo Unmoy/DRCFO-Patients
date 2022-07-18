@@ -15,22 +15,21 @@ const Header = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedDay, setSelectedDay] = useState(null);
   const [formatDay, setFormatDay] = useState("");
-
+  const [locationInput, setLocationInput] = useState("");
+  const [suggestion, setSuggestion] = useState([]);
+  const [filterLocation, setFilterLocation] = useState({});
+  const [location, setLocation] = useState({});
+  const [address, setAddress] = useState("");
+  console.log(location);
   const navigate = useNavigate();
   const handleSearch = () => {
-    // if (searchText.length) {
-    //   navigate(`/doctors/${searchText}`);
-    // }
-    // // else if (formatDay) {
-    // //   navigate(`/doctors/${{ id: "fd", formatDay }}`);
-    // // }
-    // else {
-    //   document.getElementById("myTextField").focus();
-    // }
-
-    const searchItems = { day: formatDay, text: searchText };
+    const searchItems = {
+      day: formatDay,
+      text: searchText,
+      location: filterLocation,
+    };
     console.log(searchItems);
-    if (searchText.length || formatDay.length) {
+    if (searchText.length || formatDay.length || filterLocation) {
       localStorage.setItem("searchItems", JSON.stringify(searchItems));
       navigate("/doctors");
     } else {
@@ -79,6 +78,58 @@ const Header = () => {
       className="custom-input-class"
     />
   );
+  const apikey = process.env.REACT_APP_MAPS_API_KEY;
+  async function getCoordinates(InputLocation) {
+    fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${InputLocation}&key=${apikey}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        console.log(data.results[0]);
+        // setSuggestion(data.results[0]?.formatted_address);
+        data.results.map((add) => {
+          setSuggestion([add.formatted_address]);
+          setFilterLocation(add.geometry.location);
+        });
+      });
+  }
+
+  const handleLocationInput = (e) => {
+    setLocationInput(e.target.value);
+    if (e.target.value) {
+      getCoordinates(e.target.value);
+    }
+  };
+  const onSuggestHandler = (value) => {
+    // console.log(value);
+    setLocationInput(value);
+    // setFilterLocation(value);
+    setSuggestion([]);
+  };
+  const locateMe = () => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setLocation({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+  };
+  useEffect(() => {
+    if (location.latitude && location.longitude) {
+      fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=${apikey}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          // console.log(data);
+          // console.log(data.results[0].formatted_address);
+          // setAddress(data.results[0].formatted_address);
+          setLocationInput(data.results[0].formatted_address);
+          getCoordinates(data.results[0].formatted_address);
+        });
+    }
+  }, [location]);
   return (
     <div className="header_wrapper">
       <div className="header_screen">
@@ -105,12 +156,35 @@ const Header = () => {
           </div>
           <div className="searchInput_1 header_location">
             <img src={mapmarkericon} alt="" />
-            <input placeholder="Your Location" type="text" />
+            <input
+              placeholder="Your Location"
+              type="text"
+              onChange={handleLocationInput}
+              value={locationInput}
+            />
+            {suggestion.length > 0 ? (
+              <div className="home_location_suggestion">
+                {suggestion.map((add, index) => (
+                  <div
+                    key={index}
+                    className="location_suggestion_card"
+                    onClick={() => onSuggestHandler(add)}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        setSuggestion([]);
+                      }, 100);
+                    }}
+                  >
+                    {add}
+                  </div>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
         <div className="input_right">
           <div>
-            <button className="locate_btn">
+            <button className="locate_btn" onClick={locateMe}>
               <img src={geolocationicon} alt="" />
               <span>locate me</span>
             </button>

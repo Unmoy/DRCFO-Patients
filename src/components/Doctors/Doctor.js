@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import defaultdoctor from "../../assets/images/defaultdoctor.png";
 const Doctor = ({ doctor }) => {
-  console.log(doctor);
+  // console.log(doctor);
   let navigate = useNavigate();
   const handleNavigation = () => {
     const url = `/detail/${doctor.clinicId}`;
