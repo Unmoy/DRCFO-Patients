@@ -355,11 +355,13 @@ const DoctorListScreen = () => {
   // }
   async function getAddress(InputLocation) {
     fetch(
-      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${InputLocation}&key=${apikey}`
+      // `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${InputLocation}&key=${apikey}`
+      `https://reservefree-backend.herokuapp.com/other/places?query=${InputLocation}`
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
+        setSuggestion(data.predictions.map((i) => i.description));
       });
   }
 
