@@ -61,14 +61,16 @@
   align-items: center;
   cursor: pointer;
   margin: 0 0 0px 5px;
-  /* width: 45px; */
+  width: 170px;
   height: 49px;
   flex-shrink: 0;
+  /* background-color: lavender; */
 }
 
 .daysContainer {
   display: flex;
-  /* z-index: 1; */
+  z-index: 1;
+  /* background-color: #49aa19; */
 }
 
 .dayLabel {

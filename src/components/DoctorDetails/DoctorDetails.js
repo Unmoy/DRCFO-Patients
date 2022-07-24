@@ -11,7 +11,7 @@ const DoctorDetails = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [singleDoctor, setSingleDoctor] = useState({});
   const [distance, setDistance] = useState(0);
-  console.log(singleDoctor);
+  // console.log(singleDoctor);
   const [docspecialities, setDocSpecialities] = useState([]);
   const [slots, setSlots] = useState([]);
   const { id } = useParams();
@@ -32,10 +32,11 @@ const DoctorDetails = () => {
         const propertyValues = Object.values(data.specialities);
         setDocSpecialities(propertyValues);
       });
-    console.log(singleDoctor);
+    // console.log(singleDoctor);
   }, [id]);
   useEffect(() => {
     if (selectedDate) {
+      // console.log(selectedDate);
       fetch(
         `https://reservefree-backend.herokuapp.com/get/subslots?clinicId=${id}&date=${selectedDate}`
       )
@@ -47,8 +48,8 @@ const DoctorDetails = () => {
   }, [selectedDate, id]);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
+      // console.log("Latitude is :", position.coords.latitude);
+      // console.log("Longitude is :", position.coords.longitude);
       setLocation({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
@@ -63,9 +64,9 @@ const DoctorDetails = () => {
           location.longitude
         );
         setDistance(Math.round(d * 100) / 100);
-        console.log("if");
+        // console.log("if");
       } else {
-        console.log("else");
+        // console.log("else");
         setDistance(-1);
       }
     }
@@ -214,7 +215,11 @@ const DoctorDetails = () => {
                 </div>
                 <div className="time_table">
                   <div className="date_picker_wrapper">
-                    <DatePicker getSelectedDay={selectedDay} slots={slots} />
+                    <DatePicker
+                      clinicid={id}
+                      getSelectedDay={selectedDay}
+                      slots={slots}
+                    />
                   </div>
                   <div className="d-flex justify-content-evenly flex-wrap">
                     <div className="date_selector_wrapper">

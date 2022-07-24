@@ -94,17 +94,28 @@ const Header = () => {
         });
       });
   }
-
+  async function getAddress(InputLocation) {
+    fetch(
+      // `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${InputLocation}&key=${apikey}`
+      `https://reservefree-backend.herokuapp.com/other/places?query=${InputLocation}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        setSuggestion(data.predictions.map((i) => i.description));
+      });
+  }
   const handleLocationInput = (e) => {
     setLocationInput(e.target.value);
     if (e.target.value) {
-      getCoordinates(e.target.value);
+      getAddress(e.target.value);
     }
   };
   const onSuggestHandler = (value) => {
     // console.log(value);
     setLocationInput(value);
     // setFilterLocation(value);
+    getCoordinates(value);
     setSuggestion([]);
   };
   const locateMe = () => {

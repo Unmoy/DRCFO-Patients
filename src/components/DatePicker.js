@@ -18,21 +18,87 @@ export default function DatePicker({
   color,
   labelFormat,
   slots,
+  clinicid,
 }) {
   var Tommorow = new Date(new Date().setDate(new Date().getDate() + 1));
+  // var Today = new Date();
+  // var DayAfterTommorow = new Date(new Date().setDate(new Date().getDate() + 2));
+  // localhost:8000/get/subslots?clinicId=6291b02a9b4c04f98b24fd9a&datesArray=["2022-07-23","2022-07-24"]
+  // console.log(Tommorow, Today, DayAfterTommorow);
   const [selectedDate, setSelectedDate] = useState(Tommorow);
+  const [DateTommorow, setDateTommorow] = useState("");
+  const [DateToday, setDateToday] = useState("");
+  const [DateDayAfterTommorow, setDateDayAfterTommorow] = useState("");
   const firstSection = { marginLeft: "40px" };
   const startDate = new Date();
   const lastDate = addDays(startDate, endDate || 90);
   const primaryColor = color || "#000";
   const selectedStyle = {
     fontWeight: "600",
-    width: "45px",
-    height: "45px",
-    borderRadius: "50%",
+    // width: "45px",
+    // height: "45px",
+    // borderRadius: "50%",
     color: "#194AF5",
   };
-
+  // const datesArray []
+  const getTommorow = () => {
+    // console.log(selectedDate);
+    // var Tommorow = new Date(new Date().setDate(new Date().getDate() + 1));
+    var day = selectedDate.getDate();
+    if (day < 10) {
+      day = "0" + day;
+    }
+    var month = selectedDate.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    var year = selectedDate.getFullYear();
+    setDateTommorow(year + "-" + month + "-" + day);
+    console.log("T", year + "-" + month + "-" + day);
+  };
+  const getToday = () => {
+    var Today = new Date(new Date().setDate(selectedDate.getDate() - 1));
+    var day = Today.getDate();
+    if (day < 10) {
+      day = "0" + day;
+    }
+    var month = Today.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    var year = Today.getFullYear();
+    console.log("to", year + "-" + month + "-" + day);
+    setDateToday(year + "-" + month + "-" + day);
+  };
+  const getDayAfterTommorow = () => {
+    var DayAfterTommorow = new Date(
+      new Date().setDate(selectedDate.getDate() + 1)
+    );
+    var day = DayAfterTommorow.getDate();
+    if (day < 10) {
+      day = "0" + day;
+    }
+    var month = DayAfterTommorow.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    var year = DayAfterTommorow.getFullYear();
+    setDateDayAfterTommorow(`${year + "-" + month + "-" + day}`);
+  };
+  useEffect(() => {
+    getToday();
+    getDayAfterTommorow();
+    getTommorow();
+    const DatesArray = [DateToday, DateTommorow, DateDayAfterTommorow];
+    const stringifyDatesArray = JSON.stringify(DatesArray);
+    if (DateToday && DateTommorow && DateDayAfterTommorow) {
+      fetch(
+        `https://reservefree-backend.herokuapp.com/get/subslots?clinicId=${clinicid}&datesArray=${stringifyDatesArray}`
+      )
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+    }
+  }, [selectedDate]);
   const labelColor = { color: primaryColor };
 
   const getStyles = (day) => {
@@ -55,6 +121,7 @@ export default function DatePicker({
     const dateFormat = "d";
     const months = [];
     let days = [];
+
     for (let i = 0; i <= differenceInMonths(lastDate, startDate); i++) {
       let start, end;
       const month = startOfMonth(addMonths(startDate, i));
@@ -86,6 +153,7 @@ export default function DatePicker({
           </div>
         );
       }
+      console.log(days);
       months.push(
         <div className={styles.monthContainer} key={month}>
           <span className={styles.monthYearLabel} style={labelColor}>
@@ -100,6 +168,7 @@ export default function DatePicker({
         </div>
       );
       days = [];
+      // console.log(days);
     }
     return (
       <div id={"container"} className={styles.dateListScrollable}>
@@ -109,11 +178,19 @@ export default function DatePicker({
   }
 
   const onDateClick = (day) => {
-    console.log(day);
+    // console.log(day);
+    // console.log(new Date(selectedDate.setDate(selectedDate.getDate() + 1)));
     setSelectedDate(day);
     getSelectedDay(day);
   };
-
+  const onNextArrowClick = () => {
+    setSelectedDate(new Date(selectedDate.setDate(selectedDate.getDate() + 1)));
+    getSelectedDay(new Date(selectedDate.setDate(selectedDate.getDate() + 1)));
+  };
+  const onPrevArrowClick = () => {
+    setSelectedDate(new Date(selectedDate.setDate(selectedDate.getDate() - 1)));
+    getSelectedDay(new Date(selectedDate.setDate(selectedDate.getDate() - 1)));
+  };
   useEffect(() => {
     if (selectedDate) {
       getSelectedDay(selectedDate);
@@ -141,15 +218,19 @@ export default function DatePicker({
   }, [selectDate, selectedDate]);
 
   const nextWeek = () => {
+    onNextArrowClick();
     const e = document.getElementById("container");
     const width = e ? e.getBoundingClientRect().width : null;
-    e.scrollLeft += width - 60;
+    // console.log(width);
+    e.scrollLeft += width - 403;
   };
 
   const prevWeek = () => {
+    onPrevArrowClick();
     const e = document.getElementById("container");
     const width = e ? e.getBoundingClientRect().width : null;
-    e.scrollLeft -= width - 60;
+    // console.log(width);
+    e.scrollLeft -= width - 403;
   };
 
   return (

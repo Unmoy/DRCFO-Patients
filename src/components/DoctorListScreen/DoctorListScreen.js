@@ -312,7 +312,6 @@ const DoctorListScreen = () => {
         });
       localStorage.removeItem("searchItems");
     }
-    // localStorage.removeItem("searchItems");
   }, [selectedDay]);
   useEffect(() => {
     if (sort !== 0) {
@@ -338,14 +337,35 @@ const DoctorListScreen = () => {
     setDoctorsList(list);
   };
   const apikey = process.env.REACT_APP_MAPS_API_KEY;
-
-  async function getAddress(InputLocation) {
+  async function getCoordinates(InputLocation) {
     fetch(
-      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${InputLocation}&key=${apikey}`
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${InputLocation}&key=${apikey}`
     )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        console.log(data.results[0]);
+        // setSuggestion(data.results[0]?.formatted_address);
+        data.results.map((add) => {
+          // setSuggestion([add.formatted_address]);
+          setGoogleGeometry(add.geometry.location);
+          setLocation({
+            latitude: add.geometry.location.lat,
+            longitude: add.geometry.location.lng,
+          });
+          setLocationRange([0, 20]);
+        });
+      });
+  }
+  async function getAddress(InputLocation) {
+    fetch(
+      // `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${InputLocation}&key=${apikey}`
+      `https://reservefree-backend.herokuapp.com/other/places?query=${InputLocation}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        setSuggestion(data.predictions.map((i) => i.description));
       });
   }
 
@@ -353,23 +373,28 @@ const DoctorListScreen = () => {
     setLocationInput(e.target.value);
     if (e.target.value) {
       getAddress(e.target.value);
+    } else if (!e.target.value) {
+      setLocationInput("");
+      setSuggestion([]);
     }
   };
   const onSuggestHandler = (value) => {
     console.log(value);
     setLocationInput(value);
     setFilterLocation(value);
+    getCoordinates(value);
     setSuggestion([]);
   };
-  useEffect(() => {
-    if (filterLocation) {
-      setLocation({
-        latitude: googleGeometry.lat,
-        longitude: googleGeometry.lng,
-      });
-      setLocationRange([0, 20]);
-    }
-  }, [filterLocation, googleGeometry]);
+  // useEffect(() => {
+  //   if (filterLocation) {
+
+  //     setLocation({
+  //       latitude: googleGeometry.lat,
+  //       longitude: googleGeometry.lng,
+  //     });
+  //     setLocationRange([0, 20]);
+  //   }
+  // }, [filterLocation, googleGeometry]);
   useEffect(() => {
     var locationItem = JSON.parse(localStorage.getItem("searchItems"));
     if (searchItems && list.length) {
@@ -417,6 +442,11 @@ const DoctorListScreen = () => {
                       placeholder="Enter a location"
                       onChange={handleLocationInput}
                       value={locationInput}
+                      onBlur={() => {
+                        setTimeout(() => {
+                          setSuggestion([]);
+                        }, 100);
+                      }}
                     />
                   </span>
 
@@ -427,19 +457,12 @@ const DoctorListScreen = () => {
                           key={index}
                           className="location_suggestion_card"
                           onClick={() => onSuggestHandler(add)}
-                          onBlur={() => {
-                            setTimeout(() => {
-                              setSuggestion([]);
-                            }, 100);
-                          }}
                         >
                           {add}
                         </div>
                       ))}
                     </div>
-                  ) : (
-                    ""
-                  )}
+                  ) : null}
                 </div>
                 <div className="top_doctor_search_calender_input">
                   <img src={calendericon} alt="searcbtnicon" />
