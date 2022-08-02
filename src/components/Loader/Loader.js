@@ -1,6 +1,6 @@
 import React from "react";
-// import Lottie from "react-lottie";
-import * as animationData from "./98432-loading.json";
+import Lottie from "react-lottie";
+import * as animationData from "./slotsearch.json";
 const Loader = () => {
   const defaultOptions = {
     loop: true,
@@ -12,7 +12,7 @@ const Loader = () => {
   };
   return (
     <div>
-      {/* <Lottie options={defaultOptions} height={200} width={200} /> */}
+      <Lottie options={defaultOptions} height={250} width={250} />
     </div>
   );
 };

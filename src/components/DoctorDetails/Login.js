@@ -5,7 +5,7 @@ import loginlogo from "../../assets/images/login_logo.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 const customStyles = {
   content: {
     top: "50%",
@@ -19,12 +19,14 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
-const Login = ({ closeModal, modalOpened }) => {
+const Login = () => {
   const [status, setStatus] = useState("login");
   const [result, setResult] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState(new Array(6).fill(""));
+  const [modalIsOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
+  let location = useLocation();
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return false;
     setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
@@ -33,7 +35,9 @@ const Login = ({ closeModal, modalOpened }) => {
       element.nextSibling.focus();
     }
   };
-
+  let from = location.state?.from?.pathname || "/";
+  // console.log(location.state?.from?.pathname);
+  console.log(location);
   const { signInWithPhone } = useAuth();
   const { signInWithOtp } = useAuth();
 
@@ -46,22 +50,18 @@ const Login = ({ closeModal, modalOpened }) => {
       let newNumber = "+" + phoneNumber;
       const response = await signInWithPhone(newNumber);
       setStatus("otp");
-      console.log("getotp");
-      console.log(response);
       setResult(response);
-    } catch (err) {
-      console.log(err);
-      console.log("Error");
-    }
+    } catch (err) {}
   };
   const verifyOtp = async () => {
     let otp1 = "";
     otp.map((o) => (otp1 += o));
     if (otp1 === "" || otp1 === null) return;
+
     try {
       await signInWithOtp(result, otp1);
-      setStatus("loggedIn");
-      navigate("/patientdetails");
+      console.log(from);
+      navigate(from);
     } catch (err) {
       console.log(err);
     }
@@ -70,8 +70,8 @@ const Login = ({ closeModal, modalOpened }) => {
   return (
     <div className="booking_modal">
       <Modal
-        isOpen={modalOpened}
-        onRequestClose={closeModal}
+        isOpen={modalIsOpen}
+        // onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
         className="Modal"

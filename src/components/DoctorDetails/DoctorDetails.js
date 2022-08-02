@@ -6,6 +6,8 @@ import Login from "./Login";
 import { useParams, useNavigate } from "react-router";
 import DatePicker from "../DatePicker";
 import { useAuth } from "../context/AuthContext";
+import Loader from "../Loader/Loader";
+import NoSlotsAnimations from "../Loader/NoSlotsAnimations";
 
 const DoctorDetails = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -14,6 +16,8 @@ const DoctorDetails = () => {
   // console.log(singleDoctor);
   const [docspecialities, setDocSpecialities] = useState([]);
   const [slots, setSlots] = useState([]);
+  const [filterSlots, setFilterSlots] = useState([]);
+  // console.log(filterSlots);
   const { id } = useParams();
   const speciality = Object.values(docspecialities)[0];
   const { currentUser } = useAuth();
@@ -21,6 +25,71 @@ const DoctorDetails = () => {
   const [selectedTime, setselectedTime] = useState("");
   const navigate = useNavigate();
   const [location, setLocation] = useState({});
+  const [loading, setLoading] = useState(true);
+  var today = new Date();
+  var day = today.getDate();
+  if (day < 10) {
+    day = "0" + day;
+  }
+  var month = today.getMonth() + 1;
+  if (month < 10) {
+    month = "0" + month;
+  }
+  var year = today.getFullYear();
+  const startDate = year + "-" + month + "-" + day;
+  var next60days = new Date(new Date().setDate(new Date().getDate() + 60));
+  var endday = next60days.getDate();
+  if (endday < 10) {
+    endday = "0" + endday;
+  }
+  var endmonth = next60days.getMonth() + 1;
+  if (endmonth < 10) {
+    endmonth = "0" + endmonth;
+  }
+  var endyear = next60days.getFullYear();
+  const endDate = endyear + "-" + endmonth + "-" + endday;
+  var getDaysArray = function (start, end) {
+    for (
+      var arr = [], dt = new Date(start);
+      dt <= new Date(end);
+      dt.setDate(dt.getDate() + 1)
+    ) {
+      var dates = dt.getDate();
+      if (dates < 10) {
+        dates = "0" + dates;
+      }
+      var months = dt.getMonth() + 1;
+      if (months < 10) {
+        months = "0" + months;
+      }
+      var years = dt.getFullYear();
+      const dummy = years + "-" + months + "-" + dates;
+      arr.push(dummy);
+    }
+    return arr;
+  };
+  useEffect(() => {
+    var daylist = getDaysArray(new Date(startDate), new Date(endDate));
+    fetch(
+      `https://reservefree-backend.herokuapp.com/get/subslots?clinicId=${id}&datesArray=${JSON.stringify(
+        daylist
+      )}&slots=true`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setSlots(data);
+      });
+  }, []);
+  useEffect(() => {
+    slots.filter((item) => {
+      console.log(selectedDate);
+      if (item.date == selectedDate) {
+        console.log(item);
+        setFilterSlots(item.slots);
+        setLoading(false);
+      }
+    });
+  }, [slots, selectedDate]);
   useEffect(() => {
     window.scrollTo(0, 0);
     fetch(
@@ -32,24 +101,10 @@ const DoctorDetails = () => {
         const propertyValues = Object.values(data.specialities);
         setDocSpecialities(propertyValues);
       });
-    // console.log(singleDoctor);
   }, [id]);
-  useEffect(() => {
-    if (selectedDate) {
-      // console.log(selectedDate);
-      fetch(
-        `https://reservefree-backend.herokuapp.com/get/subslots?clinicId=${id}&date=${selectedDate}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setSlots(data);
-        });
-    }
-  }, [selectedDate, id]);
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
-      // console.log("Latitude is :", position.coords.latitude);
-      // console.log("Longitude is :", position.coords.longitude);
       setLocation({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
@@ -71,9 +126,6 @@ const DoctorDetails = () => {
       }
     }
   }, [singleDoctor]);
-  useEffect(() => {
-    // console.log(singleDoctor.address.location);
-  }, []);
 
   function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km
@@ -93,44 +145,12 @@ const DoctorDetails = () => {
     return deg * (Math.PI / 180);
   }
   function openModal() {
-    if (currentUser.user_phone) {
-      navigate("/patientdetails");
-    } else {
-      setIsOpen(true);
-    }
+    navigate("/patientdetails");
   }
   function closeModal() {
     setIsOpen(false);
   }
-  var gsDayNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
 
-  const selectedDay = (val) => {
-    var monthName = gsDayNames[val.getMonth()];
-    var day = val.getDate();
-    if (day < 10) {
-      day = "0" + day;
-    }
-    var month = val.getMonth() + 1;
-    if (month < 10) {
-      month = "0" + month;
-    }
-    var year = val.getFullYear();
-    setSelectedDate(year + "-" + month + "-" + day);
-    localStorage.setItem("selectedDate", monthName + +day + "," + year);
-  };
   const getValue = (e) => {
     localStorage.setItem("selectedTime", e.target.value);
     setselectedTime(e.target.value);
@@ -167,7 +187,17 @@ const DoctorDetails = () => {
                         <img src={blackmarker} alt="" className="mb-1" />{" "}
                         {distance > -1 ? `${distance} KM` : "- -"}
                       </p>
-                      <p className="direction_btn">Get Direction</p>
+                      {singleDoctor?.address?.location?.latitude &&
+                        singleDoctor?.address?.location?.longitude && (
+                          <a
+                            className="direction_btn"
+                            target="_blank"
+                            rel="noreferrer"
+                            href={`https://www.google.com/maps/search/?api=1&query=${singleDoctor.address.location.latitude}%2C${singleDoctor.address.location.longitude}`}
+                          >
+                            Get Direction
+                          </a>
+                        )}
                     </div>
                   </div>
                 </div>
@@ -217,53 +247,56 @@ const DoctorDetails = () => {
                   <div className="date_picker_wrapper">
                     <DatePicker
                       clinicid={id}
-                      getSelectedDay={selectedDay}
+                      getActiveDate={setSelectedDate}
                       slots={slots}
                     />
                   </div>
                   <div className="d-flex justify-content-evenly flex-wrap">
                     <div className="date_selector_wrapper">
-                      {slots.length
-                        ? slots.map((slot, index) => (
-                            <div className="radio_toolbar" key={index}>
-                              <label
-                                htmlFor={"slot" + (index + 1).toString()}
-                                className={`date_input_label ${
-                                  selectedTime ===
-                                  `${slot.from.timefrom} ${slot.from.fromdayTime} ${slot.to.timeto} ${slot.to.todayTime}`
-                                    ? "checkedSlot"
-                                    : ""
-                                }`}
-                              >
-                                {" "}
-                                {slot.from.timefrom}
-                                {slot.from.fromdayTime}-{slot.to.timeto}
-                                {slot.to.todayTime}
-                              </label>
-                              <input
-                                className="booking_date_radio_input"
-                                type="radio"
-                                name="slot"
-                                id={"slot" + (index + 1).toString()}
-                                onChange={getValue}
-                                value={`${slot.from.timefrom} ${slot.from.fromdayTime} ${slot.to.timeto} ${slot.to.todayTime}`}
-                                checked={
-                                  selectedTime ===
-                                  `${slot.from.timefrom} ${slot.from.fromdayTime} ${slot.to.timeto} ${slot.to.todayTime}`
-                                    ? true
-                                    : false
-                                }
-                              />
-                            </div>
-                          ))
-                        : "No Slots available"}
+                      {filterSlots.length ? (
+                        filterSlots.map((slot, index) => (
+                          <div className="radio_toolbar" key={index}>
+                            <label
+                              htmlFor={"slot" + (index + 1).toString()}
+                              className={`date_input_label ${
+                                selectedTime ===
+                                `${slot?.from?.timefrom} ${slot?.from?.fromdayTime} ${slot?.to?.timeto} ${slot?.to?.todayTime}`
+                                  ? "checkedSlot"
+                                  : ""
+                              }`}
+                            >
+                              {slot?.from?.timefrom}
+                              {slot?.from?.fromdayTime}-{slot?.to?.timeto}
+                              {slot?.to?.todayTime}
+                            </label>
+                            <input
+                              className="booking_date_radio_input"
+                              type="radio"
+                              name="slot"
+                              id={"slot" + (index + 1).toString()}
+                              onChange={getValue}
+                              value={`${slot?.from?.timefrom} ${slot?.from?.fromdayTime} ${slot?.to?.timeto} ${slot?.to?.todayTime}`}
+                              checked={
+                                selectedTime ===
+                                `${slot?.from?.timefrom} ${slot?.from?.fromdayTime} ${slot?.to?.timeto} ${slot?.to?.todayTime}`
+                                  ? true
+                                  : false
+                              }
+                            />
+                          </div>
+                        ))
+                      ) : loading ? (
+                        <Loader />
+                      ) : (
+                        <NoSlotsAnimations />
+                      )}
                     </div>
                   </div>
                 </div>
                 <button onClick={openModal} className="bookbtn">
                   Book Appointment
                 </button>
-                <Login modalOpened={modalIsOpen} closeModal={closeModal} />
+                {/* <Login modalOpened={modalIsOpen} closeModal={closeModal} /> */}
               </div>
             </div>
           </div>

@@ -1,0 +1,10 @@
+.avaiable_stat {
+  color: green;
+  font-size: 12px;
+  font-weight: 500;
+}
+.not_avaiable_stat {
+  color: grey;
+  font-size: 12px;
+  font-weight: 500;
+}

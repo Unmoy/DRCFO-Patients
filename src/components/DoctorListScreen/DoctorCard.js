@@ -6,6 +6,7 @@ import directionicon from "../../assets/images/directionicon.png";
 import likeicon from "../../assets/images/likeicon.png";
 import { useNavigate } from "react-router-dom";
 const DoctorCard = ({ doctor, location }) => {
+  console.log(doctor.image);
   const [distance, setDistance] = useState(0);
   // console.log(
   //   doctor?.address?.location?.latitude,
@@ -57,7 +58,11 @@ const DoctorCard = ({ doctor, location }) => {
         <div className="row g-0">
           <div className="col-md-3">
             <div className="doctor_card_img">
-              <img src={image} className="img-fluid" alt="..." />
+              <img
+                src={`https://reservefree-backend.herokuapp.com/image/display?name=${doctor?.image}`}
+                className="img-fluid"
+                alt="..."
+              />
             </div>
           </div>
           <div className="col-sm-12 col-md-6">

@@ -15,8 +15,8 @@ const PatientDetails = () => {
   const [time, setTime] = useState("");
   const [gender, setGender] = useState("");
   const [doctorId, setDoctorId] = useState("");
-  const [clinicId, setClinicId] = useState(localStorage.getItem("clinicId"));
-  const [patientId, setPatientId] = useState(localStorage.getItem("patientId"));
+  const clinicId = localStorage.getItem("clinicId");
+  const patientId = localStorage.getItem("patientId");
   const [number, setNumber] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");

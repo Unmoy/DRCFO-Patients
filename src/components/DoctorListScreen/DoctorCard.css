@@ -8,7 +8,7 @@
   padding-right: 20px;
 }
 .doctor_card_img {
-  background-color: #7487ef;
+  /* background-color: #7487ef; */
   display: flex;
   justify-content: center;
   align-items: center;

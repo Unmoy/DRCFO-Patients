@@ -14,6 +14,7 @@ export function useAuth() {
 }
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
+  // console.log(currentUser);
   const [loading, setLoading] = useState(true);
   const auth = getAuth();
 
@@ -28,7 +29,7 @@ export const AuthProvider = ({ children }) => {
       },
       auth
     );
-    console.log(number);
+    // console.log(number);
     return signInWithPhoneNumber(auth, number, recaptchaVerifier);
     // return "Success";
   }
@@ -37,11 +38,12 @@ export const AuthProvider = ({ children }) => {
       const res = await result.confirm(otp);
       const user = res.user;
       if (user) {
+        console.log(user.phoneNumber);
         setCurrentUser({
           user_phone: user.phoneNumber,
           user_uid: user.uid,
         });
-        console.log(currentUser);
+
         fetch("https://reservefree-backend.herokuapp.com/auth/patient", {
           method: "POST",
           headers: {
@@ -55,10 +57,11 @@ export const AuthProvider = ({ children }) => {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
+            // console.log(data);
             if (data.message === "SUCCESS") {
               localStorage.setItem("patientId", data.id);
             }
+            setLoading(false);
           });
       }
     } catch (err) {
@@ -67,7 +70,9 @@ export const AuthProvider = ({ children }) => {
   }
 
   function logout() {
-    return auth.signOut();
+    auth.signOut();
+    setCurrentUser({});
+    return;
   }
 
   useEffect(() => {
@@ -77,10 +82,7 @@ export const AuthProvider = ({ children }) => {
           user_phone: user._delegate.phoneNumber,
           user_uid: user._delegate.auth.currentUser.uid,
         });
-        console.log(
-          user._delegate.phoneNumber,
-          user._delegate.auth.currentUser.uid
-        );
+        console.log(currentUser);
       }
       setLoading(false);
     });

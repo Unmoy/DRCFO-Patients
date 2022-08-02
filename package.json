@@ -19,6 +19,7 @@
     "react-dom": "^18.1.0",
     "react-hook-form": "^7.31.2",
     "react-horizontal-datepicker": "^2.0.3",
+    "react-lottie": "^1.2.3",
     "react-modal": "^3.15.1",
     "react-phone-input-2": "^2.15.0",
     "react-router-dom": "^6.3.0",

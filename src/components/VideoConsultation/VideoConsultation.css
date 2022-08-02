@@ -1,0 +1,165 @@
+.VideoConsultation {
+  background-color: #fff;
+  padding: 30px 40px;
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 30px auto;
+}
+.VideoConsultation h1 {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 34px;
+  margin-bottom: 20px;
+  color: #000000;
+}
+.VideoConsultation label {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #232526;
+  display: block;
+  margin-bottom: 15px;
+}
+.consultation_inputs {
+  margin-bottom: 30px;
+  /* background-color: blue; */
+}
+.VideoConsultation input::placeholder {
+  color: red;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #d5d5d5;
+}
+
+.symptom_input {
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #c4c4c4;
+  padding: 7px;
+}
+.symptom_input:focus {
+  outline: 1px solid #1472e5;
+}
+.problem_input:focus {
+  outline: 1px solid #1472e5;
+}
+.problem_input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #c4c4c4;
+}
+.problem_input::placeholder {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #d5d5d5;
+}
+.consult_name {
+  width: 300px;
+}
+.consult_name input {
+  min-width: 100%;
+  padding: 7px;
+  border-radius: 4px;
+  border: 1px solid #c4c4c4;
+}
+.consult_age {
+  width: 100px;
+}
+.consult_age input {
+  max-width: 100%;
+  padding: 7px;
+  border-radius: 4px;
+  border: 1px solid #c4c4c4;
+}
+.patient_VideoDetails button {
+  background: #194af5;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  padding: 7px;
+  color: #fff;
+}
+.relevants ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.relevants h2 {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+.specialization_type_selector .relevant_radio_input:checked,
+.relevant_radio_input:not(:checked) {
+  position: absolute;
+  left: -9999px;
+}
+
+.specialization_type_selector .relevant_radio_input:checked + label,
+.relevant_radio_input:not(:checked) + label {
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  color: #545b74;
+  width: 200px;
+  /* background-color: #194af5; */
+}
+.specialization_type_selector .relevant_radio_input:checked + label:before,
+.relevant_radio_input:not(:checked) + label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  background: #fff;
+  margin-top: 2px;
+}
+.specialization_type_selector .relevant_radio_input:checked + label:after,
+.relevant_radio_input:not(:checked) + label:after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: #194af5;
+  position: absolute;
+  top: 5px;
+  left: 3px;
+  border-radius: 50px;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.specialization_type_selector
+  .relevant_radio_input:not(:checked)
+  + label:after {
+  opacity: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+.specialization_type_selector .relevant_radio_input:checked + label:after {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+.specialization_type_selector span {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 23px;
+  letter-spacing: 0.02em;
+  color: #545b74;
+  width: 100px;
+  /* background-color: red; */
+}

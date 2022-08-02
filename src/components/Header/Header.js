@@ -19,8 +19,8 @@ const Header = () => {
   const [suggestion, setSuggestion] = useState([]);
   const [filterLocation, setFilterLocation] = useState({});
   const [location, setLocation] = useState({});
-  const [address, setAddress] = useState("");
-  console.log(location);
+  // const [address, setAddress] = useState("");
+  console.log(suggestion);
   const navigate = useNavigate();
   const handleSearch = () => {
     const searchItems = {
@@ -85,11 +85,12 @@ const Header = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        console.log(data.results[0]);
+        // console.log(data);
+        // console.log(data.results[0]);
         // setSuggestion(data.results[0]?.formatted_address);
         data.results.map((add) => {
-          setSuggestion([add.formatted_address]);
+          // setSuggestion([add.formatted_address]);
+          setLocationInput(add.formatted_address);
           setFilterLocation(add.geometry.location);
         });
       });
@@ -106,6 +107,7 @@ const Header = () => {
       });
   }
   const handleLocationInput = (e) => {
+    console.log(e.target.value);
     setLocationInput(e.target.value);
     if (e.target.value) {
       getAddress(e.target.value);
@@ -116,6 +118,7 @@ const Header = () => {
     setLocationInput(value);
     // setFilterLocation(value);
     getCoordinates(value);
+    console.log(suggestion);
     setSuggestion([]);
   };
   const locateMe = () => {
@@ -134,9 +137,9 @@ const Header = () => {
         .then((response) => response.json())
         .then((data) => {
           // console.log(data);
-          // console.log(data.results[0].formatted_address);
+          console.log(data.results[0].formatted_address);
           // setAddress(data.results[0].formatted_address);
-          setLocationInput(data.results[0].formatted_address);
+          // setLocationInput(data.results[0].formatted_address);
           getCoordinates(data.results[0].formatted_address);
         });
     }
