@@ -1,9 +1,10 @@
 import SelectInput from "@mui/material/Select/SelectInput";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Login from "../DoctorDetails/Login";
 import "./VideoConsultation.css";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import WaitingModal from "./WaitingModal";
 const VideoConsultation = () => {
   const { currentUser } = useAuth();
   const [selectedSpecialization, setSelectedSpecialization] = useState("");
@@ -15,6 +16,7 @@ const VideoConsultation = () => {
   const patientId = localStorage.getItem("patientId");
   const [modalIsOpen, setIsOpen] = useState(false);
   // console.log(JSON.stringify(inputamount));
+  const [loader, setLoader] = useState(false);
   // const amount = 359 * 100;
   const navigate = useNavigate();
   const getSpeacializationDetail = (e) => {
@@ -38,6 +40,7 @@ const VideoConsultation = () => {
   };
   const handleNameInput = (e) => {
     setName(e.target.value);
+    localStorage.setItem("joining_name", e.target.value);
   };
   const handleAgeInput = (e) => {
     setAge(e.target.value);
@@ -45,21 +48,9 @@ const VideoConsultation = () => {
   const handleDescInput = (e) => {
     setDescription(e.target.value);
   };
-  const patientConsultationData = [
-    {
-      patientId: patientId,
-      name: name,
-      age: age,
-      symptoms: symptom,
-      specialization: selectedSpecialization,
-      description: description,
-      session_cost: 359,
-      paymentDetails: {},
-    },
-  ];
+
   function openModal() {
     if (currentUser?.user_phone?.length) {
-      // console.log(currentUser?.user_phone);
       const totalAmount = inputamount * 100;
       fetch("https://reservefree-backend.herokuapp.com/payment/new", {
         method: "POST",
@@ -74,12 +65,30 @@ const VideoConsultation = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           displayRazorpay(data);
+          setLoader(true);
         });
     }
   }
+  // function useSetTimeout(timeoutCallback, seconds) {
+  //   const timeoutId = useRef();
 
+  //   useEffect(() => {
+  //     timeoutId.current = setTimeout(timeoutCallback, seconds);
+  //     return () => clearTimeout(timeoutId.current);
+  //   }, []);
+  // }
+  const [redirectNow, setRedirectNow] = useState(false);
+  // useSetTimeout(() => {
+  //   setRedirectNow(true);
+  // }, 5000);
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setRedirectNow(true);
+    }, 5000);
+    return () => clearTimeout(id);
+  }, []);
   function loadScript(src) {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -152,7 +161,7 @@ const VideoConsultation = () => {
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
-            if (data.message === "SUCCESS") {
+            if (data.message === "SUCCESS" && redirectNow) {
               navigate("/chat");
             }
             // localStorage.setItem("appointmentId", data.id);
@@ -174,6 +183,7 @@ const VideoConsultation = () => {
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   }
+
   return (
     <div>
       <div className="VideoConsultation">
@@ -267,6 +277,7 @@ const VideoConsultation = () => {
         </div>
         {/* <Login modalOpened={modalIsOpen} closeModal={closeModal} /> */}
       </div>
+      {loader ? <WaitingModal /> : null}
     </div>
   );
 };

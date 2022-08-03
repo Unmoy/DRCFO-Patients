@@ -1,5 +1,5 @@
 import { faTruckPlane } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Modal from "react-modal";
 import image from "../../assets/images/video_bg.png";
 import "./VideoModal.css";
@@ -19,7 +19,14 @@ const VideoModal = ({ closeModal, modalOpened }) => {
       borderRadius: "20px",
     },
   };
+  function useSetTimeout(timeoutCallback, seconds) {
+    const timeoutId = useRef();
 
+    useEffect(() => {
+      timeoutId.current = setTimeout(timeoutCallback, seconds);
+      return () => clearTimeout(timeoutId.current);
+    }, []);
+  }
   return (
     <div>
       <Modal
